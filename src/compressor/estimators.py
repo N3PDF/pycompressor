@@ -46,7 +46,8 @@ class Estimators:
         p_mean, _ = self.mean()
         res = 0
         for replica in self.prior:
-            res += (replica - p_mean) / pow(p_mean, 3)
+            numr = replica - p_mean
+            res += pow(numr, 3) / pow(p_mean, 3)
         return res / self.nrep
 
     def kurtosis(self):
@@ -54,7 +55,8 @@ class Estimators:
         p_cv, _ = self.stdev()
         res = 0
         for replica in self.prior:
-            res += (replica - p_cv) / pow(p_cv, 3)
+            numr = replica - p_cv
+            res += pow(numr, 4) / pow(p_cv, 4)
         return res / self.nrep
 
     # @staticmethod
@@ -81,7 +83,8 @@ class Estimators:
     #     p_mean, _ = self.mean(prior)
     #     res = 0
     #     for replica in self.prior:
-    #         res += (replica - p_mean) / pow(p_mean, 3)
+    #         numr = replica - p_mean
+    #         res += pow(numr, 3) / pow(p_mean, 3)
     #     return res / self.nrep
 
 

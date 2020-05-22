@@ -43,7 +43,19 @@ class Estimators:
 
     def skewness(self):
         # compute skewness value
-        pass
+        p_mean, _ = self.mean()
+        res = 0
+        for replica in self.prior:
+            res += (replica - p_mean) / pow(p_mean, 3)
+        return res / self.nrep
+
+    def kurtosis(self):
+        # compute kurtosis value
+        p_cv, _ = self.stdev()
+        res = 0
+        for replica in self.prior:
+            res += (replica - p_cv) / pow(p_cv, 3)
+        return res / self.nrep
 
     # @staticmethod
     # @njit
@@ -63,9 +75,14 @@ class Estimators:
 
     # @staticmethod
     # @njit
-    # def _skewness_arrays(prior, reduc, axs=0, eps=1e-8):
+    # def _skewness_arrays(prior, axs=0, eps=1e-8):
     #     # compute skewness value
     #     pass
+    #     p_mean, _ = self.mean(prior)
+    #     res = 0
+    #     for replica in self.prior:
+    #         res += (replica - p_mean) / pow(p_mean, 3)
+    #     return res / self.nrep
 
 
 class NormalizationK:

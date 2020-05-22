@@ -38,12 +38,34 @@ class Estimators:
     def stdev(self):
         # Compute standard deviation
         p_std = np.std(self.prior, axis=self.axs) + self.eps
-        R_std = np.std(self.reduc, axis=self.axs) + self.eps
-        return p_std, R_std
+        r_std = np.std(self.reduc, axis=self.axs) + self.eps
+        return p_std, r_std
 
     def skewness(self):
         # compute skewness value
         pass
+
+    # @staticmethod
+    # @njit
+    # def _mean_arrays(prior, reduc, axs=0, eps=1e-8):
+    #     # Compute mean value
+    #     p_mean = np.mean(prior, axis=axs) + eps
+    #     r_mean = np.mean(reduc, axis=axs) + eps
+    #     return p_mean, r_mean
+
+    # @staticmethod
+    # @njit
+    # def _stdev_arrays(prior, reduc, axs=0, eps=1e-8):
+    #     # Compute standard deviation
+    #     p_std = np.std(prior, axis=axs) + self.eps
+    #     r_std = np.std(reduc, axis=axs) + self.eps
+    #     return p_std, r_std
+
+    # @staticmethod
+    # @njit
+    # def _skewness_arrays(prior, reduc, axs=0, eps=1e-8):
+    #     # compute skewness value
+    #     pass
 
 
 class NormalizationK:
@@ -63,11 +85,15 @@ class NormalizationK:
         self.random_param = random_param
 
     def random_replicas(self, number):
-        # Non-redundant choice
+        """ Selcet non-redundant replicas from prior """
         index = np.random.choice(self.prior.shape[0], number, replace=False)
         return self.prior[index]
 
     def cfd68(self, name_est, randm):
+        """
+        Select replicas that falls into the 68% confidence
+        interval
+        """
         eps = 1e-8
         estm = Estimators(self.prior, randm, axs=0)
         pr_mean, rd_mean = estm.mean()
@@ -104,14 +130,14 @@ class NormalizationK:
         """
         sum2 = 0
         # Select fixed-sized subset from true
-        Nsize = 50
-        Nrand = 1000
-        for r in range(1, Nrand):
-            rand_distr = self.random_replicas(Nsize)
+        size_rp = 50
+        size_rand = 1000
+        for r in range(1, size_rand):
+            rand_distr = self.random_replicas(size_rp)
             xpr, xrd = self.cfd68("mean", rand_distr)
             sum1 = ((xrd - xpr) / xpr) ** 2
             sum2 += np.sum(sum1)
-        return sum2 / Nrand
+        return sum2 / size_rand
 
     def nk_stdev(self):
-        return self.Nk_mean()
+        return self.nk_mean()

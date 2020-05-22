@@ -7,10 +7,10 @@ Main file for Compressor
 # import logging
 import argparse
 
-from compressor.pdf_grid import XGrid
-from compressor.pdf_grid import PdfSet
-from compressor.estimators import Estimators
-from compressor.estimators import NormalizationK
+# from compressor.pdf_grid import XGrid
+# from compressor.pdf_grid import PdfSet
+# from compressor.estimators import Estimators
+# from compressor.estimators import NormalizationK
 
 
 def nb_flavors(value):

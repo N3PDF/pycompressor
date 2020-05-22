@@ -2,23 +2,23 @@
 Main file for Compressor
 """
 
-import os
-import shutil
-import logging
+# import os
+# import shutil
+# import logging
 import argparse
 
-from compressor.pdfGrid import xgrid
-from compressor.pdfGrid import pdfSet
-from compressor.estimators import estimators
-from compressor.estimators import normalizationK
+from compressor.pdf_grid import XGrid
+from compressor.pdf_grid import PdfSet
+from compressor.estimators import Estimators
+from compressor.estimators import NormalizationK
 
 
-def nbFlavors(value):
+def nb_flavors(value):
     """
     Checks the nb of flavors from input
     """
-    if value<0 and 7<value:
-        raise argparse.ArgumentTypeError(f'Value {value} is not allowed.')
+    if value < 0 and value > 7:
+        raise argparse.ArgumentTypeError(f"Value {value} is not allowed.")
     return value
 
 
@@ -27,11 +27,18 @@ def argument_parser():
     Parse arguments
     """
     parser = argparse.ArgumentParser(description="Compress PDF sets")
-    parser.add_argument("-p",  "--pdfset", help="PDF set", required=True)
-    parser.add_argument("-n",  "--compress", help="Number of compressed replicas", required=True)
-    parser.add_argument("-f",  "--nflavors", type=nbFlavors, help="Total number of flavors", required=True)
+    parser.add_argument("-p", "--pdfset", help="PDF set", required=True)
+    parser.add_argument(
+        "-n", "--compress", help="Number of compressed replicas", required=True
+    )
+    parser.add_argument(
+        "-f",
+        "--nflavors",
+        type=nb_flavors,
+        help="Total number of flavors",
+        required=True,
+    )
     args = parser.parse_args()
-
 
 
 def main():
@@ -39,5 +46,3 @@ def main():
     Main function
     """
     pass
-
-

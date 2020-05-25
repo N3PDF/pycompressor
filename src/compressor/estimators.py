@@ -2,162 +2,161 @@
 Collects estimators and corresponding normalizations
 """
 
+from math import sqrt
 import numpy as np
-from scipy import stats
 
 
 class Estimators:
     """
-    Class that contains the different types of
-    statistical estimators.
+    Class containing the different types of statistical
+    estimators.
 
-    The estimators are omputed w.r.t the pdf replicas.
+    What this class is doing is: take a replica (prior/reduced)
+    with a shape (repl,fl,xgrid) and then compute the value of
+    the estimators w.r.t to the PDF replicas.
 
     Arguments:
     ---------
-    - prior: Prior/Input PDF replicas
-    - reduc: Reduced set of PDF replicas
-    - axs  : Axis to which the estimator is computed.
-             By default is set to zero to compute
-             along the direction of the pdf replicas.
+    - replicas: Prior or Reduced PDF replicas of shape (rep,fl,xgrid)
+    - axs     : Axis to which the estimator is computed.
+                By default is set to zero to compute
+                along the direction of the pdf replicas.
     """
 
-    def __init__(self, prior, reduc, axs=0):
+    def __init__(self, replicas, axs=0):
         self.axs = axs
-        self.eps = 1e-8
-        self.prior = prior
-        self.reduc = reduc
-        self.nrep = prior.shape[0]
+        self.replicas = replicas
+        self.nrep = replicas.shape[0]
+        self.nflv = replicas.shape[1]
+        self.nxgd = replicas.shape[2]
 
     def mean(self):
         # Compute mean value
-        p_mean = np.mean(self.prior, axis=self.axs) + self.eps
-        r_mean = np.mean(self.reduc, axis=self.axs) + self.eps
-        return p_mean, r_mean
+        rp_mean = np.mean(self.replicas, axis=self.axs)
+        return rp_mean
 
     def stdev(self):
         # Compute standard deviation
-        p_std = np.std(self.prior, axis=self.axs) + self.eps
-        r_std = np.std(self.reduc, axis=self.axs) + self.eps
-        return p_std, r_std
+        rp_stdev = np.std(self.replicas, axis=self.axs)
+        return rp_stdev
 
     def skewness(self):
         # compute skewness value
-        p_mean, _ = self.mean()
+        rp_mean = self.mean()
+        rp_stdev = self.stdev()
         res = 0
-        for replica in self.prior:
-            numr = replica - p_mean
-            res += pow(numr, 3) / pow(p_mean, 3)
-        return res / self.nrep
+        for replica in self.replicas:
+            numr = replica - rp_mean
+            res += pow(numr, 3)
+        return res / (self.nrep * pow(rp_stdev, 3))
 
     def kurtosis(self):
         # compute kurtosis value
-        p_cv, _ = self.stdev()
+        rp_mean = self.mean()
+        rp_stdev = self.stdev()
         res = 0
-        for replica in self.prior:
-            numr = replica - p_cv
-            res += pow(numr, 4) / pow(p_cv, 4)
-        return res / self.nrep
+        for replica in self.replicas:
+            numr = replica - rp_mean
+            res += pow(numr, 4)
+        return res / (self.nrep * pow(rp_stdev, 4))
 
-    # @staticmethod
-    # @njit
-    # def _mean_arrays(prior, reduc, axs=0, eps=1e-8):
-    #     # Compute mean value
-    #     p_mean = np.mean(prior, axis=axs) + eps
-    #     r_mean = np.mean(reduc, axis=axs) + eps
-    #     return p_mean, r_mean
+    def moment5th(self):
+        # Compute the 5th moment
+        rp_mean = self.mean()
+        rp_stdev = self.stdev()
+        res = 0
+        for replica in self.replicas:
+            numr = replica - rp_mean
+            res += pow(numr, 5)
+        return res / (self.nrep * pow(rp_stdev, 5))
 
-    # @staticmethod
-    # @njit
-    # def _stdev_arrays(prior, reduc, axs=0, eps=1e-8):
-    #     # Compute standard deviation
-    #     p_std = np.std(prior, axis=axs) + self.eps
-    #     r_std = np.std(reduc, axis=axs) + self.eps
-    #     return p_std, r_std
+    def moment6th(self):
+        # Compute 6th moment
+        rp_mean = self.mean()
+        rp_stdev = self.stdev()
+        res = 0
+        for replica in self.replicas:
+            numr = replica - rp_mean
+            res += pow(numr, 6)
+        return res / (self.nrep * pow(rp_stdev, 6))
 
-    # @staticmethod
-    # @njit
-    # def _skewness_arrays(prior, axs=0, eps=1e-8):
-    #     # compute skewness value
-    #     pass
-    #     p_mean, _ = self.mean(prior)
-    #     res = 0
-    #     for replica in self.prior:
-    #         numr = replica - p_mean
-    #         res += pow(numr, 3) / pow(p_mean, 3)
-    #     return res / self.nrep
-
-
-class NormalizationK:
-    """
-    Class that computes the normalization K for a given estimator
-    as expressed by eq. (9) of https://arxiv.org/abs/1504.06469.
-
-    Notice that the normalization factor is defined for each estimator.
-
-    Arguments:
-    - prior: Prior set of replicas
-    - random_param: Radom parameter generation
-    """
-
-    def __init__(self, prior, random_param):
-        self.prior = prior
-        self.random_param = random_param
-
-    def random_replicas(self, number):
-        """ Selcet non-redundant replicas from prior """
-        index = np.random.choice(self.prior.shape[0], number, replace=False)
-        return self.prior[index]
-
-    def cfd68(self, name_est, randm):
+    def kolmogorov_smirnov(self):
         """
-        Select replicas that falls into the 68% confidence
-        interval
+        Compute Kolmogorov-smirnov:
+        Count the number of replicas (for all fl and x in xgrid) which fall
+        in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
+        and normalize by the total number of repplicas.
+
+        Ouput:
+        -----
+        Array of shape (fl,xgrid,regions)
         """
-        eps = 1e-8
-        estm = Estimators(self.prior, randm, axs=0)
-        pr_mean, rd_mean = estm.mean()
-        pr_stdv, rd_stdv = estm.stdev()
-        # Shift std to avoid std=0
-        pr_stdv += eps
-        rd_stdv += eps
-        # Compute 68% level (this returns a tuple)
-        pr_cfd = stats.norm.interval(0.6827, loc=pr_mean, scale=pr_stdv)
-        rd_cfd = stats.norm.interval(0.6827, loc=rd_mean, scale=rd_stdv)
-        res_pr = np.zeros(self.prior.shape[1])
-        res_rd = np.zeros(self.prior.shape[1])
-        for z in range(self.prior.shape[1]):
-            mask_rd = (rd_cfd[0][z] <= randm[:, z]) * (randm[:, z] <= rd_cfd[1][z])
-            mask_pr = (pr_cfd[0][z] <= self.prior[:, z]) * (
-                self.prior[:, z] <= pr_cfd[1][z]
-            )
-            # Apply selection
-            new_rd = randm[:, z][mask_rd]
-            new_pr = self.prior[:, z][mask_pr]
+        region_size = 6
+        # Compute mean and std of replica
+        rp_mean = self.mean()
+        rp_stdev = self.stdev()
+        # Initialize array to put the results
+        reslt = np.zeros(region_size)
+        ks_mat = np.zeros((self.nflv, self.nxgd, region_size))
+        for replica in self.replicas:
+            for f in range(self.nflv):
+                for x in range(self.nxgd):
+                    if replica[f][x] <= (rp_mean[f][x] - 2 * rp_stdev[f][x]):
+                        reslt[0] += 1
+                    elif replica[f][x] <= (rp_mean[f][x] - rp_stdev[f][x]):
+                        reslt[1] += 1
+                    elif replica[f][x] <= (rp_mean[f][x]):
+                        reslt[2] += 1
+                    elif replica[f][x] <= (rp_mean[f][x] + rp_stdev[f][x]):
+                        reslt[3] += 1
+                    elif replica[f][x] <= (rp_mean[f][x] + 2 * rp_stdev[f][x]):
+                        reslt[4] += 1
+                    elif replica[f][x] > (rp_mean[f][x] + 2 * rp_stdev[f][x]):
+                        reslt[5] += 1
+                    else:
+                        raise Exception("The replica did not fall in the regions.")
+                    ks_mat[f][x] = reslt
+        return ks_mat / self.nrep
 
-            cfd_class = Estimators(new_pr, new_rd)
-            pr_res, rd_res = getattr(cfd_class, name_est, None)()
-            res_pr[z] = pr_res
-            res_rd[z] = rd_res
-        fin_pr = res_pr + eps
-        fin_rd = res_rd + eps
-
-        return fin_pr, fin_rd
-
-    def nk_mean(self):
+    def correlation(self):
         """
-        Normalization factor for mean estimator
-        """
-        sum2 = 0
-        # Select fixed-sized subset from true
-        size_rp = 50
-        size_rand = 1000
-        for r in range(1, size_rand):
-            rand_distr = self.random_replicas(size_rp)
-            xpr, xrd = self.cfd68("mean", rand_distr)
-            sum1 = ((xrd - xpr) / xpr) ** 2
-            sum2 += np.sum(sum1)
-        return sum2 / size_rand
+        Compute correlation matrix as in eq.(16) of
+        https://arxiv.org/pdf/1504.06469.
 
-    def nk_stdev(self):
-        return self.nk_mean()
+        Input:
+        -----
+        Array of shape (repl,fl,xgrid)
+
+        Ouput:
+        -----
+        Array of shape (fl,fl)
+        """
+        cor_mat = np.zeros((self.nflv, self.nflv))
+        for fl1 in range(self.nflv):
+            for x1 in range(self.nxgd):
+                i = self.nxgd * fl1 + x1
+                for fl2 in range(self.nflv):
+                    for x2 in range(self.nxgd):
+                        j = self.nxgd * fl2 + x2
+                        i_corr, j_corr, ij_corr = 0, 0, 0
+                        sq_i, sq_j = 0, 0
+                        for r in range(self.nrep):
+                            res1 = self.replicas[r][fl1][x1]
+                            res2 = self.replicas[r][fl2][x2]
+                            i_corr += res1
+                            j_corr += res2
+                            ij_corr += res1 * res2
+                            sq_i += res1 * res1
+                            sq_j += res2 * res2
+                        i_corr /= self.nrep
+                        j_corr /= self.nrep
+                        ij_corr /= self.nrep
+                        # Compute standard deviation
+                        fac = self.nrep - 1
+                        std_i = sqrt(sq_i / fac - self.nrep / fac * res1 * res1)
+                        std_j = sqrt(sq_i / fac - self.nrep / fac * res2 * res2)
+                        # Fill corr. matrix
+                        num = ij_corr - i_corr * j_corr
+                        den = std_i * std_j
+                        cor_mat[i][j] = self.nrep / fac * num / den
+        return cor_mat

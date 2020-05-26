@@ -18,15 +18,15 @@ def compute_erfm(set_a, set_b, estm):
     - set_a: Reduc/Randm set of shape (repl,fl,x)
     - est  : Name of the estimator
     """
-    flv_size = set_a.shape[1]
-    xgd_size = set_a.shape[2]
     # Compute Estimators
     est_prior = getattr(set_a, estm, None)()
     est_reduc = getattr(set_b, estm, None)()
+    flv_size = est_prior.shape[0]
+    xgd_size = est_prior.shape[1]
     reslt = 0
     for fl in range(flv_size):
         for xg in range(xgd_size):
-            if est_prior != 0:
+            if est_prior[fl][xg] != 0:
                 fi = est_reduc[fl][xg]
                 gi = est_prior[fl][xg]
                 reslt += pow((fi - gi) / gi, 2)
@@ -47,12 +47,12 @@ def compute_erfs(set_a, set_b, estm):
     - set_a: Reduc/Randm set of shape (repl,fl,x)
     - est  : Name of the estimator
     """
-    flv_size = set_a.shape[1]
-    xgd_size = set_a.shape[2]
     # Compute Estimators
     # Return arrays of shape (fl,x,region)
     est_prior = getattr(set_a, estm, None)()
     est_reduc = getattr(set_b, estm, None)()
+    flv_size = est_prior.shape[0]
+    xgd_size = est_prior.shape[1]
     region_size = est_prior.shape[2]
     reslt = 0
     for fl in range(flv_size):
@@ -137,52 +137,51 @@ class ErfComputation:
     """
 
     def __init__(self, prior, reduc, trial=1000):
+        self.prepl = prior
+        self.trial = trial
         self.prior = Estimators(prior)
         self.reduc = Estimators(reduc)
-        self.trial = trial
-        self.rndrp = prior.shape[0] - 1
+        # self.rndrp = prior.shape[0] - 1
+        self.rndrp = 50
 
     def normalize_erfm(self, estm):
-        est_prior = getattr(self.prior, estm, None)()
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
             # TODO: Check if randomizing the set for each
             # trial is needed
-            randm = randomize_rep(self.prior, self.rndrp)
-            est_randm = getattr(randm, estm, None)()
+            randm = randomize_rep(self.prepl, self.rndrp)
+            est_randm = Estimators(randm)
             # Compute non-normalized erf for each trial
-            reslt[t] = compute_erfm(est_prior, est_randm, estm)
+            reslt[t] = compute_erfm(self.prior, est_randm, estm)
         # Compute 68% confidence interval
         normalization = compute_cfd68(reslt)
         return normalization
 
     def normalize_erfs(self, estm):
-        est_prior = getattr(self.prior, estm, None)()
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
             # TODO: Check if randomizing the set for each
             # trial is needed
-            randm = randomize_rep(self.prior, self.rndrp)
-            est_randm = getattr(randm, estm, None)()
+            randm = randomize_rep(self.prepl, self.rndrp)
+            est_randm = Estimators(randm)
             # Compute non-normalized erf for each trial
-            reslt[t] = compute_erfs(est_prior, est_randm, estm)
+            reslt[t] = compute_erfs(self.prior, est_randm, estm)
         # Compute 68% confidence interval
         normalization = compute_cfd68(reslt)
         return normalization
 
     def normalize_erfc(self, estm):
-        est_prior = getattr(self.prior, estm, None)()
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
             # TODO: Check if randomizing the set for each
             # trial is needed
-            randm = randomize_rep(self.prior, self.rndrp)
-            est_randm = getattr(randm, estm, None)()
+            randm = randomize_rep(self.prepl, self.rndrp)
+            est_randm = Estimators(randm)
             # Compute non-normalized erf for each trial
-            reslt[t] = compute_erfc(est_prior, est_randm, estm)
+            reslt[t] = compute_erfc(self.prior, est_randm, estm)
         # Compute 68% confidence interval
         normalization = compute_cfd68(reslt)
         return normalization
@@ -193,7 +192,7 @@ class ErfComputation:
         return nerf / norm
 
     def erfs(self, estm):
-        nerf = compute_erfm(self.prior, self.reduc, estm)
+        nerf = compute_erfs(self.prior, self.reduc, estm)
         norm = self.normalize_erfs(estm)
         return nerf / norm
 
@@ -226,14 +225,18 @@ def erfs(prior, reduc):
     erf_dic = {}
     # Initialize ERF computation class
     erf = ErfComputation(prior, reduc)
+
+    # Moment Estimators
     for est in MomentEstimators:
         erf_estm = erf.erfm(est)
         erf_dic[est] = erf_estm
 
+    # Statistical Estimators
     for est in StatEstimator:
         erf_ests = erf.erfs(est)
         erf_dic[est] = erf_ests
 
+    # Correlation Estimators
     for est in CorrEstimator:
         erf_estc = erf.erfc(est)
         erf_dic[est] = erf_estc

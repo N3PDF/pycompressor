@@ -4,7 +4,7 @@ import sys
 from setuptools import setup
 from setuptools import find_packages
 
-PACKAGE = "compressor"
+PACKAGE = "pycompressor"
 
 requirements = ["numpy", "scipy", "matplotlib"]
 
@@ -40,7 +40,7 @@ setup(
     url="https://github.com/N3PDF/pyCompressor",
     long_description=long_desc,
     install_requires=requirements,
-    entry_points={"console_scripts": ["compressor = compressor.compressor:main",]},
+    entry_points={"console_scripts": ["pycompressor = pycompressor.run:main",]},
     package_dir={"": "src"},
     packages=find_packages("src"),
     zip_safe=False,

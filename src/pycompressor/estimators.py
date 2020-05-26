@@ -123,26 +123,39 @@ class Estimators:
         Compute correlation matrix as in eq.(16) of
         https://arxiv.org/pdf/1504.06469.
 
+
+        NOTE: This algorithm follows exaclty the one
+        in the compressor code.
+
         Input:
         -----
         Array of shape (repl,fl,xgrid)
 
         Ouput:
         -----
-        Array of shape (fl,fl)
+        Array of shape (NxCorr*flv,NxCorr*flv)
         """
-        cor_mat = np.zeros((self.nflv, self.nflv))
+        # Define Nxcorr
+        Nxcorr = 5
+        size = Nxcorr * self.nflv
+        # Select x's in the grid
+        xs = [int(i/(Nxcorr)) * self.nxgd for i in range(1, Nxcorr)]
+        xs.append(int(self.nflv - 1))
+        nx = len(xs)
+        # Init. Matrix
+        cor_mat = np.zeros((size, size))
         for fl1 in range(self.nflv):
-            for x1 in range(self.nxgd):
-                i = self.nxgd * fl1 + x1
+            for x1 in range(nx):
+                i = nx * fl1 + x1
                 for fl2 in range(self.nflv):
-                    for x2 in range(self.nxgd):
-                        j = self.nxgd * fl2 + x2
-                        i_corr, j_corr, ij_corr = 0, 0, 0
+                    for x2 in range(nx):
+                        j = nx * fl2 + x2
                         sq_i, sq_j = 0, 0
+                        i_corr, j_corr, ij_corr = 0, 0, 0
                         for r in range(self.nrep):
-                            res1 = self.replicas[r][fl1][x1]
-                            res2 = self.replicas[r][fl2][x2]
+                            x1x, x2x = xs[x1], xs[x2]
+                            res1 = self.replicas[r][fl1][x1x]
+                            res2 = self.replicas[r][fl2][x2x]
                             i_corr += res1
                             j_corr += res2
                             ij_corr += res1 * res2
@@ -153,10 +166,10 @@ class Estimators:
                         ij_corr /= self.nrep
                         # Compute standard deviation
                         fac = self.nrep - 1
-                        std_i = sqrt(sq_i / fac - self.nrep / fac * res1 * res1)
-                        std_j = sqrt(sq_i / fac - self.nrep / fac * res2 * res2)
+                        std_i = sqrt(sq_i / fac - self.nrep / fac * i_corr * i_corr)
+                        std_j = sqrt(sq_j / fac - self.nrep / fac * j_corr * j_corr)
                         # Fill corr. matrix
-                        num = ij_corr - i_corr * j_corr
+                        num = ij_corr - (i_corr * j_corr)
                         den = std_i * std_j
                         cor_mat[i][j] = self.nrep / fac * num / den
         return cor_mat

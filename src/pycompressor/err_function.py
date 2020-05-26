@@ -3,7 +3,7 @@ Computation of the error function
 """
 
 import numpy as np
-from compressor.estimators import Estimators
+from pycompressor.estimators import Estimators
 
 
 def compute_erfm(set_a, set_b, estm):
@@ -142,7 +142,7 @@ class ErfComputation:
         self.prior = Estimators(prior)
         self.reduc = Estimators(reduc)
         # self.rndrp = prior.shape[0] - 1
-        self.rndrp = 50
+        self.rndrp = reduc.shape[0]
 
     def normalize_erfm(self, estm):
         reslt = np.zeros(self.trial)
@@ -236,7 +236,9 @@ def erfs(prior, reduc):
         erf_ests = erf.erfs(est)
         erf_dic[est] = erf_ests
 
-    # Correlation Estimators
-    for est in CorrEstimator:
-        erf_estc = erf.erfc(est)
-        erf_dic[est] = erf_estc
+    # # Correlation Estimators
+    # for est in CorrEstimator:
+    #     erf_estc = erf.erfc(est)
+    #     erf_dic[est] = erf_estc
+
+    return erf_dic

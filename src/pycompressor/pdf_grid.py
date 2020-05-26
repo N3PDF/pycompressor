@@ -154,9 +154,9 @@ class PdfSet:
         xgrid_size = self.xgrid.shape[0]
 
         # construct input pdf replicas
-        inpdf = np.zeros((pdf_size, 2 * self.nf, xgrid_size))
+        inpdf = np.zeros((pdf_size, 2 * self.nf + 1, xgrid_size))
         for p in range(pdf_size):
-            for f in range(-self.nf, self.nf):
+            for f in range(-self.nf, self.nf + 1):
                 for x in range(xgrid_size):
                     inpdf[p][f + self.nf][x] = pdf[p].xfxQ(
                         f, self.xgrid[x], self.q_value

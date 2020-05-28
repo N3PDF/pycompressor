@@ -19,8 +19,8 @@ def compute_erfm(set_a, set_b, estm):
     - est  : Name of the estimator
     """
     # Compute Estimators
-    est_prior = getattr(set_a, estm, None)()
-    est_reduc = getattr(set_b, estm, None)()
+    est_prior = set_a.compute_for(estm)
+    est_reduc = set_b.compute_for(estm)
     flv_size = est_prior.shape[0]
     xgd_size = est_prior.shape[1]
     reslt = 0
@@ -49,8 +49,8 @@ def compute_erfs(set_a, set_b, estm):
     """
     # Compute Estimators
     # Return arrays of shape (fl,x,region)
-    est_prior = getattr(set_a, estm, None)()
-    est_reduc = getattr(set_b, estm, None)()
+    est_prior = set_a.compute_for(estm)
+    est_reduc = set_b.compute_for(estm)
     flv_size = est_prior.shape[0]
     xgd_size = est_prior.shape[1]
     region_size = est_prior.shape[2]
@@ -59,8 +59,8 @@ def compute_erfs(set_a, set_b, estm):
         for xg in range(xgd_size):
             for rg in range(region_size):
                 if est_prior[fl][xg][rg] != 0:
-                    fi = est_prior[fl][xg][rg]
-                    gi = est_reduc[fl][xg][rg]
+                    fi = est_reduc[fl][xg][rg]
+                    gi = est_prior[fl][xg][rg]
                     reslt += pow((fi - gi) / gi, 2)
     return reslt
 
@@ -81,16 +81,16 @@ def compute_erfc(set_a, set_b, estm):
     """
     # Compute Estimators
     # Outputs a Matrix
-    est_prior = getattr(set_a, estm, None)()
-    est_reduc = getattr(set_b, estm, None)()
+    est_prior = set_a.compute_for(estm)
+    est_reduc = set_b.compute_for(estm)
     # Compute inverse of prior
     prior_inv = np.linalg.inv(est_prior)
-    fi = np.dot(est_prior, prior_inv)
-    gi = np.dot(est_reduc, prior_inv)
+    fi = np.dot(est_reduc, prior_inv)
+    gi = np.dot(est_prior, prior_inv)
     fi_trace = np.trace(fi)
     gi_trace = np.trace(gi)
     try:
-        reslt = pow((gi_trace - fi_trace) / fi_trace, 2)
+        reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
     except ValueError:
         print("The correlation matrix is incorrect.")
     return reslt
@@ -145,6 +145,14 @@ class ErfComputation:
         self.rndrp = reduc.shape[0]
 
     def normalize_erfm(self, estm):
+        """
+        Compute the normalization factor of the class
+        Moment Estimator.
+
+        Argument:
+        --------
+        - estm: Moment estimator name
+        """
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
@@ -159,6 +167,14 @@ class ErfComputation:
         return normalization
 
     def normalize_erfs(self, estm):
+        """
+        Compute the normalization factor of the class
+        Statistical Estimator.
+
+        Argument:
+        --------
+        - estm: Statistical estimator name
+        """
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
@@ -173,6 +189,14 @@ class ErfComputation:
         return normalization
 
     def normalize_erfc(self, estm):
+        """
+        Compute the normalization factor of the class
+        Correlation Estimator.
+
+        Argument:
+        --------
+        - estm: Correlation estimator name
+        """
         reslt = np.zeros(self.trial)
         for t in range(self.trial):
             # Subset of random replica
@@ -187,16 +211,25 @@ class ErfComputation:
         return normalization
 
     def erfm(self, estm):
+        """
+        Compute normalized ERF for moment estimators
+        """
         nerf = compute_erfm(self.prior, self.reduc, estm)
         norm = self.normalize_erfm(estm)
         return nerf / norm
 
     def erfs(self, estm):
+        """
+        Compute normalized ERF for statistical estimators
+        """
         nerf = compute_erfs(self.prior, self.reduc, estm)
         norm = self.normalize_erfs(estm)
         return nerf / norm
 
     def erfc(self, estm):
+        """
+        Compute normalized ERF for correlation estimators
+        """
         nerf = compute_erfm(self.prior, self.reduc, estm)
         norm = self.normalize_erfc(estm)
         return nerf / norm
@@ -212,7 +245,7 @@ def erfs(prior, reduc):
     - prior_set: Prior/Input replicas
     - reduc_set: Reduced set of replicas
     """
-    MomentEstimators = [
+    moment_estimators = [
         "mean",
         "stdev",
         "skewness",
@@ -220,24 +253,24 @@ def erfs(prior, reduc):
         "moment5th",
         "moment6th",
     ]
-    StatEstimator = ["kolmogorov_smirnov"]
-    CorrEstimator = ["correlation"]
+    stat_estimators = ["kolmogorov_smirnov"]
+    corr_estimators = ["correlation"]
     erf_dic = {}
     # Initialize ERF computation class
     erf = ErfComputation(prior, reduc)
 
     # Moment Estimators
-    for est in MomentEstimators:
+    for est in moment_estimators:
         erf_estm = erf.erfm(est)
         erf_dic[est] = erf_estm
 
     # Statistical Estimators
-    for est in StatEstimator:
+    for est in stat_estimators:
         erf_ests = erf.erfs(est)
         erf_dic[est] = erf_ests
 
     # # Correlation Estimators
-    # for est in CorrEstimator:
+    # for est in corr_estimators:
     #     erf_estc = erf.erfc(est)
     #     erf_dic[est] = erf_estc
 

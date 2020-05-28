@@ -2,8 +2,20 @@
 Collects estimators and corresponding normalizations
 """
 
-from math import sqrt
 import numpy as np
+from scipy.stats import skew
+from scipy.stats import moment
+from scipy.stats import kurtosis
+
+
+def replace(input_array):
+    """
+    Replace values in array
+    """
+    array = input_array
+    array[array == 1] = 0
+    array[array == -1] = 1
+    return array
 
 
 class Estimators:
@@ -41,82 +53,104 @@ class Estimators:
         return rp_stdev
 
     def skewness(self):
-        # compute skewness value
-        rp_mean = self.mean()
-        rp_stdev = self.stdev()
-        res = 0
-        for replica in self.replicas:
-            numr = replica - rp_mean
-            res += pow(numr, 3)
-        return res / (self.nrep * pow(rp_stdev, 3))
+        rp_skew = skew(self.replicas, axis=self.axs)
+        return rp_skew
 
     def kurtosis(self):
-        # compute kurtosis value
-        rp_mean = self.mean()
-        rp_stdev = self.stdev()
-        res = 0
-        for replica in self.replicas:
-            numr = replica - rp_mean
-            res += pow(numr, 4)
-        return res / (self.nrep * pow(rp_stdev, 4))
+        rp_kurt = kurtosis(self.replicas, axis=self.axs)
+        return rp_kurt
 
     def moment5th(self):
-        # Compute the 5th moment
-        rp_mean = self.mean()
+        """
+        Compute the 5th moment
+
+        The computation of the 5th moment in scipy is
+        defined here https://docs.scipy.org/doc/scipy/reference/
+        generated/scipy.stats.moment.html which is different from
+        the one defined here https://github.com/scarrazza/compressor/
+        blob/master/src/Estimators.cc#L102 in the sense that it is
+        divided by the standard deviation.
+        """
         rp_stdev = self.stdev()
-        res = 0
-        for replica in self.replicas:
-            numr = replica - rp_mean
-            res += pow(numr, 5)
-        return res / (self.nrep * pow(rp_stdev, 5))
+        rp_momnt = moment(self.replicas, moment=5, axis=self.axs)
+        return rp_momnt / pow(rp_stdev, 5)
 
     def moment6th(self):
-        # Compute 6th moment
-        rp_mean = self.mean()
+        """
+        Compute the 6th moment
+        """
         rp_stdev = self.stdev()
-        res = 0
-        for replica in self.replicas:
-            numr = replica - rp_mean
-            res += pow(numr, 6)
-        return res / (self.nrep * pow(rp_stdev, 6))
+        rp_momnt = moment(self.replicas, moment=6, axis=self.axs)
+        return rp_momnt / pow(rp_stdev, 6)
 
     def kolmogorov_smirnov(self):
         """
         Compute Kolmogorov-smirnov:
         Count the number of replicas (for all fl and x in xgrid) which fall
         in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
-        and normalize by the total number of repplicas.
+        and normalize by the total number of replicas.
 
         Ouput:
         -----
         Array of shape (fl,xgrid,regions)
         """
         region_size = 6
-        # Compute mean and std of replica
         rp_mean = self.mean()
         rp_stdev = self.stdev()
-        # Initialize array to put the results
-        reslt = np.zeros(region_size)
-        ks_mat = np.zeros((self.nflv, self.nxgd, region_size))
+        # Init. results of comp. with null arrays
+        results = {}
+        for rs in range(region_size):
+            results[f"result_{rs}"] = np.zeros((self.nflv, self.nxgd))
+        # Define regions
+        regions = {
+            "region_0": rp_mean - 2 * rp_stdev,
+            "region_1": rp_mean - 1 * rp_stdev,
+            "region_2": rp_mean,
+            "region_3": rp_mean + 1 * rp_stdev,
+            "region_4": rp_mean + 2 * rp_stdev,
+            "region_5": rp_mean + 2 * rp_stdev,
+        }
+        # Loop over replicas
         for replica in self.replicas:
-            for f in range(self.nflv):
-                for x in range(self.nxgd):
-                    if replica[f][x] <= (rp_mean[f][x] - 2 * rp_stdev[f][x]):
-                        reslt[0] += 1
-                    elif replica[f][x] <= (rp_mean[f][x] - rp_stdev[f][x]):
-                        reslt[1] += 1
-                    elif replica[f][x] <= (rp_mean[f][x]):
-                        reslt[2] += 1
-                    elif replica[f][x] <= (rp_mean[f][x] + rp_stdev[f][x]):
-                        reslt[3] += 1
-                    elif replica[f][x] <= (rp_mean[f][x] + 2 * rp_stdev[f][x]):
-                        reslt[4] += 1
-                    elif replica[f][x] > (rp_mean[f][x] + 2 * rp_stdev[f][x]):
-                        reslt[5] += 1
-                    else:
-                        raise Exception("The replica did not fall in the regions.")
-                    ks_mat[f][x] = reslt
-        return ks_mat / self.nrep
+            # 1st region
+            bool0 = replica <= regions["region_0"]
+            resb0 = bool0.astype(np.int)
+            results["result_0"] += resb0
+            # 2nd region
+            bool1 = replica <= regions["region_1"]
+            resb1 = bool1.astype(np.int)
+            relb1 = resb0 - resb1
+            resg1 = replace(relb1)
+            results["result_1"] += resg1
+            # 3rd region
+            bool2 = replica <= regions["region_2"]
+            resb2 = bool2.astype(np.int)
+            relb2 = resb0 + resg1 - resb2
+            resg2 = replace(relb2)
+            results["result_2"] += resg2
+            # 4th region
+            bool3 = replica <= regions["region_3"]
+            resb3 = bool3.astype(np.int)
+            relb3 = resb0 + resg1 + resg2 - resb3
+            resg3 = replace(relb3)
+            results["result_3"] += resg3
+            # 5th region
+            bool4 = replica <= regions["region_4"]
+            resb4 = bool4.astype(np.int)
+            relb4 = resb0 + resg1 + resg2 + resg3 - resb4
+            resg4 = replace(relb4)
+            results["result_4"] += resg4
+            # 6th region
+            bool5 = replica > regions["region_5"]
+            resb5 = bool5.astype(np.int)
+            relb5 = resb0 + resg1 + resg2 + resg3 + resg4 - resb5
+            resg5 = replace(relb5)
+            results["result_5"] += resg5
+        rslt = [results[f"result_{i}"] for i in range(region_size)]
+        tupl = tuple(rslt)
+        fin_res = np.stack(tupl, axis=-1)
+
+        return fin_res / self.nrep
 
     def correlation(self):
         """
@@ -135,11 +169,11 @@ class Estimators:
         -----
         Array of shape (NxCorr*flv,NxCorr*flv)
         """
-        # Define Nxcorr
-        Nxcorr = 5
-        size = Nxcorr * self.nflv
+        # Define nxcorr
+        nxcorr = 5
+        size = nxcorr * self.nflv
         # Select x's in the grid
-        xs = [int(i/(Nxcorr)) * self.nxgd for i in range(1, Nxcorr)]
+        xs = [int(i / (nxcorr)) * self.nxgd for i in range(1, nxcorr)]
         xs.append(int(self.nflv - 1))
         nx = len(xs)
         # Init. Matrix
@@ -166,10 +200,32 @@ class Estimators:
                         ij_corr /= self.nrep
                         # Compute standard deviation
                         fac = self.nrep - 1
-                        std_i = sqrt(sq_i / fac - self.nrep / fac * i_corr * i_corr)
-                        std_j = sqrt(sq_j / fac - self.nrep / fac * j_corr * j_corr)
+                        std_i = np.sqrt(sq_i / fac - self.nrep / fac * i_corr * i_corr)
+                        std_j = np.sqrt(sq_j / fac - self.nrep / fac * j_corr * j_corr)
                         # Fill corr. matrix
                         num = ij_corr - (i_corr * j_corr)
                         den = std_i * std_j
                         cor_mat[i][j] = self.nrep / fac * num / den
         return cor_mat
+
+    def compute_for(self, estm_name):
+        """
+        Method that maps the called estimators
+        to the coorect one
+        """
+        if estm_name == 'mean':
+            return self.mean()
+        elif estm_name == 'stdev':
+            return self.stdev()
+        elif estm_name == 'skewness':
+            return self.skewness()
+        elif estm_name == 'kurtosis':
+            return self.kurtosis()
+        elif estm_name == 'moment5th':
+            return self.moment5th()
+        elif estm_name == 'moment6th':
+            return self.moment6th()
+        elif estm_name == 'kolmogorov_smirnov':
+            return self.kolmogorov_smirnov()
+        else:
+            return self.correlation()

@@ -150,7 +150,7 @@ class PdfSet:
     def build_pdf(self):
         # Call lhapdf PDF set PDF set
         pdf = lhapdf.mkPDFs(self.pdf_name)
-        pdf_size = len(pdf)
+        pdf_size = len(pdf) - 1
         xgrid_size = self.xgrid.shape[0]
 
         # construct input pdf replicas
@@ -158,7 +158,7 @@ class PdfSet:
         for p in range(pdf_size):
             for f in range(-self.nf, self.nf + 1):
                 for x in range(xgrid_size):
-                    inpdf[p][f + self.nf][x] = pdf[p].xfxQ(
+                    inpdf[p][f + self.nf][x] = pdf[p + 1].xfxQ(
                         f, self.xgrid[x], self.q_value
                     )
         return inpdf

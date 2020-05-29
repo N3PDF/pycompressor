@@ -3,6 +3,8 @@ File that manages the compression algorithm.
 
 For the time being, this compressor select a
 random subset from the Prior and compute the ERF.
+
+TODO: Plug CMA from EvolutionaryKeras here.
 """
 
 import numpy as np

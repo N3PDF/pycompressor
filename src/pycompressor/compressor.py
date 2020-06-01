@@ -6,7 +6,7 @@ random subset from the Prior and compute the ERF.
 """
 
 import numpy as np
-from pycompressor.err_function import erfs
+from pycompressor.err_function import ErfComputation
 
 
 def error_function(prior, nb_reduc):
@@ -15,10 +15,17 @@ def error_function(prior, nb_reduc):
     number of reduced replica. Then compute the
     Error Function.
 
-    Arguments:
-    ---------
-    - prior   : Prior PDF set of shape (repl,fl,xgrid)
-    - nb_reduc: Number of replica in the reduced set
+    Parameters
+    ----------
+        prior: array
+            Prior PDF set of shape=(replicas, flavours , x-grid)
+        nb_reduc: int
+            Number of replica in the reduced set.
+
+    Returns
+    -------
+        result: float
+            Results of ERF for all estimators
     """
     # Choose a non-redundant subset of replicas
     index = np.random.choice(
@@ -27,10 +34,19 @@ def error_function(prior, nb_reduc):
             replace=False
             )
     reduc_rep = prior[index]
-    erf_res = erfs(prior, reduc_rep)
-    tot_erf = 0
-    for key in erf_res:
-        print(f'ERF_{key}: {erf_res[key]}')
-        tot_erf += erf_res[key]
-
-    return tot_erf / len(erf_res)
+    # List of estimators
+    est_dic = {
+            'moment_estimators': [
+                'mean',
+                'stdev',
+                'skewness',
+                'kurtosis'
+                ],
+            'stat_estimators': [
+                'kolmogorov_smirnov'
+                ]
+            }
+    # Compute Normalized Error function
+    res = ErfComputation(prior, est_dic, nb_reduc)
+    erf_res = res.compute_tot_erf(reduc_rep)
+    return erf_res

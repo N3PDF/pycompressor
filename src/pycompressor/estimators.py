@@ -227,5 +227,7 @@ class Estimators:
             return self.moment6th()
         elif estm_name == 'kolmogorov_smirnov':
             return self.kolmogorov_smirnov()
-        else:
+        elif estm_name == 'correlation':
             return self.correlation()
+        else:
+            raise Exception(f'{estm_name} is not a valid Estimator.')

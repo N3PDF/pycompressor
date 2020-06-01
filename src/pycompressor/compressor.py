@@ -15,16 +15,17 @@ def error_function(prior, nb_reduc):
     number of reduced replica. Then compute the
     Error Function.
 
-    Arguments:
-    ---------
-    - prior   : Array of shape=(replicas, flavours, x-grid)
-                Prior PDF set of shape (repl,fl,xgrid).
-    - nb_reduc: Integer
-                Number of replica in the reduced set.
+    Parameters
+    ----------
+        prior: array
+            Prior PDF set of shape=(replicas, flavours , x-grid)
+        nb_reduc: int
+            Number of replica in the reduced set.
 
-    Outputs: Float
+    Returns
     -------
-             Results of ERF for all estimators.
+        result: float
+            Results of ERF for all estimators
     """
     # Choose a non-redundant subset of replicas
     index = np.random.choice(

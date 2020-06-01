@@ -9,6 +9,11 @@ import numpy as np
 class XGrid:
     """
     Construct the x-grid as in NNPDF
+
+    Returns
+    -------
+        result: array
+            Numpy array containg the x-grid
     """
 
     def __init__(self):
@@ -133,12 +138,21 @@ class PdfSet:
     It returns a multi-dimensional array that has the
     following shape (flavor, pdfReplicas, pdfValue).
 
-    Arguments:
-    ---------
-    - pdf_name: Name of the input PDF replicas
-    - xgrid   : x-grid
-    - q_value : Value of Q
-    - nf      : Number of flavors
+    Parameters
+    ----------
+        pdf_name: str
+            Name of the input PDF replicas
+        xgrid: array
+            Array of x-grid
+        q_value: float
+            Value of intial energy scale Q
+        nf: int
+            Total number of flavors
+
+    Returns
+    -------
+        result: array
+            PDF grid of shape=(replicas, flavours, x-grid)
     """
 
     def __init__(self, pdf_name, xgrid, q_value, nf):

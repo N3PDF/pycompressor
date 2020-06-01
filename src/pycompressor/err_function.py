@@ -9,17 +9,19 @@ from pycompressor.estimators import Estimators
 def randomize_rep(replica, number):
     """
     Extract a subset of random replica from
-    the prior with a nun-redundent way.
+    the prior with a nun-redundant way.
 
-    Arguments:
-    ---------
-    - replica: Array of shape=(replicas, flavours, x-grid)
-               Prior set of replicas.
-    - number : Integer
-               Number of subset of replicas.
+    Parameters
+    ----------
+        replica: array
+            Prior set of replicas shape=(replicas, flavours, x-grid)
+        number: int
+            Number of subset of replicas
 
-    Outputs: Array of shape=(number, flavours, x-grid)
+    Returns
     -------
+        result: array
+            Randomized array of shape=(number, flavours, x-grid)
     """
     index = np.random.choice(replica.shape[0], number, replace=False)
     return replica[index]
@@ -30,12 +32,15 @@ def compute_cfd68(reslt_trial):
     Compute the 68% confidence interval of
     a randomized trial arrays.
 
-    Arguments:
-    ---------
-    - reslt_trial: Array of shape=(size_trials)
+    Parameters
+    ----------
+        reslt_trial: array
+            Array of shape=(size_trials)
 
-    Outputs: Float
+    Returns
     -------
+        result: float
+            Value of the 68% cfd
     """
     size = reslt_trial.shape[0]
     sort = np.sort(reslt_trial)
@@ -50,16 +55,17 @@ def compute_erfm(prior, nset):
     the moment estimators given by eq.(6) of
     https://arxiv.org/pdf/1504.06469.
 
-    Arguments:
-    ---------
-    - prior: Array of shape=(flavours, x-grid)
-             Prior set of replicas.
-    - nset : Array of shape=(flavours, x-gird)
-             Reduced or Random set of replica.
+    Parameters
+    ----------
+        prior: array
+            Prior set of replicas of shape=(flavours, x-grid)
+        nset : array
+            Reduced or Random set of replica shape=(flavours, x-gird)
 
-    Outputs: Float
+    Returns
     -------
-             Value of the error Estimation
+        result: float
+            Value of the error Estimation
     """
     flv_size = prior.shape[0]
     xgd_size = prior.shape[1]
@@ -81,16 +87,17 @@ def compute_erfs(prior, nset):
     The Kolmogorov-smirnov is given by eq.(13) of
     https://arxiv.org/pdf/1504.06469.
 
-    Arguments:
-    ---------
-    - prior: Array of shape=(flavours, x-grid)
-             Prior set of replicas.
-    - nset : Array of shape=(flavours, x-gird)
-             Array of shape (flavor, x-grid, regions)
+    Parameters
+    ----------
+        prior: array
+            Prior set of replicas of shape=(flavours, x-grid)
+        nset: array
+            Array of shape (flavor, x-grid, regions)
 
-    Outputs: Float
+    Returns
     -------
-             Value of the error Estimation
+        result: float
+            Value of the error Estimation
     """
     flv_size = prior.shape[0]
     xgd_size = prior.shape[1]
@@ -114,16 +121,17 @@ def compute_erfc(prior, nset):
     The correlation ERF is given by eq.(21) of
     https://arxiv.org/pdf/1504.06469.
 
-    Arguments:
-    ---------
-    - prior: Array of shape=(flavours, x-grid)
-             Prior set of replicas.
-    - nset : Array of shape=(flavours, x-gird)
-             Array of shape (NxCorr*flavors, NxCorr*flavors)
+    Parameters
+    ----------
+        prior: array
+            Prior set of replicas of shape=(flavours, x-grid)
+        nset: array
+            Array of shape (NxCorr*flavors, NxCorr*flavors)
 
-    Outputs: Float
+    Returns
     -------
-             Value of the error Estimation
+        result: float
+            Value of the error Estimation
     """
     # Compute inverse of prior
     prior_inv = np.linalg.inv(prior)
@@ -142,19 +150,22 @@ def estimate(prior, est_dic):
     """
     Compute estimators for the PRIOR set.
 
-    Arguments:
-    ---------
-    - prior  : Array of shape=(replicas, flavours, x-grid)
-    - est_dic: Dictionary
-               Contains the list ot all estimators
+    Parameters
+    ----------
+        prior: array
+            Prior set of shape=(replicas, flavours, x-grid)
+        est_dic: dict
+            Contains the list ot all estimators
 
-    Outputs: Array of shape=(flavours, x-grid)
+    Returns
     -------
+        result: float
+            Array of shape=(flavours, x-grid)
     """
     est_res = Estimators(prior)
     reslt = {}
-    for es_type in est_dic.keys():
-        for es in est_dic[es_type]:
+    for _, est_list in est_dic.items():
+        for es in est_list:
             reslt[es] = est_res.compute_for(es)
     return reslt
 
@@ -166,26 +177,27 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
     for each trials as given generally by eq.(9) of the paper
     (https://arxiv.org/pdf/1504.06469).
 
-    Arguments:
-    ---------
-    - prior    : Array of shape (replicas, flavours, x-grid)
-                 Prior set of replica
-    - est_prior: Dictionary
-                 Contains the values of the estimated results
-    - rndm_size: Integer
-                 Size of random replicas
-    - est_dic  : Dictionary
-                 Contains the list of estimators
-    - trials   : Integer
-                 Number of random trials
+    Parameters
+    ----------
+        prior: array
+            Prior set of replica fo shape=(replicas, flavours, x-grid)
+        est_prior: dict
+            Dictionary containing the values of the estimated results
+        rndm_size: int
+            Size of random replicas
+        est_dic: dict
+            Contains the list of estimators
+        trials: int
+            Number of random trials
 
-    Output: Dictionary of floats
-    ------
-            Normalization value for each estimator.
+    Returns
+    -------
+        result: float
+            Normalization value for each estimator
     """
     reslt = {}
-    for es_class in est_dic.keys():
-        for es in est_dic[es_class]:
+    for _, est_list in est_dic.items():
+        for es in est_list:
             reslt[es] = np.zeros(trials)
     # Loop over the random trials
     for t in range(trials):
@@ -205,8 +217,8 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         #     reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
     norm = {}
-    for est in reslt.keys():
-        norm[est] = compute_cfd68(reslt[est])
+    for est, est_val in reslt.items():
+        norm[est] = compute_cfd68(est_val)
     return norm
 
 
@@ -219,19 +231,21 @@ class ErfComputation:
     When this class is initialized, the Estimators and
     the normalization factors are computed.
 
-    Arguments:
-    ---------
-    - prior  : Array os shape=(replicas, flavours, x-grid)
-               Prior set of replicas
-    - est_dic: Dictionary
-               Contains the list of all the Estimators
-    - nreduc : Integer
-               Size of reduced replicas
-    - trials : Integer
-               Number of trials
+    Parameters
+    ----------
+        prior: array
+            Prior set of replicas of shape=(replicas, flavours, x-grid)
+        est_dic: dict
+            Contains the list of all the Estimators
+        nreduc: int
+            Size of reduced replicas
+        trials: int
+            Number of trials
 
-    Outputs:
+    Returns
     -------
+        result: float
+            Normalized ERF
     """
 
     def __init__(self, prior, est_dic, nreduc, trials=1000):
@@ -250,13 +264,14 @@ class ErfComputation:
         Compute the total normalized Error Function which
         is given by the sum of all the normalized estimators.
 
-        Arguments:
-        ---------
-        - reduc: Array of shape=(replica, flavours, x-grid)
-                 Reduced set of replicas.
+        Parameters
+        ----------
+            reduc: array
+                Reduced set of replicas of shape=(replica, flavours, x-grid)
 
-        Outputs: Float
+        Returns
         -------
+            result: float
                 Value of the total normalized ERF
         """
         erf = {}

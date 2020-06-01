@@ -11,6 +11,16 @@ from scipy.stats import kurtosis
 def replace(input_array):
     """
     Replace values in array
+
+    Parameters
+    ----------
+        input_array: array
+            Array of shape=(flavours, x-grid)
+
+    Returns
+    -------
+        result: array
+            Array of shape=(falvours, x-grid)
     """
     array = input_array
     array[array == 1] = 0
@@ -25,14 +35,19 @@ class Estimators:
 
     What this class is doing is: take a replica (prior/reduced)
     with a shape (repl,fl,xgrid) and then compute the value of
-    the estimators w.r.t to the PDF replicas.
+    the estimators w.r.t to the PDF replicas
 
-    Arguments:
-    ---------
-    - replicas: Prior or Reduced PDF replicas of shape (rep,fl,xgrid)
-    - axs     : Axis to which the estimator is computed.
-                By default is set to zero to compute
-                along the direction of the pdf replicas.
+    Parameters
+    ----------
+        replicas: array
+            Prior or Reduced PDF replicas of shape=(replicas, flavours, x-grid)
+        axs: int
+            Axis to which the estimator is computed. By default is set to zero
+            to compute along the direction of the pdf replicas
+
+    Returns
+    -------
+        results: array
     """
 
     def __init__(self, replicas, axs=0):
@@ -89,10 +104,6 @@ class Estimators:
         Count the number of replicas (for all fl and x in xgrid) which fall
         in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
         and normalize by the total number of replicas.
-
-        Ouput:
-        -----
-        Array of shape (fl,xgrid,regions)
         """
         region_size = 6
         rp_mean = self.mean()
@@ -160,14 +171,6 @@ class Estimators:
 
         NOTE: This algorithm follows exaclty the one
         in the compressor code.
-
-        Input:
-        -----
-        Array of shape (repl,fl,xgrid)
-
-        Ouput:
-        -----
-        Array of shape (NxCorr*flv,NxCorr*flv)
         """
         # Define nxcorr
         nxcorr = 5
@@ -211,7 +214,12 @@ class Estimators:
     def compute_for(self, estm_name):
         """
         Method that maps the called estimators
-        to the coorect one
+        to the coorect one.
+
+        Parameters
+        ----------
+            estm_name: str
+                Name of the estimator
         """
         if estm_name == 'mean':
             return self.mean()
@@ -230,4 +238,4 @@ class Estimators:
         elif estm_name == 'correlation':
             return self.correlation()
         else:
-            raise Exception(f'{estm_name} is not a valid Estimator.')
+            raise ValueError(f'{estm_name} is not a valid Estimator.')

@@ -5,6 +5,7 @@ Main file for Compressor
 # import os
 # import logging
 import argparse
+import numpy as np
 from tqdm import trange
 
 from pycompressor.pdf_grid import XGrid
@@ -95,6 +96,9 @@ def main():
     print('[+] Loading PDF set:')
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(pdf, xgrid, q0, nfl).build_pdf()
+
+    # Set seed
+    np.random.seed(0)
 
     # Init. compressor class
     comp = compress(prior, est_dic, nbr)

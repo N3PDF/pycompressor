@@ -195,6 +195,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         result: float
             Normalization value for each estimator
     """
+    print('\n[+] Computing normalization factors...')
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:
@@ -219,6 +220,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
     norm = {}
     for est, est_val in reslt.items():
         norm[est] = compute_cfd68(est_val)
+        print(' - {:<18} {:^2} {:>}'.format(est, ':', norm[est]))
     return norm
 
 

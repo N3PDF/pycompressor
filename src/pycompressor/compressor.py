@@ -96,15 +96,11 @@ class compress:
         for m in range(nmut):
             erf[m] = self.error_function(mut[m])
         # Perform Selection
-        idx, besterf = 0, erf[0]
-        for i in range(nmut):
-            if erf[i] < besterf:
-                besterf = erf[i]
-                idx = i
+        besterf = np.min(erf)                 # Find the lowest ERF
+        idx = np.where(erf == besterf)[0][0]  # Find index of the lowest ERF
         # Update index
         if besterf < berf:
-            for i in range(self.nb_reduc):
-                self.index[i] = mut[idx][i]
+            self.index = mut[idx]
         else:
             besterf = berf
         return besterf, self.index

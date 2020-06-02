@@ -28,6 +28,8 @@ class compress:
         # the one-time computation of the estimators
         # for the prior
         self.err_func = ErfComputation(prior, est_dic, nb_reduc)
+        # Init. index for ERF computation
+        self.index = np.arange(1, self.nb_reduc + 1, 1)
 
     def error_function(self, index):
         """
@@ -69,12 +71,10 @@ class compress:
                     Contains the index of the reduced PDF
         """
         nmut = ga_params['number_mutation']
-        # Init. index for ERF computation
-        index = np.arange(1, self.nb_reduc + 1, 1)
         # Compute ERF
-        berf = self.error_function(index)
+        berf = self.error_function(self.index)
         # Construc mutation matrix
-        mut = np.full((nmut, index.shape[0]), index)
+        mut = np.full((nmut, self.index.shape[0]), self.index)
         # Perform mutation
         for i in range(nmut):
             # Define mutation rate
@@ -104,10 +104,10 @@ class compress:
         # Update index
         if besterf < berf:
             for i in range(self.nb_reduc):
-                index[i] = mut[idx][i]
+                self.index[i] = mut[idx][i]
         else:
             besterf = berf
-        return besterf, index
+        return besterf, self.index
 
     def cma_algorithm(self):
         pass

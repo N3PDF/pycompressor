@@ -39,7 +39,8 @@ def argument_parser():
     """
     parser = argparse.ArgumentParser(description="Compress PDF sets")
     parser.add_argument("-p", "--pdfset", help="Input PDF set", required=True)
-    parser.add_argument("-q", "--qinit", type=positive_int, help="Initial Scale Q0")
+    parser.add_argument("-q", "--qinit", type=positive_int, help="Scale Q0")
+    parser.add_argument("-m", "--minimizer", help="Minimizer name")
     parser.add_argument(
         "-f", "--nflavors", type=nbflavors, help="Total number of flavors"
     )
@@ -59,21 +60,24 @@ def main():
     Main function
     """
     args = argument_parser()
-
     # Initi. parameters
     pdf = args.pdfset
     nbr = args.compress
-
+    # Define default flavour number
     if args.nflavors is None:
         nfl = 3
     else:
         nfl = args.nflavors
-
+    # Define default initial scale
     if args.qinit is None:
         q0 = 1
     else:
         q0 = args.qinit
-
+    # Default Minimizer
+    if args.minimizer is None:
+        minimizer = 'genetic'
+    else:
+        minimizer = args.minimizer
     # List of estimators
     est_dic = {
             'moment_estimators': [
@@ -86,31 +90,29 @@ def main():
                 'kolmogorov_smirnov'
                 ]
             }
-
-    # GA parameters
-    ga_params = {
-            'number_mutation': 5
-            }
-
     # Construc xgrid
     print('[+] Loading PDF set:')
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(pdf, xgrid, q0, nfl).build_pdf()
-
     # Set seed
     np.random.seed(0)
-
     # Init. compressor class
     comp = compress(prior, est_dic, nbr)
-
-    # Run compressor
-    nb_iter = 15000
-    print('\n[+] Compressing replicas:')
-    with trange(nb_iter) as iter_range:
-        for i in iter_range:
-            iter_range.set_description("Compression")
-            erf, index = comp.genetic_algorithm(ga_params)
-            iter_range.set_postfix(ERF=erf)
+    # Start compression depending on the Evolution Strategy
+    print(f'\n[+] Compressing replicas using {minimizer} algorithm:')
+    if minimizer == 'genetic':
+        # Run compressor using GA
+        nb_iter = 15000
+        with trange(nb_iter) as iter_range:
+            for i in iter_range:
+                iter_range.set_description("Compression")
+                erf, index = comp.genetic_algorithm(nb_mut=5)
+                iter_range.set_postfix(ERF=erf)
+    elif minimizer == 'cma':
+        # Run compressor using CMA
+        erf, index = comp.cma_algorithm(std_dev=0.3)
+    else:
+        raise ValueError(f'{minimizer} is not a valid minimizer.')
 
     # Fetching ERF and construct reduced PDF grid
-    print(f'\n[+] Final ERF:{erf}\n')
+    print(f'\n[+] Final ERF: {erf}\n')

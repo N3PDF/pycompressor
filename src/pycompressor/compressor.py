@@ -5,6 +5,7 @@ For the time being, this compressor select a
 random subset from the Prior and compute the ERF.
 """
 
+import cma
 import numpy as np
 from pycompressor.err_function import ErfComputation
 
@@ -20,6 +21,7 @@ class compress:
     Parameters
     ----------
     """
+
     def __init__(self, prior, est_dic, nb_reduc):
         self.prior = prior
         self.est_dic = est_dic
@@ -51,16 +53,15 @@ class compress:
         erf_res = self.err_func.compute_tot_erf(reduc_rep)
         return erf_res
 
-    def genetic_algorithm(self, ga_params):
+    def genetic_algorithm(self, nb_mut=5):
         """
         Look for the combination of replicas that gives the
         best ERF value.
 
         Parameters
         ----------
-            ga_params: dict
-                Dictionary containing the inner parameters
-                of the GA-ES algorithm
+            nb_mut: int
+                Number of mutation
 
         Returns
         -------
@@ -70,7 +71,7 @@ class compress:
                 'index': array
                     Contains the index of the reduced PDF
         """
-        nmut = ga_params['number_mutation']
+        nmut = nb_mut
         # Compute ERF
         berf = self.error_function(self.index)
         # Construc mutation matrix
@@ -79,11 +80,11 @@ class compress:
         for i in range(nmut):
             # Define mutation rate
             r = np.random.uniform(0, 1)
-            if r <= .3:
+            if r <= 0.3:
                 _nmut = 1
-            elif r > .3 and r <= .6:
+            elif r > 0.3 and r <= 0.6:
                 _nmut = 2
-            elif r > .6 and r <= .7:
+            elif r > 0.6 and r <= 0.7:
                 _nmut = 3
             else:
                 _nmut = 4
@@ -96,7 +97,7 @@ class compress:
         for m in range(nmut):
             erf[m] = self.error_function(mut[m])
         # Perform Selection
-        besterf = np.min(erf)                 # Find the lowest ERF
+        besterf = np.min(erf)  # Find the lowest ERF
         idx = np.where(erf == besterf)[0][0]  # Find index of the lowest ERF
         # Update index
         if besterf < berf:
@@ -105,5 +106,54 @@ class compress:
             besterf = berf
         return besterf, self.index
 
-    def cma_algorithm(self):
-        pass
+    def cma_algorithm(self, std_dev=0.3, verbosity=100, seed=0):
+        """
+        CMA (Covariance Matrix Adaptation) Evolution Strategy.
+        The following builds upon the python CMA implementation defined
+        here (http://cma.gforge.inria.fr/cmaes_sourcecode_page.html#python).
+
+        Parameters
+        ----------
+            std_dev: float
+                Value of the standard deviation
+            verbosity: int
+                Print to screen every `verbosity` iteration
+            seed: int
+                Parameter for randomization
+        """
+        min_itereval = 1000
+        max_itereval = 15000
+        init_index = self.index
+
+        def minimize_erf(index):
+            """
+            Define the ERF function that is going to be minimized.
+
+            Parameters
+            ----------
+                index: array
+                    Array containing the index of the replicas
+
+            Returns
+            -------
+                result: float
+                    Value of the ERF
+            """
+            # Convert float array into int
+            index_int = index.astype(int)
+            reduc_rep = self.prior[index_int]
+            # Compute Normalized Error function
+            erf_res = self.err_func.compute_tot_erf(reduc_rep)
+            return erf_res
+
+        # Init CMA class
+        options = {"maxfevals": max_itereval, "seed": seed}
+        cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
+        cma_opt = cma_es.optimize(
+            minimize_erf, min_iterations=min_itereval, verb_disp=verbosity
+        )
+        cma_res = cma_opt.result[0]
+        selected_index = cma_res.astype(int)
+        # Compute ERF with the selected index
+        erf_cma = self.error_function(selected_index)
+        return erf_cma, selected_index

@@ -60,7 +60,7 @@ def compute_erfm(prior, nset):
         prior: array
             Prior set of replicas of shape=(flavours, x-grid)
         nset : array
-            Reduced or Random set of replica shape=(flavours, x-gird)
+            Reduced or Random set of replica shape=(flavours, x-grid)
 
     Returns
     -------

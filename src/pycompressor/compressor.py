@@ -106,11 +106,18 @@ class compress:
             besterf = berf
         return besterf, self.index
 
-    def cma_algorithm(self, std_dev=0.3, verbosity=100, seed=0):
+    def cma_algorithm(
+        self,
+        std_dev=0.3,
+        seed=0,
+        verbosity=100,
+        min_itereval=1000,
+        max_itereval=15000
+    ):
         """
-        CMA (Covariance Matrix Adaptation) Evolution Strategy.
-        The following builds upon the python CMA implementation defined
-        here (http://cma.gforge.inria.fr/cmaes_sourcecode_page.html#python).
+        CMA (Covariance Matrix Adaptation) Evolution Strategy. This
+        is based on the python CMA implementation defined here
+        http://cma.gforge.inria.fr/cmaes_sourcecode_page.html#python.
 
         Parameters
         ----------
@@ -121,8 +128,6 @@ class compress:
             seed: int
                 Parameter for randomization
         """
-        min_itereval = 1000
-        max_itereval = 15000
         init_index = self.index
 
         def minimize_erf(index):
@@ -141,7 +146,8 @@ class compress:
             """
             # Convert float array into int
             index_int = index.astype(int)
-            reduc_rep = self.prior[index_int]
+            index_modulo = index_int % self.prior.shape[0]
+            reduc_rep = self.prior[index_modulo]
             # Compute Normalized Error function
             erf_res = self.err_func.compute_tot_erf(reduc_rep)
             return erf_res
@@ -154,6 +160,7 @@ class compress:
         )
         cma_res = cma_opt.result[0]
         selected_index = cma_res.astype(int)
+        selected_modulo = selected_index % self.prior.shape[0]
         # Compute ERF with the selected index
-        erf_cma = self.error_function(selected_index)
+        erf_cma = self.error_function(selected_modulo)
         return erf_cma, selected_index

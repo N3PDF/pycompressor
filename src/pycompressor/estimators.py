@@ -63,8 +63,9 @@ class Estimators:
         return rp_mean
 
     def stdev(self):
-        # Compute standard deviation
-        rp_stdev = np.std(self.replicas, axis=self.axs)
+        # Compute standard deviation for SAMPLES
+        # ddof=1 means that the sum is divided by N-1
+        rp_stdev = np.std(self.replicas, axis=self.axs, ddof=1)
         return rp_stdev
 
     def skewness(self):

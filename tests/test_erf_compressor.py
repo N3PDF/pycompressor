@@ -9,17 +9,20 @@ from pycompressor import err_function
 
 # Define test values
 FLAVS = 3
-XGRID = 6
+# The x-grid has to be big enough in order for the
+# correlation matrix not to be SINGULAR
+XGRID = 20
 PDFSIZE = 10
 NB_REDUCED = 4
 
-# Create Toy PDFprior = np.random.rand(total, FLAVS, XGRID)
-PRIOR = np.random.rand(PDFSIZE, FLAVS, XGRID)
+# Create Toy prior PDF
+PRIOR = np.random.uniform(0, 1, size=[PDFSIZE, FLAVS, XGRID])
 
 # List of estimators
 ESTIMATORS = {
     "moment_estimators": ["mean", "stdev", "skewness", "kurtosis"],
     "stat_estimators": ["kolmogorov_smirnov"],
+    "corr_estimators": ["correlation"],
 }
 
 # Compressor class
@@ -64,9 +67,7 @@ def test_normalization(random_size=4, trial=2):
     """ Test if the value of the normalization factors
     are positive. """
     est_prior = test_estimate()
-    norm = err_function.normalization(
-        PRIOR, est_prior, random_size, ESTIMATORS, trial
-    )
+    norm = err_function.normalization(PRIOR, est_prior, random_size, ESTIMATORS, trial)
     for _, val in norm.items():
         assert val > 0
 

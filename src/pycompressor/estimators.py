@@ -56,6 +56,13 @@ class Estimators:
         self.nrep = replicas.shape[0]
         self.nflv = replicas.shape[1]
         self.nxgd = replicas.shape[2]
+        self.pfac = replicas.shape[0] - 1
+        # The following variable takes into account
+        # the difference in definition of scipy stats
+        # SKEWNESS & KURTOSIS and the ones in the 
+        # paper which implement the standard deviation
+        # for samples instead of population
+        self.conv = np.sqrt(self.nrep / self.pfac)
 
     def mean(self):
         # Compute mean value
@@ -70,11 +77,11 @@ class Estimators:
 
     def skewness(self):
         rp_skew = skew(self.replicas, axis=self.axs)
-        return rp_skew
+        return rp_skew / pow(self.conv, 3)
 
     def kurtosis(self):
         rp_kurt = kurtosis(self.replicas, axis=self.axs)
-        return rp_kurt
+        return rp_kurt / pow(self.conv, 4)
 
     def moment5th(self):
         """
@@ -177,7 +184,7 @@ class Estimators:
         nxcorr = 5
         size = nxcorr * self.nflv
         # Select x's in the grid
-        xs = [int(i / (nxcorr)) * self.nxgd for i in range(1, nxcorr)]
+        xs = [int(i / (nxcorr) * self.nxgd) for i in range(1, nxcorr)]
         xs.append(int(self.nflv - 1))
         nx = len(xs)
         # Init. Matrix
@@ -222,21 +229,21 @@ class Estimators:
             estm_name: str
                 Name of the estimator
         """
-        if estm_name == 'mean':
+        if estm_name == "mean":
             return self.mean()
-        elif estm_name == 'stdev':
+        elif estm_name == "stdev":
             return self.stdev()
-        elif estm_name == 'skewness':
+        elif estm_name == "skewness":
             return self.skewness()
-        elif estm_name == 'kurtosis':
+        elif estm_name == "kurtosis":
             return self.kurtosis()
-        elif estm_name == 'moment5th':
+        elif estm_name == "moment5th":
             return self.moment5th()
-        elif estm_name == 'moment6th':
+        elif estm_name == "moment6th":
             return self.moment6th()
-        elif estm_name == 'kolmogorov_smirnov':
+        elif estm_name == "kolmogorov_smirnov":
             return self.kolmogorov_smirnov()
-        elif estm_name == 'correlation':
+        elif estm_name == "correlation":
             return self.correlation()
         else:
-            raise ValueError(f'{estm_name} is not a valid Estimator.')
+            raise ValueError(f"{estm_name} is not a valid Estimator.")

@@ -195,7 +195,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         result: float
             Normalization value for each estimator
     """
-    print('\n[+] Computing normalization factors...')
+    print("\n[+] Computing normalization factors...")
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:
@@ -212,15 +212,15 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         for es in est_dic["stat_estimators"]:
             est_randm = est_cl.compute_for(es)
             reslt[es][t] = compute_erfs(est_prior[es], est_randm)
-        # # Normalization for Statistical Estimators
-        # for es in est_dic['corr_estimators']:
-        #     est_randm = est_cl.compute_for(es)
-        #     reslt[es][t] = compute_erfc(est_prior[es], est_randm)
+        # Normalization for Statistical Estimators
+        for es in est_dic["corr_estimators"]:
+            est_randm = est_cl.compute_for(es)
+            reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
     norm = {}
     for est, est_val in reslt.items():
         norm[est] = compute_cfd68(est_val)
-        print(' - {:<18} {:^2} {:>}'.format(est, ':', norm[est]))
+        print(" - {:<18} {:^2} {:>}".format(est, ":", norm[est]))
     return norm
 
 
@@ -279,17 +279,17 @@ class ErfComputation:
         erf = {}
         reduc_cl = Estimators(reduc)
         # Compute non-normalized Moment Estimators
-        for es in self.est_dic['moment_estimators']:
+        for es in self.est_dic["moment_estimators"]:
             est_reduc = reduc_cl.compute_for(es)
             erf[es] = compute_erfm(self.pestm[es], est_reduc)
         # Compute non-normalized Statistical Estimators
-        for es in self.est_dic['stat_estimators']:
+        for es in self.est_dic["stat_estimators"]:
             est_reduc = reduc_cl.compute_for(es)
             erf[es] = compute_erfs(self.pestm[es], est_reduc)
-        # # Compute non-normalized Correlation Estimators
-        # for es in self.est_dic['corr_estimators']:
-        #     est_reduc = reduc_cl.compute_for(es)
-        #     erf[es] = compute_erfc(self.pestm[es], est_reduc)
+        # Compute non-normalized Correlation Estimators
+        for es in self.est_dic["corr_estimators"]:
+            est_reduc = reduc_cl.compute_for(es)
+            erf[es] = compute_erfc(self.pestm[es], est_reduc)
         # Normalize ERF
         nerf = 0
         for er in erf.keys():

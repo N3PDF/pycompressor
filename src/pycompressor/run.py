@@ -4,6 +4,7 @@ Main file for Compressor
 
 # import os
 # import logging
+import json
 import argparse
 import numpy as np
 from tqdm import trange
@@ -75,23 +76,17 @@ def main():
         q0 = args.qinit
     # Default Minimizer
     if args.minimizer is None:
-        minimizer = 'genetic'
+        minimizer = "genetic"
     else:
         minimizer = args.minimizer
     # List of estimators
     est_dic = {
-            'moment_estimators': [
-                'mean',
-                'stdev',
-                'skewness',
-                'kurtosis'
-                ],
-            'stat_estimators': [
-                'kolmogorov_smirnov'
-                ]
-            }
+        "moment_estimators": ["mean", "stdev", "skewness", "kurtosis"],
+        "stat_estimators": ["kolmogorov_smirnov"],
+        "corr_estimators": ["correlation"],
+    }
     # Construc xgrid
-    print('[+] Loading PDF set:')
+    print("[+] Loading PDF set:")
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(pdf, xgrid, q0, nfl).build_pdf()
     # Set seed
@@ -99,20 +94,28 @@ def main():
     # Init. compressor class
     comp = compress(prior, est_dic, nbr)
     # Start compression depending on the Evolution Strategy
-    print(f'\n[+] Compressing replicas using {minimizer} algorithm:')
-    if minimizer == 'genetic':
+    erf_list = []
+    final_result = {'pdfset_name': pdf}
+    print(f"\n[+] Compressing replicas using {minimizer} algorithm:")
+    if minimizer == "genetic":
         # Run compressor using GA
-        nb_iter = 15000
+        nb_iter = 2000
         with trange(nb_iter) as iter_range:
             for i in iter_range:
                 iter_range.set_description("Compression")
                 erf, index = comp.genetic_algorithm(nb_mut=5)
+                erf_list.append(erf)
                 iter_range.set_postfix(ERF=erf)
-    elif minimizer == 'cma':
+    elif minimizer == "cma":
         # Run compressor using CMA
         erf, index = comp.cma_algorithm(std_dev=0.3)
     else:
-        raise ValueError(f'{minimizer} is not a valid minimizer.')
+        raise ValueError(f"{minimizer} is not a valid minimizer.")
+    # Prepare output file
+    final_result['ERFs'] = erf_list
+    final_result['index'] = index.tolist()
+    with open(f'compress_{args.pdfset}_{args.compress}_output.dat', 'w') as outfile:
+        json.dump(final_result, outfile)
 
     # Fetching ERF and construct reduced PDF grid
-    print(f'\n[+] Final ERF: {erf}\n')
+    print(f"\n[+] Final ERF: {erf}\n")

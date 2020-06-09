@@ -3,6 +3,8 @@ Computation of the error function
 """
 
 import numpy as np
+from numba import njit
+from tqdm import trange
 from pycompressor.estimators import Estimators
 
 
@@ -49,6 +51,7 @@ def compute_cfd68(reslt_trial):
     return cfd_val
 
 
+@njit
 def compute_erfm(prior, nset):
     """
     Non-normalized error function. The ERF of
@@ -79,6 +82,7 @@ def compute_erfm(prior, nset):
     return reslt
 
 
+@njit
 def compute_erfs(prior, nset):
     """
     Non-normalized error function for Statistical
@@ -113,6 +117,7 @@ def compute_erfs(prior, nset):
     return reslt
 
 
+@njit
 def compute_erfc(prior, nset):
     """
     Non-normalized error function for correlation
@@ -139,10 +144,11 @@ def compute_erfc(prior, nset):
     gi = np.dot(prior, prior_inv)
     fi_trace = np.trace(fi)
     gi_trace = np.trace(gi)
-    try:
-        reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
-    except ValueError:
-        print("The correlation matrix is incorrect.")
+    # try:
+    #     reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
+    # except ValueError:
+    #     print("The correlation matrix is incorrect.")
+    reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
     return reslt
 
 
@@ -201,21 +207,23 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         for es in est_list:
             reslt[es] = np.zeros(trials)
     # Loop over the random trials
-    for t in range(trials):
-        randm = randomize_rep(prior, rndm_size)
-        est_cl = Estimators(randm)
-        # Normalization for Moment Estimators
-        for es in est_dic["moment_estimators"]:
-            est_randm = est_cl.compute_for(es)
-            reslt[es][t] = compute_erfm(est_prior[es], est_randm)
-        # Normalization for Statistical Estimators
-        for es in est_dic["stat_estimators"]:
-            est_randm = est_cl.compute_for(es)
-            reslt[es][t] = compute_erfs(est_prior[es], est_randm)
-        # Normalization for Statistical Estimators
-        for es in est_dic["corr_estimators"]:
-            est_randm = est_cl.compute_for(es)
-            reslt[es][t] = compute_erfc(est_prior[es], est_randm)
+    with trange(trials) as iter_trial:
+        for t in iter_trial:
+            iter_trial.set_description("Random Trial")
+            randm = randomize_rep(prior, rndm_size)
+            est_cl = Estimators(randm)
+            # Normalization for Moment Estimators
+            for es in est_dic["moment_estimators"]:
+                est_randm = est_cl.compute_for(es)
+                reslt[es][t] = compute_erfm(est_prior[es], est_randm)
+            # Normalization for Statistical Estimators
+            for es in est_dic["stat_estimators"]:
+                est_randm = est_cl.compute_for(es)
+                reslt[es][t] = compute_erfs(est_prior[es], est_randm)
+            # Normalization for Statistical Estimators
+            for es in est_dic["corr_estimators"]:
+                est_randm = est_cl.compute_for(es)
+                reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
     norm = {}
     for est, est_val in reslt.items():

@@ -99,7 +99,7 @@ def main():
     print(f"\n[+] Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
-        nb_iter = 2000
+        nb_iter = 15000
         with trange(nb_iter) as iter_range:
             for i in iter_range:
                 iter_range.set_description("Compression")

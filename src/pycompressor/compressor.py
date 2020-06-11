@@ -53,6 +53,26 @@ class compress:
         erf_res = self.err_func.compute_tot_erf(reduc_rep)
         return erf_res
 
+    def final_erfs(self, index):
+        """
+        Compute the final ERF after minimization.
+
+        Parameters
+        ----------
+            index: array
+                Array containing the index of the selected
+                replicas
+
+        Returns
+        -------
+            result: dict
+                Dictionary containing the list of estimators
+                and their respective values
+        """
+        selected_replicas = self.prior[index]
+        erfs = self.err_func.compute_all_erf(selected_replicas)
+        return erfs
+
     def genetic_algorithm(self, nb_mut=5):
         """
         Look for the combination of replicas that gives the

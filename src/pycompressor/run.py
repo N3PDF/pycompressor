@@ -2,7 +2,8 @@
 Main file for Compressor
 """
 
-# import os
+import os
+
 # import logging
 import json
 import argparse
@@ -64,6 +65,7 @@ def main():
     # Initi. parameters
     pdf = args.pdfset
     nbr = args.compress
+
     # Define default flavour number
     if args.nflavors is None:
         nfl = 3
@@ -79,12 +81,14 @@ def main():
         minimizer = "genetic"
     else:
         minimizer = args.minimizer
+
     # List of estimators
     est_dic = {
         "moment_estimators": ["mean", "stdev", "skewness", "kurtosis"],
         "stat_estimators": ["kolmogorov_smirnov"],
         "corr_estimators": ["correlation"],
     }
+
     # Construc xgrid
     print("[+] Loading PDF set:")
     xgrid = XGrid().build_xgrid()
@@ -95,7 +99,8 @@ def main():
     comp = compress(prior, est_dic, nbr)
     # Start compression depending on the Evolution Strategy
     erf_list = []
-    final_result = {'pdfset_name': pdf}
+    final_result = {"pdfset_name": pdf}
+
     print(f"\n[+] Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
@@ -111,11 +116,29 @@ def main():
         erf, index = comp.cma_algorithm(std_dev=0.3)
     else:
         raise ValueError(f"{minimizer} is not a valid minimizer.")
+
+    # Create Output folders
+    if not os.path.exists(pdf):
+        os.mkdir(pdf)
+    else:
+        pass
+
     # Prepare output file
-    final_result['ERFs'] = erf_list
-    final_result['index'] = index.tolist()
-    with open(f'compress_{args.pdfset}_{args.compress}_output.dat', 'w') as outfile:
+    final_result["ERFs"] = erf_list
+    final_result["index"] = index.tolist()
+    with open(
+        f"{pdf}/compress_{args.pdfset}_{args.compress}_output.dat", "w"
+    ) as outfile:
         json.dump(final_result, outfile)
 
     # Fetching ERF and construct reduced PDF grid
     print(f"\n[+] Final ERF: {erf}\n")
+
+    # Compute final ERFs for the final choosen replicas
+    final_err_func = comp.final_erfs(index)
+    serfile = open("erf_reduced.dat", "a+")
+    serfile.write(f"{nbr} ")
+    for err in final_err_func.keys():
+        serfile.write(f"{final_err_func[err]} ")
+    serfile.write("\n")
+    serfile.close()

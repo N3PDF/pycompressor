@@ -31,7 +31,7 @@ def randomize_rep(replica, number):
 
 def compute_cfd68(reslt_trial):
     """
-    Compute the 68% confidence interval of
+    Compute the confidence interval of
     a randomized trial arrays.
 
     Parameters
@@ -41,14 +41,32 @@ def compute_cfd68(reslt_trial):
 
     Returns
     -------
-        result: float
-            Value of the 68% cfd
+        result: array
+            Value of the cfd
     """
     size = reslt_trial.shape[0]
     sort = np.sort(reslt_trial)
-    cfd_ind = int((size * (1 - 0.68) / 2))
-    cfd_val = sort[size - cfd_ind - 1]
-    return cfd_val
+    cfdv = np.zeros(8)
+    # cv
+    cfdv[0] = np.mean(reslt_trial)
+    # 50% cfd
+    cfd50 = int((size * (1 - 0.50) / 2))
+    cfdv[1] = sort[size - cfd50 - 1]
+    cfdv[2] = sort[cfd50]
+    # 68% cfd
+    cfd68 = int((size * (1 - 0.68) / 2))
+    cfdv[3] = sort[size - cfd68 - 1]
+    cfdv[4] = sort[cfd68]
+    # 90% cfd
+    cfd90 = int((size * (1 - 0.90) / 2))
+    cfdv[5] = sort[size - cfd90 - 1]
+    cfdv[6] = sort[cfd90]
+    # md
+    if (size % 2) == 0:
+        cfdv[7] = (sort[size // 2 - 1] + sort[size // 2]) / 2
+    else:
+        cfdv[7] = sort[size // 2]
+    return cfdv
 
 
 @njit
@@ -144,10 +162,6 @@ def compute_erfc(prior, nset):
     gi = np.dot(prior, prior_inv)
     fi_trace = np.trace(fi)
     gi_trace = np.trace(gi)
-    # try:
-    #     reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
-    # except ValueError:
-    #     print("The correlation matrix is incorrect.")
     reslt = pow((fi_trace - gi_trace) / gi_trace, 2)
     return reslt
 
@@ -201,7 +215,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
         result: float
             Normalization value for each estimator
     """
-    print("\n[+] Computing normalization factors...")
+    print("\n[+] Computing normalization factors:")
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:
@@ -226,9 +240,26 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
                 reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
     norm = {}
+    erfile = open("erf_randomized.dat", "a+")
+    erfile.write(f"{rndm_size} ")
     for est, est_val in reslt.items():
-        norm[est] = compute_cfd68(est_val)
-        print(" - {:<18} {:^2} {:>}".format(est, ":", norm[est]))
+        ucfd68 = compute_cfd68(est_val)
+        norm[est] = ucfd68[3]
+        erfile.write(
+            "{} {} {} {} {} {} {} {} ".format(
+                ucfd68[0],
+                ucfd68[7],
+                ucfd68[2],
+                ucfd68[1],
+                ucfd68[4],
+                ucfd68[3],
+                ucfd68[6],
+                ucfd68[5],
+            )
+        )
+        print(" - {:<18} {:^2} {:> .4e}".format(est, ":", norm[est]))
+    erfile.write("\n")
+    erfile.close()
     return norm
 
 
@@ -303,3 +334,37 @@ class ErfComputation:
         for er in erf.keys():
             nerf += erf[er] / self.normz[er]
         return nerf / len(erf)
+
+    def compute_all_erf(self, reduc):
+        """
+        Compute the total normalized Error Function which
+        is given by the sum of all the normalized estimators.
+
+        Parameters
+        ----------
+            reduc: array
+                Reduced set of replicas of shape=(replica, flavours, x-grid)
+
+        Returns
+        -------
+            result: float
+                Value of the total normalized ERF
+        """
+        erf = {}
+        reduc_cl = Estimators(reduc)
+        # Compute non-normalized Moment Estimators
+        for es in self.est_dic["moment_estimators"]:
+            est_reduc = reduc_cl.compute_for(es)
+            erf[es] = compute_erfm(self.pestm[es], est_reduc)
+            # erf[es] /= self.normz[es]
+        # Compute non-normalized Statistical Estimators
+        for es in self.est_dic["stat_estimators"]:
+            est_reduc = reduc_cl.compute_for(es)
+            erf[es] = compute_erfs(self.pestm[es], est_reduc)
+            # erf[es] /= self.normz[es]
+        # Compute non-normalized Correlation Estimators
+        for es in self.est_dic["corr_estimators"]:
+            est_reduc = reduc_cl.compute_for(es)
+            erf[es] = compute_erfc(self.pestm[es], est_reduc)
+            # erf[es] /= self.normz[es]
+        return erf

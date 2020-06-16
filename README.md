@@ -25,8 +25,8 @@ compressed PDF grid, run the following command:
 ```bash
 ./tools/compressed_grid.py PDF_NAME
 ```
-Finally, in order to generate ERF plots, run the command below inside of the 
-compressed folder (this requires root):
+Finally, in order to generate ERF plots, copy the file `compressor_validate.C`
+in `tools` into the compressed folder and run (this requires root):
 ```bash
 root -l compressor_validate.C
 ``` 

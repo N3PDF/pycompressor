@@ -15,6 +15,9 @@ XGRID = 20
 PDFSIZE = 10
 NB_REDUCED = 4
 
+# Seed
+np.random.seed(0)
+
 # Create Toy prior PDF
 PRIOR = np.random.uniform(0, 1, size=[PDFSIZE, FLAVS, XGRID])
 

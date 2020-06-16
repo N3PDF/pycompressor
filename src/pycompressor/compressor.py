@@ -130,7 +130,7 @@ class compress:
         self,
         std_dev=0.3,
         seed=0,
-        verbosity=100,
+        verbosity=0,
         min_itereval=1000,
         max_itereval=15000
     ):
@@ -167,13 +167,17 @@ class compress:
             # Convert float array into int
             index_int = index.astype(int)
             index_modulo = index_int % self.prior.shape[0]
+            # Check Duplicates and if so return high values
+            duplicates, counts = np.unique(index_modulo, return_counts=True)
+            if duplicates[counts > 1].shape[0] != 0:
+                return 2
             reduc_rep = self.prior[index_modulo]
             # Compute Normalized Error function
             erf_res = self.err_func.compute_tot_erf(reduc_rep)
             return erf_res
 
         # Init CMA class
-        options = {"maxfevals": max_itereval, "seed": seed}
+        options = {"maxfevals": max_itereval, "seed": seed, 'verb_log': 0}
         cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
         cma_opt = cma_es.optimize(
             minimize_erf, min_iterations=min_itereval, verb_disp=verbosity

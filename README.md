@@ -5,15 +5,28 @@
 Python implementation of PDF set **compressor** (https://arxiv.org/abs/1504.06469).
 
 #### Installation
-```
+To install pyCompressor, just type:
+```bash
 python setup.py install
 ```
-or
-```
+or if you are a developer:
+```bash
 python setup.py develop
 ```
 
 ####  Running
+```bash
+pycompressor -p PDF_NAME -n NB_COMPRESSED_REPLICAS -m [MINIMIZER]
 ```
-pycompressor -p PDF_NAME -n NB_COMPRESSED_REPLICAS
+
+#### Post-Analysis
+The code will generate a folder named after the prior PDF sets. To generate the
+compressed PDF grid, run the following command:
+```bash
+./tools/compressed_grid.py PDF_NAME
 ```
+Finally, in order to generate ERF plots, run the command below inside of the 
+compressed folder (this requires root):
+```bash
+root -l compressor_validate.C
+``` 

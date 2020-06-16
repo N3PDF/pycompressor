@@ -22,7 +22,7 @@ from setuptools import find_packages
 
 PACKAGE = "pycompressor"
 
-requirements = ["numpy", "numba", "tqdm", "scipy", "cma", "matplotlib"]
+requirements = ["numpy", "numba", "tqdm", "cma", "matplotlib"]
 
 # Check python version
 if sys.version_info < (3, 6):

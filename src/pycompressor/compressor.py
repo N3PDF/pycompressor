@@ -7,37 +7,7 @@ random subset from the Prior and compute the ERF.
 
 import cma
 import numpy as np
-from functools import partial
-from multiprocessing import Pool
 from pycompressor.err_function import ErfComputation
-
-
-def cma_erf(index, err_comp, prior):
-    """
-    Top level function.
-    Define the ERF function that is going to be minimized.
-
-    Parameters
-    ----------
-        index: array
-            Array containing the index of the replicas
-
-    Returns
-    -------
-        result: float
-            Value of the ERF
-    """
-    # Convert float array into int
-    index_int = index.astype(int)
-    index_modulo = index_int % prior.shape[0]
-    # Check Duplicates and if so returns NaN
-    duplicates, counts = np.unique(index_modulo, return_counts=True)
-    if duplicates[counts > 1].shape[0] != 0:
-        return np.NaN
-    reduc_rep = prior[index_modulo]
-    # Compute Normalized Error function
-    erf_res = err_comp.compute_tot_erf(reduc_rep)
-    return erf_res
 
 
 class compress:
@@ -233,58 +203,31 @@ class compress:
         erf_cma = self.error_function(selected_modulo)
         return erf_cma, selected_modulo
 
-    def cma_algorithm_multiprocessed(
-        self,
-        std_dev=0.3,
-        seed=0,
-        verbosity=0,
-        min_itereval=1000,
-        max_itereval=15000
-    ):
-        """
-        Define the ERF function that is going to be minimized.
 
-        Parameters
-        ----------
-            index: array
-                Array containing the index of the replicas
-
-        Returns
-        -------
-            result: float
-                Value of the ERF
-        """
-        init_index = np.random.choice(
-                self.prior.shape[0],
-                self.nb_reduc,
-                replace=False
-        )
-
-        # Init CMA class
-        options = {"maxiter": max_itereval, "seed": seed, "verb_log": 0}
-        cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
-        count_it = 0
-        with Pool(processes=12) as pool:
-            while not cma_es.stop() and cma_es.best.f > 2e-2:
-                count_it += 1
-                pop_solutions, erf_values = [], []
-                while len(pop_solutions) < cma_es.popsize:
-                    ind = cma_es.ask(cma_es.popsize - len(pop_solutions))
-                    current_erf = pool.map_async(
-                        partial(
-                            cma_erf, err_comp=self.err_func, prior=self.prior
-                        ), ind
-                    ).get()
-                    for erfval, solution in zip(current_erf, ind):
-                        if not np.isnan(erfval):
-                            erf_values.append(erfval)
-                            pop_solutions.append(solution)
-                cma_es.tell(pop_solutions, erf_values)
-                cma_es.disp()
-
-        # Compute final ERF from selected indices
-        cma_res = cma_es.result[0]
-        selected_index = cma_res.astype(int)
-        selected_modulo = selected_index % self.prior.shape[0]
-        erf_cma = self.error_function(selected_modulo)
-        return erf_cma, selected_modulo
+# def cma_erf(index, err_comp, prior):
+#     """
+#     Top level function.
+#     Define the ERF function that is going to be minimized.
+# 
+#     Parameters
+#     ----------
+#         index: array
+#             Array containing the index of the replicas
+# 
+#     Returns
+#     -------
+#         result: float
+#             Value of the ERF
+#     """
+#     # TODO: cma_erf(ind, self.err_func, self.prior)
+#     # Convert float array into int
+#     index_int = index.astype(int)
+#     index_modulo = index_int % prior.shape[0]
+#     # Check Duplicates and if so returns NaN
+#     duplicates, counts = np.unique(index_modulo, return_counts=True)
+#     if duplicates[counts > 1].shape[0] != 0:
+#         return np.NaN
+#     reduc_rep = prior[index_modulo]
+#     # Compute Normalized Error function
+#     erf_res = err_comp.compute_tot_erf(reduc_rep)
+#     return erf_res

@@ -7,7 +7,37 @@ random subset from the Prior and compute the ERF.
 
 import cma
 import numpy as np
+from functools import partial
+from multiprocessing import Pool
 from pycompressor.err_function import ErfComputation
+
+
+def cma_erf(index, err_comp, prior):
+    """
+    Top level function.
+    Define the ERF function that is going to be minimized.
+
+    Parameters
+    ----------
+        index: array
+            Array containing the index of the replicas
+
+    Returns
+    -------
+        result: float
+            Value of the ERF
+    """
+    # Convert float array into int
+    index_int = index.astype(int)
+    index_modulo = index_int % prior.shape[0]
+    # Check Duplicates and if so returns NaN
+    duplicates, counts = np.unique(index_modulo, return_counts=True)
+    if duplicates[counts > 1].shape[0] != 0:
+        return np.NaN
+    reduc_rep = prior[index_modulo]
+    # Compute Normalized Error function
+    erf_res = err_comp.compute_tot_erf(reduc_rep)
+    return erf_res
 
 
 class compress:
@@ -135,20 +165,23 @@ class compress:
         max_itereval=15000
     ):
         """
-        CMA (Covariance Matrix Adaptation) Evolution Strategy. This
-        is based on the python CMA implementation defined here
-        http://cma.gforge.inria.fr/cmaes_sourcecode_page.html#python.
+        Define the ERF function that is going to be minimized.
 
         Parameters
         ----------
-            std_dev: float
-                Value of the standard deviation
-            verbosity: int
-                Print to screen every `verbosity` iteration
-            seed: int
-                Parameter for randomization
+            index: array
+                Array containing the index of the replicas
+
+        Returns
+        -------
+            result: float
+                Value of the ERF
         """
-        init_index = self.index
+        init_index = np.random.choice(
+                self.prior.shape[0],
+                self.nb_reduc,
+                replace=False
+        )
 
         def minimize_erf(index):
             """
@@ -167,24 +200,91 @@ class compress:
             # Convert float array into int
             index_int = index.astype(int)
             index_modulo = index_int % self.prior.shape[0]
-            # Check Duplicates and if so return high values
+            # Check Duplicates and if so returns NaN
             duplicates, counts = np.unique(index_modulo, return_counts=True)
             if duplicates[counts > 1].shape[0] != 0:
-                return 2
+                return np.NaN
             reduc_rep = self.prior[index_modulo]
             # Compute Normalized Error function
             erf_res = self.err_func.compute_tot_erf(reduc_rep)
             return erf_res
 
         # Init CMA class
-        options = {"maxfevals": max_itereval, "seed": seed, 'verb_log': 0}
+        options = {"maxiter": max_itereval, "seed": seed, "verb_log": 0}
         cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
-        cma_opt = cma_es.optimize(
-            minimize_erf, min_iterations=min_itereval, verb_disp=verbosity
-        )
-        cma_res = cma_opt.result[0]
+        count_it = 0
+        while not cma_es.stop() and cma_es.best.f > 2e-2:
+            count_it += 1
+            pop_solutions, erf_values = [], []
+            while len(pop_solutions) < cma_es.popsize:
+                current_erf = ind = np.NaN
+                while np.isnan(current_erf):
+                    ind = cma_es.ask(1)[0]
+                    current_erf = minimize_erf(ind)
+                pop_solutions.append(ind)
+                erf_values.append(current_erf)
+            cma_es.tell(pop_solutions, erf_values)
+            cma_es.disp()
+
+        # Compute final ERF from selected indices
+        cma_res = cma_es.result[0]
         selected_index = cma_res.astype(int)
         selected_modulo = selected_index % self.prior.shape[0]
-        # Compute ERF with the selected index
         erf_cma = self.error_function(selected_modulo)
-        return erf_cma, selected_index
+        return erf_cma, selected_modulo
+
+    def cma_algorithm_multiprocessed(
+        self,
+        std_dev=0.3,
+        seed=0,
+        verbosity=0,
+        min_itereval=1000,
+        max_itereval=15000
+    ):
+        """
+        Define the ERF function that is going to be minimized.
+
+        Parameters
+        ----------
+            index: array
+                Array containing the index of the replicas
+
+        Returns
+        -------
+            result: float
+                Value of the ERF
+        """
+        init_index = np.random.choice(
+                self.prior.shape[0],
+                self.nb_reduc,
+                replace=False
+        )
+
+        # Init CMA class
+        options = {"maxiter": max_itereval, "seed": seed, "verb_log": 0}
+        cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
+        count_it = 0
+        with Pool(processes=12) as pool:
+            while not cma_es.stop() and cma_es.best.f > 2e-2:
+                count_it += 1
+                pop_solutions, erf_values = [], []
+                while len(pop_solutions) < cma_es.popsize:
+                    ind = cma_es.ask(cma_es.popsize - len(pop_solutions))
+                    current_erf = pool.map_async(
+                        partial(
+                            cma_erf, err_comp=self.err_func, prior=self.prior
+                        ), ind
+                    ).get()
+                    for erfval, solution in zip(current_erf, ind):
+                        if not np.isnan(erfval):
+                            erf_values.append(erfval)
+                            pop_solutions.append(solution)
+                cma_es.tell(pop_solutions, erf_values)
+                cma_es.disp()
+
+        # Compute final ERF from selected indices
+        cma_res = cma_es.result[0]
+        selected_index = cma_res.astype(int)
+        selected_modulo = selected_index % self.prior.shape[0]
+        erf_cma = self.error_function(selected_modulo)
+        return erf_cma, selected_modulo

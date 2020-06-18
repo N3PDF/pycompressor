@@ -1,6 +1,9 @@
-"""
-Main file for Compressor
-"""
+# Main file for Compressor which does the following:
+#
+# [+] Parse the input argument
+# [+] Prepare output folder
+# [+] Minimize the ERF and look for the best combination
+#     of sets
 
 import os
 
@@ -16,8 +19,12 @@ from pycompressor.compressor import compress
 
 
 def positive_int(value):
-    """
-    Checks if the given number is positive
+    """Checks if the given integer is positive.
+
+    Parameters
+    ----------
+        value: int
+            Input integer
     """
     ivalue = int(value)
     if ivalue <= 0:
@@ -26,8 +33,12 @@ def positive_int(value):
 
 
 def nbflavors(value):
-    """
-    Checks the nb of flavors from input
+    """Checks the nb of flavors from input.
+
+    Parameters
+    ----------
+        value: int
+            Total number of flavors
     """
     ivalue = int(value)
     if ivalue < 0 or ivalue > 7:
@@ -58,8 +69,7 @@ def argument_parser():
 
 
 def main():
-    """
-    Main function
+    """Main function
     """
     args = argument_parser()
     # Initi. parameters

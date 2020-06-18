@@ -1,9 +1,11 @@
-"""
-File that manages the compression algorithm.
-
-For the time being, this compressor select a
-random subset from the Prior and compute the ERF.
-"""
+# File containing the modules that compute the total values of the Error
+# function and try to minimize its value using a Minimizer: a Genetic
+# Algorithm (GA) or a Covariance Matrix Adaptation (CMA) EWvolution
+# Strategy. 
+#
+# This file also generates an output file that contains the statistical
+# evlation of the random trials. Such a file is used afterward in order
+# to perform a post-analysis.
 
 import cma
 import numpy as np
@@ -11,15 +13,18 @@ from pycompressor.err_function import ErfComputation
 
 
 class compress:
-    """
-    Compress the Prior set of replicas into a
-    subset of replicas that faithfully contains the
-    statistical properties of the prior (in other words
-    a subset that gives the best value of the error
-    function).
+    """Compress the Prior set of replicas into a subset of replicas that
+    faithfully contains the statistical properties of the prior (in other
+    words a subset that gives the best value of the error function).
 
     Parameters
     ----------
+        prior: array_like
+            Prior PDF replicas
+        est_dic: dic
+            Dictionary contaning the list of estimators
+        nb_reduc: int
+            Size of the reduced/compressed replicas
     """
 
     def __init__(self, prior, est_dic, nb_reduc):
@@ -34,18 +39,17 @@ class compress:
         self.index = np.arange(1, self.nb_reduc + 1, 1)
 
     def error_function(self, index):
-        """
-        Sample a subset of replicas as given by the index.
-        Then computes the corrresponding ERF value.
+        """Sample a subset of replicas as given by the index. Then computes the
+        corrresponding ERF value.
 
         Parameters
         ----------
-            index: array
+            index: array_like
                 Array containing the index of the replicas
 
         Returns
         -------
-            result: float
+            float
                 Value of the ERF
         """
         reduc_rep = self.prior[index]
@@ -54,18 +58,17 @@ class compress:
         return erf_res
 
     def final_erfs(self, index):
-        """
-        Compute the final ERF after minimization.
+        """Compute the final ERF after minimization.
 
         Parameters
         ----------
-            index: array
+            index: array_like
                 Array containing the index of the selected
                 replicas
 
         Returns
         -------
-            result: dict
+            dict
                 Dictionary containing the list of estimators
                 and their respective values
         """
@@ -74,22 +77,18 @@ class compress:
         return erfs
 
     def genetic_algorithm(self, nb_mut=5):
-        """
-        Look for the combination of replicas that gives the
-        best ERF value.
+        """Look for the combination of replicas that gives the best ERF value.
 
         Parameters
         ----------
-            nb_mut: int
+            nb_mut: int, optional
                 Number of mutation
 
         Returns
         -------
-            result: tuple
-                'besterf': float
-                    Vaue of the best ERF
-                'index': array
-                    Contains the index of the reduced PDF
+            tuple(float, array_like)
+                The first argument is the value of the best ERF while the second
+                contains the index of the reduced PDF
         """
         nmut = nb_mut
         # Compute ERF
@@ -134,17 +133,16 @@ class compress:
         min_itereval=1000,
         max_itereval=15000
     ):
-        """
-        Define the ERF function that is going to be minimized.
+        """Define the ERF function that is going to be minimized.
 
         Parameters
         ----------
-            index: array
+            index: array_like
                 Array containing the index of the replicas
 
         Returns
         -------
-            result: float
+            float
                 Value of the ERF
         """
         init_index = np.random.choice(
@@ -154,17 +152,16 @@ class compress:
         )
 
         def minimize_erf(index):
-            """
-            Define the ERF function that is going to be minimized.
+            """Define the ERF function that is going to be minimized.
 
             Parameters
             ----------
-                index: array
+                index: array_like
                     Array containing the index of the replicas
 
             Returns
             -------
-                result: float
+                float
                     Value of the ERF
             """
             # Convert float array into int
@@ -205,21 +202,24 @@ class compress:
 
 
 # def cma_erf(index, err_comp, prior):
-#     """
-#     Top level function.
-#     Define the ERF function that is going to be minimized.
+#     """Top level function that defines the ERF function that is going
+#     to be minimized.
 # 
 #     Parameters
 #     ----------
-#         index: array
+#         index: array_like
 #             Array containing the index of the replicas
+#         err_comp: class
+#             Class containing the method that computes the ERFs
+#         prior: array_like
+#             Array of PDF replicas (prior/reduced/random)
 # 
 #     Returns
 #     -------
 #         result: float
 #             Value of the ERF
 #     """
-#     # TODO: cma_erf(ind, self.err_func, self.prior)
+#     # TODO: (use) cma_erf(ind, self.err_func, self.prior)
 #     # Convert float array into int
 #     index_int = index.astype(int)
 #     index_modulo = index_int % prior.shape[0]

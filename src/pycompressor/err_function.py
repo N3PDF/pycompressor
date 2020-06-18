@@ -1,6 +1,5 @@
-"""
-Computation of the error function
-"""
+# This file contains the modules that computes the Error Function (ERF)
+# by taking the upper 68% from the confidence interval.
 
 import numpy as np
 from numba import njit
@@ -9,20 +8,19 @@ from pycompressor.estimators import Estimators
 
 
 def randomize_rep(replica, number):
-    """
-    Extract a subset of random replica from
-    the prior with a nun-redundant way.
+    """Extract a subset of random replica from the prior with a nun-
+    redundant way.
 
     Parameters
     ----------
-        replica: array
+        replica: array_like
             Prior set of replicas shape=(replicas, flavours, x-grid)
         number: int
             Number of subset of replicas
 
     Returns
     -------
-        result: array
+        array_like
             Randomized array of shape=(number, flavours, x-grid)
     """
     index = np.random.choice(replica.shape[0], number, replace=False)
@@ -30,18 +28,16 @@ def randomize_rep(replica, number):
 
 
 def compute_cfd68(reslt_trial):
-    """
-    Compute the confidence interval of
-    a randomized trial arrays.
+    """Compute the confidence interval of a randomized trial arrays.
 
     Parameters
     ----------
-        reslt_trial: array
+        reslt_trial: array_like
             Array of shape=(size_trials)
 
     Returns
     -------
-        result: array
+        array_like
             Value of the cfd
     """
     size = reslt_trial.shape[0]
@@ -71,21 +67,19 @@ def compute_cfd68(reslt_trial):
 
 @njit
 def compute_erfm(prior, nset):
-    """
-    Non-normalized error function. The ERF of
-    the moment estimators given by eq.(6) of
-    https://arxiv.org/pdf/1504.06469.
+    """Non-normalized error function. The ERF of the moment estimators
+    given by eq.(6) of https://arxiv.org/pdf/1504.06469.
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of replicas of shape=(flavours, x-grid)
-        nset : array
+        nset : array_like
             Reduced or Random set of replica shape=(flavours, x-grid)
 
     Returns
     -------
-        result: float
+        float
             Value of the error Estimation
     """
     flv_size = prior.shape[0]
@@ -102,23 +96,21 @@ def compute_erfm(prior, nset):
 
 @njit
 def compute_erfs(prior, nset):
-    """
-    Non-normalized error function for Statistical
-    estimators.
+    """Non-normalized error function for Statistical estimators.
 
     The Kolmogorov-smirnov is given by eq.(13) of
     https://arxiv.org/pdf/1504.06469.
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of replicas of shape=(flavours, x-grid)
-        nset: array
+        nset: array_like
             Array of shape (flavor, x-grid, regions)
 
     Returns
     -------
-        result: float
+        float
             Value of the error Estimation
     """
     flv_size = prior.shape[0]
@@ -137,23 +129,21 @@ def compute_erfs(prior, nset):
 
 @njit
 def compute_erfc(prior, nset):
-    """
-    Non-normalized error function for correlation
-    estimators.
+    """Non-normalized error function for correlation estimators.
 
     The correlation ERF is given by eq.(21) of
     https://arxiv.org/pdf/1504.06469.
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of replicas of shape=(flavours, x-grid)
-        nset: array
+        nset: array_like
             Array of shape (NxCorr*flavors, NxCorr*flavors)
 
     Returns
     -------
-        result: float
+        float
             Value of the error Estimation
     """
     # Compute inverse of prior
@@ -167,19 +157,18 @@ def compute_erfc(prior, nset):
 
 
 def estimate(prior, est_dic):
-    """
-    Compute estimators for the PRIOR set.
+    """Compute estimators for the PRIOR set.
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of shape=(replicas, flavours, x-grid)
         est_dic: dict
             Contains the list ot all estimators
 
     Returns
     -------
-        result: float
+        float
             Array of shape=(flavours, x-grid)
     """
     est_res = Estimators(prior)
@@ -191,15 +180,13 @@ def estimate(prior, est_dic):
 
 
 def normalization(prior, est_prior, rndm_size, est_dic, trials):
-    """
-    Compute normalization for each Estimator. The normalization
-    is computed by calculating the ERF of the given estimator
-    for each trials as given generally by eq.(9) of the paper
-    (https://arxiv.org/pdf/1504.06469).
+    """Compute normalization for each Estimator. The normalization is computed
+    by calculating the ERF of the given estimator for each trials as given
+    generally by eq.(9) of the paper (https://arxiv.org/pdf/1504.06469).
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of replica fo shape=(replicas, flavours, x-grid)
         est_prior: dict
             Dictionary containing the values of the estimated results
@@ -212,7 +199,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
 
     Returns
     -------
-        result: float
+        float
             Normalization value for each estimator
     """
     print("\n[+] Computing normalization factors:")
@@ -264,17 +251,15 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
 
 
 class ErfComputation:
-    """
-    Class that computes the normalized Error Functions.
-    The complete ERF expression is generally given by
-    eq.(6) in https://arxiv.org/pdf/1504.06469.
+    """Class that computes the normalized Error Functions. The complete ERF
+    expression is generally given by eq.(6) of https://arxiv.org/pdf/1504.06469.
 
-    When this class is initialized, the Estimators and
-    the normalization factors are computed.
+    When this class is initialized, the Estimators and the normalization factors
+    are computed.
 
     Parameters
     ----------
-        prior: array
+        prior: array_like
             Prior set of replicas of shape=(replicas, flavours, x-grid)
         est_dic: dict
             Contains the list of all the Estimators
@@ -282,11 +267,6 @@ class ErfComputation:
             Size of reduced replicas
         trials: int
             Number of trials
-
-    Returns
-    -------
-        result: float
-            Normalized ERF
     """
 
     def __init__(self, prior, est_dic, nreduc, trials=1000):
@@ -301,18 +281,17 @@ class ErfComputation:
         return "Normalizations: {}".format(self.normz)
 
     def compute_tot_erf(self, reduc):
-        """
-        Compute the total normalized Error Function which
-        is given by the sum of all the normalized estimators.
+        """Compute the total normalized Error Function which is given by the sum of
+        all the normalized estimators.
 
         Parameters
         ----------
-            reduc: array
+            reduc: array_like
                 Reduced set of replicas of shape=(replica, flavours, x-grid)
 
         Returns
         -------
-            result: float
+            float
                 Value of the total normalized ERF
         """
         erf = {}
@@ -336,18 +315,17 @@ class ErfComputation:
         return nerf / len(erf)
 
     def compute_all_erf(self, reduc):
-        """
-        Compute the total normalized Error Function which
-        is given by the sum of all the normalized estimators.
+        """Compute the total normalized Error Function which is given by the sum of
+        all the normalized estimators.
 
         Parameters
         ----------
-            reduc: array
+            reduc: array_like
                 Reduced set of replicas of shape=(replica, flavours, x-grid)
 
         Returns
         -------
-            result: float
+            float
                 Value of the total normalized ERF
         """
         erf = {}

@@ -1,18 +1,16 @@
-"""
-Format the input PDF
-"""
+# This file defines the x-grid and computes the PDF
+# gird according to the input parameters.
 
 import lhapdf
 import numpy as np
 
 
 class XGrid:
-    """
-    Construct the x-grid as in NNPDF
+    """Construct the x-grid as in NNPDF.
 
     Returns
     -------
-        result: array
+        result: array_like
             Numpy array containg the x-grid
     """
 
@@ -99,10 +97,9 @@ class XGrid:
 
 
 class PdfSet:
-    """
-    This formats the input PDF replicas.
-    It returns a multi-dimensional array that has the
-    following shape (flavor, pdfReplicas, pdfValue).
+    """This formats the input PDF replicas. It returns a multi-
+    dimensional array that has the following shape (flavor,
+    pdfReplicas, pdfValue).
 
     Parameters
     ----------
@@ -114,11 +111,6 @@ class PdfSet:
             Value of intial energy scale Q
         nf: int
             Total number of flavors
-
-    Returns
-    -------
-        result: array
-            PDF grid of shape=(replicas, flavours, x-grid)
     """
 
     def __init__(self, pdf_name, xgrid, q_value, nf):
@@ -128,6 +120,14 @@ class PdfSet:
         self.pdf_name = pdf_name
 
     def build_pdf(self):
+        """Construct a grid of PDF from a grid in x depenging on
+        the input parameters.
+
+        Returns
+        -------
+            result: array_like
+                PDF grid of shape=(replicas, flavours, x-grid)
+        """
         # Call lhapdf PDF set PDF set
         pdf = lhapdf.mkPDFs(self.pdf_name)
         pdf_size = len(pdf) - 1

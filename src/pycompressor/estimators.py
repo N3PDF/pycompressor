@@ -1,14 +1,16 @@
-"""
-Collects estimators and corresponding normalizations
-"""
+# This file contains the definition of the Statistical estimators
+# used to evaluate the accuracy of a subset of probability distributions
+#
+# The definition of the statistical estimators are extracted from the
+# paper https://arxiv.org/pdf/1504.06469
 
 import numpy as np
 from numba import njit
 
 
 def replace(input_array):
-    """
-    Replace values in array
+    """Replace values in array in the following way: change all the
+    (1) to (0) and all (-1) to (1).
 
     Parameters
     ----------
@@ -17,7 +19,7 @@ def replace(input_array):
 
     Returns
     -------
-        result: array
+        array
             Array of shape=(falvours, x-grid)
     """
     array = input_array
@@ -28,8 +30,25 @@ def replace(input_array):
 
 @njit
 def _moment(replicas, mean, stdev, order):
-    """ Compute skewness in the standard way following
-    exactly eq.(11) of the paper. """
+    """Compute skewness in the standard way following
+    exactly eq.(11) of the paper.
+
+    Parameters
+    ----------
+        replicas: array_like
+            Array of PDF replicas (prior/reduced/random)
+        mean: array_like
+            Array with the mean values of replicas
+        stdev: array_like
+            Array with the values of standard deviation of replicas
+        nb_regions: int, optional
+            Number of regions. This is by default set to 6
+    
+    Returns
+    -------
+        array_like
+            Array of the value of the n-order moment
+    """
     nrep = replicas.shape[0]
     nflv = replicas.shape[1]
     nxgd = replicas.shape[2]
@@ -44,51 +63,36 @@ def _moment(replicas, mean, stdev, order):
     return result / nrep
 
 
-# @njit
-# def _kolmogorov(replicas, mean, stdev, nbregions=6):
-#     """ Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
-#     of the compressor:
-#     https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122
-#     As opposed to the above implementation, this computes the KS for all
-#     replicas, flavours and x-grid. """
-#     nrep = replicas.shape[0]
-#     nflv = replicas.shape[1]
-#     nxgd = replicas.shape[2]
-# 
-#     def _ks_c_compressor(flavour, x):
-#         res = np.zeros(nbregions)
-#         for r in range(nrep):
-#             val = replicas[r][flavour][x]
-#             if val <= mean[flavour][x] - 2 * stdev[flavour][x]:
-#                 res[0] += 1
-#             elif val <= mean[flavour][x] - 1 * stdev[flavour][x]:
-#                 res[1] += 1
-#             elif val <= mean[flavour][x]:
-#                 res[2] += 1
-#             elif val <= mean[flavour][x] + 1 * stdev[flavour][x]:
-#                 res[3] += 1
-#             elif val <= mean[flavour][x] + 2 * stdev[flavour][x]:
-#                 res[4] += 1
-#             elif val > mean[flavour][x] + 2 * stdev[flavour][x]:
-#                 res[5] += 1
-#         return res / nrep
-# 
-#     result = np.zeros((nflv, nxgd, nbregions))
-#     for fl in range(nflv):
-#         for x in range(nxgd):
-#             result[fl][x] = _ks_c_compressor(fl, x)
-#     return result
-
-
 @njit
 def _kolmogorov(replicas, mean, stdev, nb_regions=6):
-    """ Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
+    """Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
     of the compressor:
 
     https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122
+    
+    This function counts the number of replicas (for all fl and x in xgrid)
+    which fall in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
+    and normalize the result by the total number of replicas.
 
     As opposed to the above implementation, this computes the KS for all
-    replicas, flavours and x-grid. """
+    replicas, flavours and x-grid.
+
+    Parameters
+    ----------
+        replicas: array_like
+            PDF replicas (prior/reduced/random)
+        mean: array_like
+            Array with the mean values of replicas
+        stdev: array_like
+            Array with the values of standard deviation of replicas
+        nb_regions: int, optional
+            Number of regions. This is by default set to 6
+
+    Returns
+    -------
+        array_like
+            Array containing the number of replicas that fall into a region
+    """
     nrep = replicas.shape[0]
     nflv = replicas.shape[1]
     nxgd = replicas.shape[2]
@@ -117,13 +121,17 @@ def _kolmogorov(replicas, mean, stdev, nb_regions=6):
 
 @njit
 def _correlation(replicas):
-    """
-    Compute correlation matrix as in eq.(16) of
+    """ Compute the correlation matrix of a given PDF replicas as in eq.(16) of
     https://arxiv.org/pdf/1504.06469.
 
-
-    NOTE: This algorithm follows exaclty the one
-    in the compressor code.
+    Parameters
+    ----------
+        replicas: array_like
+            Array of PDF replicas (prior/reduced/random)
+    Returns
+    -------
+        array_like
+            Correlation matrix
     """
     nrep = replicas.shape[0]
     nflv = replicas.shape[1]
@@ -169,13 +177,11 @@ def _correlation(replicas):
 
 
 class Estimators:
-    """
-    Class containing the different types of statistical
-    estimators.
+    """Class containing the different types of statistical estimators.
 
-    What this class is doing is: take a replica (prior/reduced)
-    with a shape (repl,fl,xgrid) and then compute the value of
-    the estimators w.r.t to the PDF replicas
+    This class takes a set of PDF replicas (prior/compressed/random)
+    with a shape (replicas, flavours, xgrid) and then compute the value
+    of the estimators w.r.t to the PDF replicas
 
     Parameters
     ----------
@@ -184,10 +190,6 @@ class Estimators:
         axs: int
             Axis to which the estimator is computed. By default is set to zero
             to compute along the direction of the pdf replicas
-
-    Returns
-    -------
-        results: array
     """
 
     def __init__(self, replicas, axs=0):
@@ -204,46 +206,76 @@ class Estimators:
         self._stdev = np.std(replicas, axis=0, ddof=1)
 
     def mean(self):
+        """Compute the mean of a PDF set along the replicas.
+
+        Returns
+        -------
+            array_like
+                Array of the mean values of replicas
+        """
         return self._mean
 
     def stdev(self):
+        """Compute the standard deviation of a PDF set along the replicas.
+
+        Returns
+        -------
+            array_like
+                Array of the standard deviation values of replicas
+        """
         return self._stdev
 
     def skewness(self):
+        """Compute the skewness value of a PDF set along the replicas.
+
+        Returns
+        -------
+            array_like
+                Array of the skewness values of replicas
+        """
         return _moment(self.replicas, self._mean, self._stdev, 3)
 
     def kurtosis(self):
         return _moment(self.replicas, self._mean, self._stdev, 4)
 
     def moment5th(self):
-        """
-        Compute the 5th moment
+        """Compute the 5th moment of a PDF set along the replicas.
+
+        Returns
+        -------
+            array_like
+                Array of the values of the 5th moment of replicas
         """
         return _moment(self.replicas, self._mean, self._stdev, 5)
 
     def moment6th(self):
-        """
-        Compute the 6th moment
+        """Compute the 6th moment of a PDF set along the replicas.
+
+        Returns
+        -------
+            result: array_like
+                Array of the values of the 6th moment of replicas
         """
         return _moment(self.replicas, self._mean, self._stdev, 6)
 
     def kolmogorov_smirnov(self):
-        """
-        Compute Kolmogorov-smirnov:
-        Count the number of replicas (for all fl and x in xgrid) which fall
-        in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
-        and normalize by the total number of replicas.
+        """Compute the value of the Kolmogorov-smirnov.
+
+        Returns
+        -------
+            array
+                Array containing the number of replicas that fall into a
+                region.
         """
         return _kolmogorov(self.replicas, self._mean, self._stdev)
 
     def correlation(self):
-        """
-        Compute correlation matrix as in eq.(16) of
-        https://arxiv.org/pdf/1504.06469.
+        """Compute the correlation matrix of a given PDF replicas.
 
-
-        NOTE: This algorithm follows exaclty the one
-        in the compressor code.
+        Returns
+        -------
+            array_like
+                Correlation matrix
         """
         return _correlation(self.replicas)
 

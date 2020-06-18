@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pycompressor package &mdash; pyCompressor 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="pycompressor" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pyCompressor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Theory:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../theory/estimators.html">Statistical Estimators</a></li>
+</ul>
+<p class="caption"><span class="caption-text">HowTo</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../howto/howto.html">How to run the code</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">pycompressor</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pycompressor package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.compressor">pycompressor.compressor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.err_function">pycompressor.err_function module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.estimators">pycompressor.estimators module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.pdf_grid">pycompressor.pdf_grid module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.run">pycompressor.run module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyCompressor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">pycompressor</a> &raquo;</li>
+        
+      <li>pycompressor package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/modules/pycompressor/pycompressor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pycompressor-package">
+<h1>pycompressor package<a class="headerlink" href="#pycompressor-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycompressor.compressor">
+<span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pycompressor.compressor.compress">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Compress the Prior set of replicas into a subset of replicas that
+faithfully contains the statistical properties of the prior (in other
+words a subset that gives the best value of the error function).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior PDF replicas</p></li>
+<li><p><strong>est_dic</strong> (<em>dic</em>) – Dictionary contaning the list of estimators</p></li>
+<li><p><strong>nb_reduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of the reduced/compressed replicas</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycompressor.compressor.compress.error_function">
+<code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.error_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample a subset of replicas as given by the index. Then computes the
+corrresponding ERF value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.compressor.compress.final_erfs">
+<code class="sig-name descname">final_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.final_erfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the final ERF after minimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the selected
+replicas</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the list of estimators
+and their respective values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.compressor.compress.genetic_algorithm">
+<code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Look for the combination of replicas that gives the best ERF value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The first argument is the value of the best ERF while the second
+contains the index of the reduced PDF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a>, array_like)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.compressor.compress.cma_algorithm">
+<code class="sig-name descname">cma_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">std_dev</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_itereval</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">max_itereval</span><span class="o">=</span><span class="default_value">15000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.cma_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the ERF function that is going to be minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycompressor.err_function">
+<span id="pycompressor-err-function-module"></span><h2>pycompressor.err_function module<a class="headerlink" href="#module-pycompressor.err_function" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.err_function.randomize_rep">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">randomize_rep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replica</span></em>, <em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.randomize_rep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a subset of random replica from the prior with a nun-
+redundant way.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>replica</strong> (<em>array_like</em>) – Prior set of replicas shape=(replicas, flavours, x-grid)</p></li>
+<li><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of subset of replicas</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Randomized array of shape=(number, flavours, x-grid)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.compute_cfd68">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">compute_cfd68</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reslt_trial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.compute_cfd68" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the confidence interval of a randomized trial arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reslt_trial</strong> (<em>array_like</em>) – Array of shape=(size_trials)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the cfd</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.compute_erfm">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">compute_erfm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.compute_erfm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-normalized error function. The ERF of the moment estimators
+given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replicas of shape=(flavours, x-grid)</p></li>
+<li><p><strong>nset</strong> (<em>array_like</em>) – Reduced or Random set of replica shape=(flavours, x-grid)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the error Estimation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.compute_erfs">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">compute_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.compute_erfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-normalized error function for Statistical estimators.</p>
+<p>The Kolmogorov-smirnov is given by eq.(13) of
+<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replicas of shape=(flavours, x-grid)</p></li>
+<li><p><strong>nset</strong> (<em>array_like</em>) – Array of shape (flavor, x-grid, regions)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the error Estimation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.compute_erfc">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">compute_erfc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.compute_erfc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-normalized error function for correlation estimators.</p>
+<p>The correlation ERF is given by eq.(21) of
+<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replicas of shape=(flavours, x-grid)</p></li>
+<li><p><strong>nset</strong> (<em>array_like</em>) – Array of shape (NxCorr*flavors, NxCorr*flavors)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the error Estimation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.estimate">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">estimate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute estimators for the PRIOR set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of shape=(replicas, flavours, x-grid)</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list ot all estimators</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of shape=(flavours, x-grid)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.err_function.normalization">
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.normalization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute normalization for each Estimator. The normalization is computed
+by calculating the ERF of the given estimator for each trials as given
+generally by eq.(9) of the paper (<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replica fo shape=(replicas, flavours, x-grid)</p></li>
+<li><p><strong>est_prior</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Dictionary containing the values of the estimated results</p></li>
+<li><p><strong>rndm_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of random replicas</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list of estimators</p></li>
+<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of random trials</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Normalization value for each estimator</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycompressor.err_function.ErfComputation">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class that computes the normalized Error Functions. The complete ERF
+expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
+<p>When this class is initialized, the Estimators and the normalization factors
+are computed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replicas of shape=(replicas, flavours, x-grid)</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list of all the Estimators</p></li>
+<li><p><strong>nreduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of reduced replicas</p></li>
+<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of trials</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycompressor.err_function.ErfComputation.compute_tot_erf">
+<code class="sig-name descname">compute_tot_erf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.ErfComputation.compute_tot_erf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the total normalized Error Function which is given by the sum of
+all the normalized estimators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reduc</strong> (<em>array_like</em>) – Reduced set of replicas of shape=(replica, flavours, x-grid)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the total normalized ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.err_function.ErfComputation.compute_all_erf">
+<code class="sig-name descname">compute_all_erf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.ErfComputation.compute_all_erf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the total normalized Error Function which is given by the sum of
+all the normalized estimators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>reduc</strong> (<em>array_like</em>) – Reduced set of replicas of shape=(replica, flavours, x-grid)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the total normalized ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycompressor.estimators">
+<span id="pycompressor-estimators-module"></span><h2>pycompressor.estimators module<a class="headerlink" href="#module-pycompressor.estimators" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.estimators.replace">
+<code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace values in array in the following way: change all the
+(1) to (0) and all (-1) to (1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_array</strong> (<em>array</em>) – Array of shape=(flavours, x-grid)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of shape=(falvours, x-grid)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycompressor.estimators.Estimators">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">Estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">axs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Class containing the different types of statistical estimators.</p>
+<p>This class takes a set of PDF replicas (prior/compressed/random)
+with a shape (replicas, flavours, xgrid) and then compute the value
+of the estimators w.r.t to the PDF replicas</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>replicas</strong> (<em>array</em>) – Prior or Reduced PDF replicas of shape=(replicas, flavours, x-grid)</p></li>
+<li><p><strong>axs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Axis to which the estimator is computed. By default is set to zero
+to compute along the direction of the pdf replicas</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.mean">
+<code class="sig-name descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the mean of a PDF set along the replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of the mean values of replicas</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.stdev">
+<code class="sig-name descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.stdev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the standard deviation of a PDF set along the replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of the standard deviation values of replicas</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.skewness">
+<code class="sig-name descname">skewness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.skewness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the skewness value of a PDF set along the replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of the skewness values of replicas</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.kurtosis">
+<code class="sig-name descname">kurtosis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kurtosis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.moment5th">
+<code class="sig-name descname">moment5th</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment5th" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the 5th moment of a PDF set along the replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of the values of the 5th moment of replicas</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.moment6th">
+<code class="sig-name descname">moment6th</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment6th" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the 6th moment of a PDF set along the replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>result</strong> – Array of the values of the 6th moment of replicas</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.kolmogorov_smirnov">
+<code class="sig-name descname">kolmogorov_smirnov</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kolmogorov_smirnov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the value of the Kolmogorov-smirnov.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array containing the number of replicas that fall into a
+region.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.correlation">
+<code class="sig-name descname">correlation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the correlation matrix of a given PDF replicas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Correlation matrix</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.estimators.Estimators.compute_for">
+<code class="sig-name descname">compute_for</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estm_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.compute_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that maps the called estimators
+to the coorect one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>estm_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of the estimator</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycompressor.pdf_grid">
+<span id="pycompressor-pdf-grid-module"></span><h2>pycompressor.pdf_grid module<a class="headerlink" href="#module-pycompressor.pdf_grid" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="pycompressor.pdf_grid.XGrid">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.pdf_grid.</code><code class="sig-name descname">XGrid</code><a class="headerlink" href="#pycompressor.pdf_grid.XGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Construct the x-grid as in NNPDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>result</strong> – Numpy array containg the x-grid</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycompressor.pdf_grid.XGrid.build_xgrid">
+<code class="sig-name descname">build_xgrid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.XGrid.build_xgrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an array of input pdf</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="pycompressor.pdf_grid.PdfSet">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.pdf_grid.</code><code class="sig-name descname">PdfSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdf_name</span></em>, <em class="sig-param"><span class="n">xgrid</span></em>, <em class="sig-param"><span class="n">q_value</span></em>, <em class="sig-param"><span class="n">nf</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.PdfSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This formats the input PDF replicas. It returns a multi-
+dimensional array that has the following shape (flavor,
+pdfReplicas, pdfValue).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of the input PDF replicas</p></li>
+<li><p><strong>xgrid</strong> (<em>array</em>) – Array of x-grid</p></li>
+<li><p><strong>q_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Value of intial energy scale Q</p></li>
+<li><p><strong>nf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Total number of flavors</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="pycompressor.pdf_grid.PdfSet.build_pdf">
+<code class="sig-name descname">build_pdf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.PdfSet.build_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a grid of PDF from a grid in x depenging on
+the input parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>result</strong> – PDF grid of shape=(replicas, flavours, x-grid)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>array_like</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycompressor.run">
+<span id="pycompressor-run-module"></span><h2>pycompressor.run module<a class="headerlink" href="#module-pycompressor.run" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.run.positive_int">
+<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">positive_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.positive_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the given integer is positive.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Input integer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.run.nbflavors">
+<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">nbflavors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.nbflavors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks the nb of flavors from input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Total number of flavors</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.run.argument_parser">
+<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">argument_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.argument_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse arguments</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.run.main">
+<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main function</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pycompressor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycompressor" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="modules.html" class="btn btn-neutral float-left" title="pycompressor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Stefano Carrazza, Juan Cruz-Martinez, Tanjona R. Rabemananjara
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

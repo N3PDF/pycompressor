@@ -1,0 +1,7 @@
+pycompressor
+============
+
+.. toctree::
+   :maxdepth: 4
+
+   pycompressor

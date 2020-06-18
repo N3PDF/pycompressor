@@ -1,0 +1,54 @@
+pycompressor package
+====================
+
+Submodules
+----------
+
+pycompressor.compressor module
+------------------------------
+
+.. automodule:: pycompressor.compressor
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.err\_function module
+---------------------------------
+
+.. automodule:: pycompressor.err_function
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.estimators module
+------------------------------
+
+.. automodule:: pycompressor.estimators
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.pdf\_grid module
+-----------------------------
+
+.. automodule:: pycompressor.pdf_grid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.run module
+-----------------------
+
+.. automodule:: pycompressor.run
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: pycompressor
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,7 +1,4 @@
-"""
-Tests for the estimators.py module
-"""
-
+# Tests for the estimators.py module
 import numpy as np
 from pycompressor import estimators
 from numpy.testing import assert_array_equal

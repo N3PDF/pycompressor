@@ -177,10 +177,18 @@ class compress:
             return erf_res
 
         # Init CMA class
-        options = {"maxiter": max_itereval, "seed": seed, "verb_log": 0}
+        # Possible CMA options
+        # 'ftarget': 1e-8, 'verb_disp': 0
+        options = {
+                "maxiter": max_itereval,
+                "seed": seed,
+                "verbose": verbosity,
+                "verb_log": 0,
+                "verb_disp": 0
+            }
         cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
         count_it = 0
-        while not cma_es.stop() and cma_es.best.f > 2e-2:
+        while not cma_es.stop() and cma_es.best.f > 1.4e-2:
             count_it += 1
             pop_solutions, erf_values = [], []
             while len(pop_solutions) < cma_es.popsize:

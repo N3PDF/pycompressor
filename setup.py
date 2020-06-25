@@ -23,16 +23,13 @@ from setuptools import find_packages
 PACKAGE = "pycompressor"
 
 requirements = [
-        "cma",
-        "tqdm",
-        "scipy",
-        "numpy",
-        "numba",
-        "matplotlib",
-        "recommonmark",
-        "sphinx_rtd_theme",
-        'sphinxcontrib-bibtex'
-    ]
+    "cma",
+    "tqdm",
+    "scipy",
+    "numpy",
+    "numba",
+    "matplotlib",
+]
 
 # Check python version
 if sys.version_info < (3, 6):
@@ -75,6 +72,9 @@ setup(
     author="Tanjona R. Rabemananjara, Juan Cruz Martinez, Stefano Carrazza",
     author_email="tanjona.rabemananjara@mi.infn.it",
     url="https://github.com/N3PDF/pyCompressor",
+    extras_require={
+        "docs": ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"],
+    },
     long_description=long_desc,
     install_requires=requirements,
     entry_points={"console_scripts": ["pycompressor = pycompressor.run:main",]},

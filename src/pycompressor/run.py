@@ -1,3 +1,6 @@
+"""
+    Main pycompressor module
+"""
 # Main file for Compressor which does the following:
 #
 # [+] Parse the input argument

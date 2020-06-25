@@ -126,7 +126,7 @@ def main():
                 iter_range.set_postfix(ERF=erf)
     elif minimizer == "cma":
         # Run compressor using CMA
-        erf, index = comp.cma_algorithm(std_dev=0.3)
+        erf, index = comp.cma_algorithm(std_dev=0.8)
     else:
         raise ValueError(f"{minimizer} is not a valid minimizer.")
 

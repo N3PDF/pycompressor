@@ -1,6 +1,4 @@
-"""
-Tests for the err_function.py module
-"""
+# Tests for the err_function.py module
 
 import pytest
 import numpy as np

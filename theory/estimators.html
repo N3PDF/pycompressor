@@ -30,6 +30,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -84,7 +85,10 @@
             
               <p class="caption"><span class="caption-text">Theory:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical Estimators</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical Estimators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mean-value">Mean Value</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">HowTo</span></p>
 <ul>
@@ -160,7 +164,46 @@
             
   <div class="section" id="statistical-estimators">
 <h1>Statistical Estimators<a class="headerlink" href="#statistical-estimators" title="Permalink to this headline">¶</a></h1>
-<p>Here, we describe all the statistical etimators used in the pyCompressor code…</p>
+<p>The error function (ERF) that assesses the goodness of the compression by measuring the
+distance between the prior and the compressed distributions is defined as</p>
+<div class="math notranslate nohighlight">
+\[\text{ERF}^{(ES)} = \frac{1}{N_{ES}} \sum\limits_{i} \left( \frac{C_i^{(ES)} - O_i^{(ES)}}{O_i^{(ES)}} \right)^2\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{ES}\)</span> is the normalization factor for a given estimator <span class="math notranslate nohighlight">\(ES\)</span>,
+<span class="math notranslate nohighlight">\(O_i^{(ES)}\)</span> represents the value of that estimator <span class="math notranslate nohighlight">\(ES\)</span> computed at a generic
+point <span class="math notranslate nohighlight">\(i\)</span> (which could be a given value of <span class="math notranslate nohighlight">\((x,Q)\)</span> in the PDFs), and
+<span class="math notranslate nohighlight">\(C_i^{(ES)}\)</span> is the corresponding value of the same estimator in the compressed set.</p>
+<p>The total value of ERF is then given by</p>
+<div class="math notranslate nohighlight">
+\[\text{ERF}_{TOT} = \frac{1}{N_{est}} \sum\limits_{k} \text{ERF}^{(ES)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k\)</span> runs over the number of statistiacal estimators used to quantify the distance
+between the original and compressed distributions, and <span class="math notranslate nohighlight">\(N_{est}\)</span> is the total number
+of statistical estimators.</p>
+<p>The estimators taken into account in the computation of the ERF are the following:</p>
+<ol class="arabic simple">
+<li><p>The first four moments of the distribution including: central value, standard deviation,
+skewness and kurtosis</p></li>
+<li><p>The kolmogorov-Smirnov test. This ensures that the higher moments are automatically
+adjusted.</p></li>
+<li><p>The correlation between the mutpiple PDF flavours at different x points. This information
+is important to ensure that PDF-induced correlations in physical cross-sections are
+succesfully maintained.</p></li>
+</ol>
+<div class="section" id="mean-value">
+<h2>Mean Value<a class="headerlink" href="#mean-value" title="Permalink to this headline">¶</a></h2>
+<p>Let us denote by <span class="math notranslate nohighlight">\(g_i^{(k)}(x_j, Q_0)\)</span> and <span class="math notranslate nohighlight">\(f_i^{(k)}(x_j, Q_0)\)</span> respectively the prior
+and the compressed sets for a flavor <span class="math notranslate nohighlight">\(i\)</span> at the position <span class="math notranslate nohighlight">\(j\)</span> of the <span class="math notranslate nohighlight">\(x\)</span>-grid
+containing <span class="math notranslate nohighlight">\(N_x\)</span> points. The central values are defined as</p>
+<div class="math notranslate nohighlight">
+\[f_i^{CV}(x_j, Q_0) = \frac{1}{N_{rep}} \sum\limits_{r=1}^{N_{rep}} f_i^{(r)} (x_j, Q_0)\]</div>
+<div class="math notranslate nohighlight">
+\[g_i^{CV}(x_j, Q_0) = \frac{1}{\tilde{N}_{rep}} \sum\limits_{r=1}^{\tilde{N}_{rep}} g_i^{(r)} (x_j, Q_0)\]</div>
+<p>Therefore, <span class="math notranslate nohighlight">\(\text{ERF}^{(ES)}\)</span> is defined as</p>
+<div class="math notranslate nohighlight">
+\[\text{ERF}_{CV} = \frac{1}{N_{CV}} \sum\limits_{i=-nf}^{nf} \sum\limits_{j=1}^{N_x} \left( \frac{f_i^{CV}(x_j, Q_0) - g_i^{CV}(x_j, Q_0)}{g_i^{CV}(x_j, Q_0)} \right)^2\]</div>
+<p>where the normalization factor <span class="math notranslate nohighlight">\(N_{CV}\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[N_{CV} = \frac{1}{N_{rand}} \sum\limits_{d=1}^{N_{rand}} \sum\limits_{i=-nf}^{nf} \sum\limits_{j=1}^{N_x} \left( \frac{r_i^{d,CV}(x_j, Q_0) - g_i^{CV}(x_j, Q_0)}{g_i^{CV}(x_j, Q_0)} \right)^2\]</div>
+</div>
 </div>
 
 

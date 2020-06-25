@@ -23,14 +23,15 @@ from setuptools import find_packages
 PACKAGE = "pycompressor"
 
 requirements = [
-        "numpy",
-        "numba",
+        "cma",
         "tqdm",
         "scipy",
-        "cma",
+        "numpy",
+        "numba",
         "matplotlib",
+        "recommonmark",
         "sphinx_rtd_theme",
-        "recommonmark"
+        'sphinxcontrib-bibtex'
     ]
 
 # Check python version

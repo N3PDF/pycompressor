@@ -25,7 +25,7 @@ jobs:
           conda info
           # install pip
           python -m pip install --upgrade pip
-          pip install .
+          pip install .[docs]
           # install lhapdf
           conda install -y lhapdf -c https://packages.nnpdf.science/conda
       - name: Build 🔨
@@ -33,6 +33,7 @@ jobs:
         run: |
           cd doc/
           make html
+          touch build/html/.nojekyll 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:

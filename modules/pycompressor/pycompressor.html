@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycompressor package &mdash; pyCompressor 1.0.0 documentation</title>
+  <title>pycompressor package &mdash; pyCompressor 0.1.0 documentation</title>
   
 
   
@@ -479,24 +479,6 @@ all the normalized estimators.</p>
 </div>
 <div class="section" id="module-pycompressor.estimators">
 <span id="pycompressor-estimators-module"></span><h2>pycompressor.estimators module<a class="headerlink" href="#module-pycompressor.estimators" title="Permalink to this headline">¶</a></h2>
-<dl class="py function">
-<dt id="pycompressor.estimators.replace">
-<code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_array</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.replace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace values in array in the following way: change all the
-(1) to (0) and all (-1) to (1).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>input_array</strong> (<em>array</em>) – Array of shape=(flavours, x-grid)</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Array of shape=(falvours, x-grid)</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>array</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py class">
 <dt id="pycompressor.estimators.Estimators">
 <em class="property">class </em><code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">Estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">axs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators" title="Permalink to this definition">¶</a></dt>
@@ -515,105 +497,71 @@ to compute along the direction of the pdf replicas</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pycompressor.estimators.Estimators.mean">
-<code class="sig-name descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.mean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the mean of a PDF set along the replicas.</p>
+<dt id="pycompressor.estimators.Estimators.moment">
+<em class="property">static </em><code class="sig-name descname">moment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">mean</span></em>, <em class="sig-param"><span class="n">stdev</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute skewness in the standard way following
+exactly eq.(11) of the paper.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Array of the mean values of replicas</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>replicas</strong> (<em>array_like</em>) – Array of PDF replicas (prior/reduced/random)</p></li>
+<li><p><strong>mean</strong> (<em>array_like</em>) – Array with the mean values of replicas</p></li>
+<li><p><strong>stdev</strong> (<em>array_like</em>) – Array with the values of standard deviation of replicas</p></li>
+<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array of the value of the n-order moment</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycompressor.estimators.Estimators.stdev">
-<code class="sig-name descname">stdev</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.stdev" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the standard deviation of a PDF set along the replicas.</p>
+<dt id="pycompressor.estimators.Estimators.kolmogorov">
+<em class="property">static </em><code class="sig-name descname">kolmogorov</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">mean</span></em>, <em class="sig-param"><span class="n">stdev</span></em>, <em class="sig-param"><span class="n">nb_regions</span><span class="o">=</span><span class="default_value">6</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kolmogorov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
+of the compressor:</p>
+<p><a class="reference external" href="https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122">https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122</a></p>
+<p>This function counts the number of replicas (for all fl and x in xgrid)
+which fall in the region given by eq.(14) of <a class="reference external" href="https://arxiv.org/abs/1504.06469">https://arxiv.org/abs/1504.06469</a>
+and normalize the result by the total number of replicas.</p>
+<p>As opposed to the above implementation, this computes the KS for all
+replicas, flavours and x-grid.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Array of the standard deviation values of replicas</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>replicas</strong> (<em>array_like</em>) – PDF replicas (prior/reduced/random)</p></li>
+<li><p><strong>mean</strong> (<em>array_like</em>) – Array with the mean values of replicas</p></li>
+<li><p><strong>stdev</strong> (<em>array_like</em>) – Array with the values of standard deviation of replicas</p></li>
+<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array containing the number of replicas that fall into a region</p>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycompressor.estimators.Estimators.skewness">
-<code class="sig-name descname">skewness</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.skewness" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the skewness value of a PDF set along the replicas.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Array of the skewness values of replicas</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycompressor.estimators.Estimators.kurtosis">
-<code class="sig-name descname">kurtosis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kurtosis" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pycompressor.estimators.Estimators.moment5th">
-<code class="sig-name descname">moment5th</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment5th" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the 5th moment of a PDF set along the replicas.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Array of the values of the 5th moment of replicas</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycompressor.estimators.Estimators.moment6th">
-<code class="sig-name descname">moment6th</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment6th" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the 6th moment of a PDF set along the replicas.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>result</strong> – Array of the values of the 6th moment of replicas</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pycompressor.estimators.Estimators.kolmogorov_smirnov">
-<code class="sig-name descname">kolmogorov_smirnov</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kolmogorov_smirnov" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the value of the Kolmogorov-smirnov.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Array containing the number of replicas that fall into a
-region.</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array</p>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pycompressor.estimators.Estimators.correlation">
-<code class="sig-name descname">correlation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.correlation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute the correlation matrix of a given PDF replicas.</p>
+<em class="property">static </em><code class="sig-name descname">correlation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the correlation matrix of a given PDF replicas as in eq.(16) of
+<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Correlation matrix</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>replicas</strong> (<em>array_like</em>) – Array of PDF replicas (prior/reduced/random)</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Correlation matrix</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>array_like</p>
 </dd>
 </dl>
 </dd></dl>

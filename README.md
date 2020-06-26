@@ -1,5 +1,5 @@
 ![pytest](https://github.com/N3PDF/pycompressor/workflows/pytest/badge.svg)
-![documentation](https://github.com/N3PDF/pycompressor/workflows/docs/badge.svg)
+[![documentation](https://github.com/N3PDF/pycompressor/workflows/docs/badge.svg)](https://n3pdf.github.io/pycompressor/)
 
 ### pycompressor
 

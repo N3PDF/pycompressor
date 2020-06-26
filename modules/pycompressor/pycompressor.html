@@ -98,8 +98,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.compressor">pycompressor.compressor module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.err_function">pycompressor.err_function module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.estimators">pycompressor.estimators module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.pdf_grid">pycompressor.pdf_grid module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.run">pycompressor.run module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pycompressor-pdf-grid-module">pycompressor.pdf_grid module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pycompressor-run-module">pycompressor.run module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor">Module contents</a></li>
 </ul>
 </li>
@@ -633,101 +633,11 @@ to the coorect one.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-pycompressor.pdf_grid">
-<span id="pycompressor-pdf-grid-module"></span><h2>pycompressor.pdf_grid module<a class="headerlink" href="#module-pycompressor.pdf_grid" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="pycompressor.pdf_grid.XGrid">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.pdf_grid.</code><code class="sig-name descname">XGrid</code><a class="headerlink" href="#pycompressor.pdf_grid.XGrid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Construct the x-grid as in NNPDF.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>result</strong> – Numpy array containg the x-grid</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="pycompressor.pdf_grid.XGrid.build_xgrid">
-<code class="sig-name descname">build_xgrid</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.XGrid.build_xgrid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct an array of input pdf</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="pycompressor.pdf_grid.PdfSet">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.pdf_grid.</code><code class="sig-name descname">PdfSet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdf_name</span></em>, <em class="sig-param"><span class="n">xgrid</span></em>, <em class="sig-param"><span class="n">q_value</span></em>, <em class="sig-param"><span class="n">nf</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.PdfSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>This formats the input PDF replicas. It returns a multi-
-dimensional array that has the following shape (flavor,
-pdfReplicas, pdfValue).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pdf_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of the input PDF replicas</p></li>
-<li><p><strong>xgrid</strong> (<em>array</em>) – Array of x-grid</p></li>
-<li><p><strong>q_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Value of intial energy scale Q</p></li>
-<li><p><strong>nf</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Total number of flavors</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="pycompressor.pdf_grid.PdfSet.build_pdf">
-<code class="sig-name descname">build_pdf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.pdf_grid.PdfSet.build_pdf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct a grid of PDF from a grid in x depenging on
-the input parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><strong>result</strong> – PDF grid of shape=(replicas, flavours, x-grid)</p>
-</dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>array_like</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<div class="section" id="pycompressor-pdf-grid-module">
+<h2>pycompressor.pdf_grid module<a class="headerlink" href="#pycompressor-pdf-grid-module" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pycompressor.run">
-<span id="pycompressor-run-module"></span><h2>pycompressor.run module<a class="headerlink" href="#module-pycompressor.run" title="Permalink to this headline">¶</a></h2>
-<p>Main pycompressor module</p>
-<dl class="py function">
-<dt id="pycompressor.run.positive_int">
-<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">positive_int</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.positive_int" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks if the given integer is positive.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Input integer</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycompressor.run.nbflavors">
-<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">nbflavors</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.nbflavors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Checks the nb of flavors from input.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Total number of flavors</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycompressor.run.argument_parser">
-<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">argument_parser</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.argument_parser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse arguments</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="pycompressor.run.main">
-<code class="sig-prename descclassname">pycompressor.run.</code><code class="sig-name descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.run.main" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main function</p>
-</dd></dl>
-
+<div class="section" id="pycompressor-run-module">
+<h2>pycompressor.run module<a class="headerlink" href="#pycompressor-run-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pycompressor">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycompressor" title="Permalink to this headline">¶</a></h2>

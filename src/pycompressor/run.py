@@ -8,10 +8,9 @@
 # [+] Minimize the ERF and look for the best combination
 #     of sets
 
-import os
-
-# import logging
 import json
+import logging
+import pathlib
 import argparse
 import numpy as np
 from tqdm import trange
@@ -19,6 +18,9 @@ from tqdm import trange
 from pycompressor.pdf_grid import XGrid
 from pycompressor.pdf_grid import PdfSet
 from pycompressor.compressor import compress
+
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+log = logging.getLogger(__name__)
 
 
 def positive_int(value):
@@ -81,19 +83,26 @@ def main():
 
     # Define default flavour number
     if args.nflavors is None:
+        log.info("The total number of flavours is set by default to nF=7.")
         nfl = 3
     else:
         nfl = args.nflavors
     # Define default initial scale
     if args.qinit is None:
+        log.info("The initial scale is set by default to Q0=1 GeV.")
         q0 = 1
     else:
         q0 = args.qinit
     # Default Minimizer
     if args.minimizer is None:
+        log.info("The minimizer is set by default to Genetic Algorithm (GA).")
         minimizer = "genetic"
     else:
         minimizer = args.minimizer
+
+    # Create Output folders
+    folder = pathlib.Path().absolute() / pdf
+    folder.mkdir(exist_ok=True)
 
     # List of estimators
     est_dic = {
@@ -129,12 +138,6 @@ def main():
         erf, index = comp.cma_algorithm(std_dev=0.8)
     else:
         raise ValueError(f"{minimizer} is not a valid minimizer.")
-
-    # Create Output folders
-    if not os.path.exists(pdf):
-        os.mkdir(pdf)
-    else:
-        pass
 
     # Prepare output file
     final_result["ERFs"] = erf_list

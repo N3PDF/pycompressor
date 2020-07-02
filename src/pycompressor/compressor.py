@@ -8,8 +8,11 @@
 # to perform a post-analysis.
 
 import cma
+import logging
 import numpy as np
 from pycompressor.err_function import ErfComputation
+
+log = logging.getLogger(__name__)
 
 
 class compress:

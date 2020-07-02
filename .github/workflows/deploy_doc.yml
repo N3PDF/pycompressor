@@ -1,6 +1,9 @@
 name: docs
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   deploy-ghpages:
@@ -14,11 +17,10 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v1
-      - name: Set up conda
-        uses: goanpeca/setup-miniconda@v1
+      - name: Set up python
+        uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
-          auto-update-conda: true
       - name: Install packages 📦
         shell: bash --login {0}
         run: |

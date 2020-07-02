@@ -1,0 +1,16 @@
+fit: PN3_DIS_130519
+
+compressed: 20
+
+minimizer: genetic
+
+est_dic:
+  corr_estimators:
+    - correlation
+  stat_estimators:
+    - kolmogorov_smirnov
+  moment_estimators:
+    - mean
+    - stdev
+    - skewness
+    - kurtosis

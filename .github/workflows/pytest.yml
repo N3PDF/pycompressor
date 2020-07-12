@@ -18,15 +18,14 @@ jobs:
       with:
           python-version: ${{ matrix.python-version }}
           auto-update-conda: true
-    - name: Install dependencies and package
-      shell: bash --login {0}
+    - name: Install package with dependencies
       run: |
         conda info
         python -m pip install --upgrade pip
         pip install .
         conda install -y lhapdf -c https://packages.nnpdf.science/conda
-    - name: Test with pytest
-      shell: bash --login {0}
+        conda install -y validphys -c https://packages.nnpdf.science/conda
+    - name: Test modules and coverage with pytest
       run: |
-        pip install pytest
-        pytest
+        pip install .[tests]
+        pytest -v tests/ --cov=./src/pycompressor

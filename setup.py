@@ -7,10 +7,10 @@ This program has been developed within the framework of the
 N3PDF group n3pdf.mi.infn.it/
 
 Authors: - Tanjona R. Rabemananjara
-         - Juan Cruz Martinez
+         - Juan Cruz-Martinez
          - Stefano Carrazza
 
-License: GPL-3.0
+License: GPL-3.0, 2020
 """
 
 
@@ -22,14 +22,12 @@ from setuptools import find_packages
 
 PACKAGE = "pycompressor"
 
-requirements = [
-    "cma",
-    "tqdm",
-    "scipy",
-    "numpy",
-    "numba",
-    "matplotlib",
-]
+# Used for pytest and code coverage
+TESTS_REQUIEREMENTS = ["pytest", "pytest-cov"]
+# Depending on the documents more dependencies can be added
+DOCS_REQUIEREMENTS = ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"]
+# Dependencies for the packages
+PACKAGE_REQUIEREMENTS = ["cma", "tqdm", "scipy", "numpy", "numba"]
 
 # Check python version
 if sys.version_info < (3, 6):
@@ -42,12 +40,19 @@ try:
 except ImportError:
     print(f"Note: {PACKAGE} requires the installation of LHAPDF")
 
+# Check if Validphys is installed
+try:
+    import validphys
+except ImportError:
+    print(f"Note: {PACKAGE} requires the installation of VALIDPHYS")
+
 # Read through Readme
 try:
-    with open("README.md") as f:
-        long_desc = f.read()
+    this_directory = os.path.abspath(os.path.dirname(__file__))
+    with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
+        long_description = f.read()
 except IOError:
-    print("Read me file not found")
+    print("Read me file not found.")
 
 
 # Get package version
@@ -72,12 +77,10 @@ setup(
     author="Tanjona R. Rabemananjara, Juan Cruz Martinez, Stefano Carrazza",
     author_email="tanjona.rabemananjara@mi.infn.it",
     url="https://github.com/N3PDF/pyCompressor",
-    extras_require={
-        "docs": ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"],
-    },
-    long_description=long_desc,
-    install_requires=requirements,
-    entry_points={"console_scripts": ["pycompressor = pycompressor.run:main",]},
+    extras_require={"docs": DOCS_REQUIEREMENTS, "tests": TESTS_REQUIEREMENTS},
+    long_description=long_description,
+    install_requires=PACKAGE_REQUIEREMENTS,
+    entry_points={"console_scripts": ["pycompressor = pycompressor.app:main",]},
     package_dir={"": "src"},
     packages=find_packages("src"),
     zip_safe=False,

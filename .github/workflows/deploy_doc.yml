@@ -22,13 +22,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install packages 📦
-        shell: bash --login {0}
         run: |
           # install pip
           python -m pip install --upgrade pip
           pip install .[docs]
       - name: Build 🔨
-        shell: bash --login {0}
         run: |
           cd doc/
           make html

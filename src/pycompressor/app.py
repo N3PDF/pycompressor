@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
 APP_CONFIG = dict(actions_=["compressing"])
-APP_PROVIDERS = ["compressing"]
+APP_PROVIDERS = ["pycompressor.compressing"]
 INPUT_FOLDER = "input"
 
 
@@ -38,9 +38,12 @@ class CompressorEnvironment(Environment):
         else:
             if not self.config_yml.is_file():
                 raise CompressorError("Invalid runcard. Must be a file.")
-        # Create output folder
+        # Check if results folder exists
         self.output_path = pathlib.Path(self.output_path).absolute()
-        self.output_path.mkdir(exist_ok=True)
+        try:
+            self.output_path.mkdir(exist_ok=True)
+        except OSError as err:
+            raise EnvironmentError_(err) from err
         # Create input folder
         self.input_folder = self.output_path / INPUT_FOLDER
         self.input_folder.mkdir(exist_ok=True)
@@ -108,7 +111,3 @@ class CompressorApp(App):
 def main():
     application = CompressorApp()
     application.main()
-
-
-if __name__ == "__main__":
-    main()

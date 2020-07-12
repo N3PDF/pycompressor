@@ -19,14 +19,20 @@ NB_REDUCED = 50
 
 
 def compressing(fit, compressed, minimizer, est_dic):
-    # List of estimators
-    # est_dic = {
-    #     "moment_estimators": ["mean", "stdev", "skewness", "kurtosis"],
-    #     "stat_estimators": ["kolmogorov_smirnov"],
-    #     "corr_estimators": ["correlation"],
-    # }
+    """
+    Action that performs the compression. The parameters
+    for the compression are provided by a `runcard.yml`.
 
-    # Construc xgrid
+    Parameters
+    ----------
+        fit: str
+            Fit/PDF name
+        compressed: int
+            Size of the compressed set
+        est_dic: dict
+            Dictionary containing the list of estimators
+    """
+
     pdf = str(fit)
     # Create output folder
     folder = pathlib.Path().absolute() / pdf

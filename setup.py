@@ -23,16 +23,11 @@ from setuptools import find_packages
 PACKAGE = "pycompressor"
 
 # Used for pytest and code coverage
-TESTS_REQUIEREMENTS = ["pytest", "pytest-cov"]
+TESTS_REQUIEREMENTS = ["pytest"]
 # Depending on the documents more dependencies can be added
 DOCS_REQUIEREMENTS = ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"]
 # Dependencies for the packages
 PACKAGE_REQUIEREMENTS = ["cma", "tqdm", "scipy", "numpy", "numba"]
-
-# Check python version
-if sys.version_info < (3, 6):
-    print("cyclejet requires Python 3.6 or later", file=sys.stderr)
-    sys.exit(1)
 
 # Check if LHAPDF is installed
 try:

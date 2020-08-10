@@ -14,8 +14,6 @@ log = logging.getLogger(__name__)
 Q0 = 1
 # Total number of flavour to 2nf+1=7
 NF = 3
-# Number of reduced set
-NB_REDUCED = 50
 
 
 def compressing(fit, compressed, minimizer, est_dic):

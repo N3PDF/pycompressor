@@ -1,3 +1,5 @@
+# Test the modules
+
 name: pytest
 
 on: [push]
@@ -26,8 +28,6 @@ jobs:
         PASSWORD: ${{ secrets.PASSWORD}}
       run: |
         conda info
-        python -m pip install --upgrade pip
-        pip install .
         # Create .netrc file for authentification
         echo "machine $MACHINE" >> ~/.netrc
         echo "  login $LOGIN" >> ~/.netrc
@@ -41,8 +41,16 @@ jobs:
         # Install lhapdf && nnpdf
         conda install -y lhapdf
         conda install -y nnpdf
+        # Install package
+        python -m pip install --upgrade pip
+        pip install .
     - name: Test modules and coverage with pytest
       shell: bash --login {0}
       run: |
         pip install .[tests]
         pytest
+    # - name: Checking out the GANPDFs repo
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: N3PDF/ganpdfs
+    #     token: ${{ secrets.REPOS_TOKEN }}

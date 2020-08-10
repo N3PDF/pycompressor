@@ -2,6 +2,7 @@
 [![documentation](https://github.com/N3PDF/pycompressor/workflows/docs/badge.svg)](https://n3pdf.github.io/pycompressor/)
 
 ### pycompressor
+================
 
 Python implementation of PDF set **compressor** (https://arxiv.org/abs/1504.06469).
 
@@ -17,17 +18,17 @@ python setup.py develop
 
 ####  Running
 ```bash
-pycompressor -p PDF_NAME -n NB_COMPRESSED_REPLICAS -m [MINIMIZER]
+pycompressor runcard.yml
 ```
 
 #### Post-Analysis
 The code will generate a folder named after the prior PDF sets. To generate the
 compressed PDF grid, run the following command:
 ```bash
-./tools/compressed_grid.py PDF_NAME
+./tools/compressed_grid.py <PDF_NAME/>
 ```
 Finally, in order to generate ERF plots, copy the file `compressor_validate.C`
-in `tools` into the compressed folder and run (this requires root):
+in `tools` into the main directory and run the following as root:
 ```bash
 root -l compressor_validate.C
 ``` 

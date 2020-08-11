@@ -1,5 +1,6 @@
 # Tests for the err_function.py module
 
+import os
 import pytest
 import numpy as np
 from pycompressor import compressor
@@ -26,8 +27,16 @@ ESTIMATORS = {
     "corr_estimators": ["correlation"],
 }
 
+# Create test folder
+# Create Output folders
+if not os.path.exists("TEST"):
+    os.mkdir("TEST")
+else:
+    pass
+
+
 # Compressor class
-COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED)
+COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
 
 
 def get_subset(n):
@@ -68,7 +77,9 @@ def test_normalization(random_size=4, trial=2):
     """ Test if the value of the normalization factors
     are positive. """
     est_prior = test_estimate()
-    norm = err_function.normalization(PRIOR, est_prior, random_size, ESTIMATORS, trial)
+    norm = err_function.normalization(
+            PRIOR, est_prior, random_size, ESTIMATORS, trial, "TEST"
+    )
     for _, val in norm.items():
         assert val > 0
 

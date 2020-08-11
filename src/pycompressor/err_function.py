@@ -179,7 +179,7 @@ def estimate(prior, est_dic):
     return reslt
 
 
-def normalization(prior, est_prior, rndm_size, est_dic, trials):
+def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
     """Compute normalization for each Estimator. The normalization is computed
     by calculating the ERF of the given estimator for each trials as given
     generally by eq.(9) of the paper (https://arxiv.org/pdf/1504.06469).
@@ -227,7 +227,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials):
                 reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
     norm = {}
-    erfile = open("erf_randomized.dat", "a+")
+    erfile = open(f"{folder}/erf_randomized.dat", "a+")
     erfile.write(f"{rndm_size} ")
     for est, est_val in reslt.items():
         ucfd68 = compute_cfd68(est_val)
@@ -269,13 +269,13 @@ class ErfComputation:
             Number of trials
     """
 
-    def __init__(self, prior, est_dic, nreduc, trials=1000):
+    def __init__(self, prior, est_dic, nreduc, folder, trials=1000):
         self.prior = prior
         self.est_dic = est_dic
         # Compute estimators for PRIOR replicas
         self.pestm = estimate(prior, est_dic)
         # Compute normalizations for each estimator
-        self.normz = normalization(prior, self.pestm, nreduc, est_dic, trials)
+        self.normz = normalization(prior, self.pestm, nreduc, est_dic, trials, folder)
 
     def __repr__(self):
         return "Normalizations: {}".format(self.normz)

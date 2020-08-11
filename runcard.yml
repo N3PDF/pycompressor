@@ -1,6 +1,7 @@
-fit: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
+fit: NNPDF31_nnlo_as_0118_1000
+# fit: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
 
-compressed: 20
+compressed: 75
 
 minimizer: genetic
 

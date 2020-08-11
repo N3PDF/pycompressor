@@ -18,7 +18,6 @@ compressed_file = sys.argv[1]
 with open(compressed_file) as results_file:
     results = json.load(results_file)
 pdfset_name = results["pdfset_name"]
-erf = results["ERFs"]  # List of ERF values
 index = results["index"]  # Array of index
 nbcomp = len(index)
 
@@ -92,7 +91,8 @@ w = open(src_str + "_0000.dat", "r")
 xpdf = []
 xgrid, qgrid, fgrid = [], [], []
 textxs, textqs, textfs = [], [], []
-for j in range(0, 2):
+# Remove the first 3 lines
+for j in range(0, 3):
     w.readline()
 s = 0
 while True:

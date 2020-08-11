@@ -35,13 +35,16 @@ def compressing(fit, compressed, minimizer, est_dic):
     # Create output folder
     folder = pathlib.Path().absolute() / pdf
     folder.mkdir(exist_ok=True)
+    # Create output folder for ERF stats
+    out_folder = pathlib.Path().absolute() / "erfs_output"
+    out_folder.mkdir(exist_ok=True)
     print("[+] Loading PDF set:")
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
     # Set seed
     np.random.seed(0)
     # Init. compressor class
-    comp = compress(prior, est_dic, compressed)
+    comp = compress(prior, est_dic, compressed, out_folder)
     # Start compression depending on the Evolution Strategy
     erf_list = []
     final_result = {"pdfset_name": pdf}
@@ -75,7 +78,7 @@ def compressing(fit, compressed, minimizer, est_dic):
 
     # Compute final ERFs for the final choosen replicas
     final_err_func = comp.final_erfs(index)
-    serfile = open("erf_reduced.dat", "a+")
+    serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
     serfile.write(f"{compressed} ")
     for err in final_err_func.keys():
         serfile.write(f"{final_err_func[err]} ")

@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import os
 import sys
 import json
@@ -91,18 +91,21 @@ w = open(src_str + "_0000.dat", "r")
 xpdf = []
 xgrid, qgrid, fgrid = [], [], []
 textxs, textqs, textfs = [], [], []
-# Remove the first 3 lines
-for j in range(0, 3):
-    w.readline()
+
+# Removing the info in the head
+for _ in range(0, 10):
+    if "--" in w.readline():
+        break
+
+# Init grid size count
 s = 0
 while True:
-    w.readline()
     textxs.append(w.readline())
     xs = [float(el) for el in textxs[s].split()]
     textqs.append(w.readline())
     qs = [float(el) for el in textqs[s].split()]
     textfs.append(w.readline())
-    fs = [int(el) for el in textfs[s].split()]
+    fs = [int(float(el)) for el in textfs[s].split()]
     if len(xs) == 0:
         break
     xgrid.append(xs)
@@ -114,6 +117,7 @@ while True:
     for ix in range(0, nx):
         for iq in range(0, nq):
             w.readline().split()
+    w.readline()
     s += 1
 w.close()
 

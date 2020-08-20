@@ -95,11 +95,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">pycompressor</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pycompressor package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pycompressor-app-module">pycompressor.app module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pycompressor-compressing-module">pycompressor.compressing module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.compressor">pycompressor.compressor module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.err_function">pycompressor.err_function module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.estimators">pycompressor.estimators module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-pdf-grid-module">pycompressor.pdf_grid module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pycompressor-run-module">pycompressor.run module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor">Module contents</a></li>
 </ul>
 </li>
@@ -177,11 +178,17 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="pycompressor-app-module">
+<h2>pycompressor.app module<a class="headerlink" href="#pycompressor-app-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="pycompressor-compressing-module">
+<h2>pycompressor.compressing module<a class="headerlink" href="#pycompressor-compressing-module" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-pycompressor.compressor">
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -397,7 +404,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.err_function.normalization">
-<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.normalization" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.normalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute normalization for each Estimator. The normalization is computed
 by calculating the ERF of the given estimator for each trials as given
 generally by eq.(9) of the paper (<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>).</p>
@@ -422,7 +429,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 
 <dl class="py class">
 <dt id="pycompressor.err_function.ErfComputation">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.err_function.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.err_function.ErfComputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -583,9 +590,6 @@ to the coorect one.</p>
 </div>
 <div class="section" id="pycompressor-pdf-grid-module">
 <h2>pycompressor.pdf_grid module<a class="headerlink" href="#pycompressor-pdf-grid-module" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="pycompressor-run-module">
-<h2>pycompressor.run module<a class="headerlink" href="#pycompressor-run-module" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-pycompressor">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycompressor" title="Permalink to this headline">¶</a></h2>

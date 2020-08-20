@@ -4,6 +4,22 @@ pycompressor package
 Submodules
 ----------
 
+pycompressor.app module
+-----------------------
+
+.. automodule:: pycompressor.app
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.compressing module
+-------------------------------
+
+.. automodule:: pycompressor.compressing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pycompressor.compressor module
 ------------------------------
 
@@ -35,15 +51,6 @@ pycompressor.pdf\_grid module
    :members:
    :undoc-members:
    :show-inheritance:
-
-pycompressor.run module
------------------------
-
-.. automodule:: pycompressor.run
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 
 Module contents
 ---------------

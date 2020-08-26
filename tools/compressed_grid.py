@@ -9,10 +9,6 @@ from subprocess import PIPE
 from subprocess import Popen
 
 
-# Check input arguments
-# if len(sys.argv) > 1:
-#     raise IOError("Only one argument is allowed.")
-
 compressed_file = sys.argv[1]
 # Reading results from file
 with open(compressed_file) as results_file:

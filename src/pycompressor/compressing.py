@@ -4,8 +4,8 @@ import pathlib
 import numpy as np
 from tqdm import trange
 
-from pycompressor.pdf_grid import XGrid
-from pycompressor.pdf_grid import PdfSet
+from pycompressor.pdfgrid import XGrid
+from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import compress
 
 log = logging.getLogger(__name__)

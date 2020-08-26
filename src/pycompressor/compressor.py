@@ -10,7 +10,7 @@
 import cma
 import logging
 import numpy as np
-from pycompressor.err_function import ErfComputation
+from pycompressor.errfunction import ErfComputation
 
 log = logging.getLogger(__name__)
 

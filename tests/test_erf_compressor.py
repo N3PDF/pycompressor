@@ -1,10 +1,10 @@
-# Tests for the err_function.py module
+# Tests for the errfunction.py module
 
 import os
 import pytest
 import numpy as np
 from pycompressor import compressor
-from pycompressor import err_function
+from pycompressor import errfunction
 
 # Define test values
 FLAVS = 3
@@ -42,7 +42,7 @@ COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
 def get_subset(n):
     """ Extract random set of replicas from the prior
     using the `randomize_rep` method. """
-    subset = err_function.randomize_rep(PRIOR, n)
+    subset = errfunction.randomize_rep(PRIOR, n)
     return subset
 
 
@@ -62,7 +62,7 @@ def test_estimate():
     IMPORTANT:
     =========
     This at the same time tests the Estimators. """
-    est = err_function.estimate(PRIOR, ESTIMATORS)
+    est = errfunction.estimate(PRIOR, ESTIMATORS)
     for key, val in est.items():
         if key in ESTIMATORS["moment_estimators"]:
             moment_est_shape = (PRIOR.shape[1], PRIOR.shape[2])
@@ -77,7 +77,7 @@ def test_normalization(random_size=4, trial=2):
     """ Test if the value of the normalization factors
     are positive. """
     est_prior = test_estimate()
-    norm = err_function.normalization(
+    norm = errfunction.normalization(
             PRIOR, est_prior, random_size, ESTIMATORS, trial, "TEST"
     )
     for _, val in norm.items():

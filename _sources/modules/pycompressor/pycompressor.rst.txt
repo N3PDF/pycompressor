@@ -28,10 +28,10 @@ pycompressor.compressor module
    :undoc-members:
    :show-inheritance:
 
-pycompressor.err\_function module
----------------------------------
+pycompressor.errfunction module
+-------------------------------
 
-.. automodule:: pycompressor.err_function
+.. automodule:: pycompressor.errfunction
    :members:
    :undoc-members:
    :show-inheritance:
@@ -44,10 +44,10 @@ pycompressor.estimators module
    :undoc-members:
    :show-inheritance:
 
-pycompressor.pdf\_grid module
------------------------------
+pycompressor.pdfgrid module
+---------------------------
 
-.. automodule:: pycompressor.pdf_grid
+.. automodule:: pycompressor.pdfgrid
    :members:
    :undoc-members:
    :show-inheritance:

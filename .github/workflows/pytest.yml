@@ -49,8 +49,3 @@ jobs:
       run: |
         pip install .[tests]
         pytest
-    # - name: Checking out the GANPDFs repo
-    #   uses: actions/checkout@v2
-    #   with:
-    #     repository: N3PDF/ganpdfs
-    #     token: ${{ secrets.REPOS_TOKEN }}

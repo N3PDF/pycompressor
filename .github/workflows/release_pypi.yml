@@ -1,9 +1,8 @@
-name: release
+name: Deploy PyPI package
 
 on:
-  push:
-    branches:
-      - never
+  release:
+    types: [released, created, published, edited]
 
 jobs:
   release:

@@ -1,14 +1,14 @@
 """
-pyCompressor: Python implementation of compressor presented
-in this paper https://arxiv.org/pdf/1504.06469 and implemented
-here https://github.com/scarrazza/compressor.
+pyCompressor is a Python implementation of a compressor code
+presented in this paper https://arxiv.org/pdf/1504.06469 and
+implemented here https://github.com/scarrazza/compressor.
 
-This program has been developed within the framework of the
-N3PDF group n3pdf.mi.infn.it/
+This program has been developed within the N3PDF group.
+(n3pdf.mi.infn.it/)
 
-Authors: - Tanjona R. Rabemananjara
+Authors: - Stefano Carrazza
          - Juan Cruz-Martinez
-         - Stefano Carrazza
+         - Tanjona R. Rabemananjara
 
 License: GPL-3.0, 2020
 """
@@ -16,7 +16,6 @@ License: GPL-3.0, 2020
 
 import os
 import re
-import sys
 from setuptools import setup
 from setuptools import find_packages
 
@@ -69,16 +68,16 @@ setup(
     name=PACKAGE,
     version=get_version(),
     description="PDF set compressor",
-    author="Tanjona R. Rabemananjara, Juan Cruz Martinez, Stefano Carrazza",
+    author="Stefano Carrazza, Juan Cruz Martinez, Tanjona R. Rabemananjara",
     author_email="tanjona.rabemananjara@mi.infn.it",
     url="https://github.com/N3PDF/pyCompressor",
     extras_require={"docs": DOCS_REQUIEREMENTS, "tests": TESTS_REQUIEREMENTS},
     long_description=long_description,
+    long_description_content_type="text/markdown",
     install_requires=PACKAGE_REQUIEREMENTS,
     entry_points={"console_scripts": ["pycompressor = pycompressor.app:main",]},
     package_dir={"": "src"},
     packages=find_packages("src"),
-    zip_safe=False,
     classifiers=[
         "Operating System :: Unix",
         "Programming Language :: Python",
@@ -86,4 +85,6 @@ setup(
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Physics",
     ],
+    setup_requires=["wheel"],
+    python_requires='>=3.6'
 )

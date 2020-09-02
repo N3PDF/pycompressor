@@ -32,7 +32,7 @@ enhance : True
 ```
 Below is shown a caricatural picture of the pycompressor workflow.
 <p align="center">
-  <img alt="Logo" src="https://github.com/N3PDF/pycompressor/tree/GANsInterface/doc/source/img-src/diagram.png" width=800>
+  <img alt="diagram" src="https://github.com/N3PDF/pycompressor/blob/GANsInterface/doc/source/img-src/diagram.png" width=800>
 </p>
 
 

@@ -1,7 +1,7 @@
 ###################################################
 # PDF Set                                         #
 ###################################################
-fit: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
+pdf: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
 
 ###################################################
 # Size of compressed PDF replicas                 #
@@ -32,4 +32,46 @@ est_dic:
     - stdev
     - skewness
     - kurtosis
-###################################################
+
+#########################################################
+# Enhance statistics of Prior                           #
+#########################################################
+enhance  : True
+nbgen    : 83
+
+#########################################################
+# [Grids]                                               #
+# Options:                                              #
+# - custom: Custom GANs xgrid as defined in the Module  #
+# - lhapdf: Use the same xgrid as in the input PDF      #
+#########################################################
+q        : 1.65
+x_grid   : custom
+
+#########################################################
+# * Architecture:                                       #
+#   - dnn : Deep Neural Network                         #
+#   - dcnn: Deep Convolutional Neural Network           #
+#########################################################
+architecture: dcnn
+
+# [NUmber of Nodes in 1st Layer]
+g_nodes  : 256
+d_nodes  : 128
+
+# [Activations]
+g_act    : leakyrelu
+d_act    : leakyrelu
+
+# [Optimizer]
+d_opt    : rms
+gan_opt  : rms
+epochs   : 20
+
+# [Batch size]
+batch_size : 32
+
+# Intermediate steps to train the
+# Critic & Generator
+nd_steps : 4
+ng_steps : 3

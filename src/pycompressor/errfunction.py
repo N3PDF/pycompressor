@@ -1,10 +1,13 @@
 # This file contains the modules that computes the Error Function (ERF)
 # by taking the upper 68% from the confidence interval.
 
+import logging
 import numpy as np
 from numba import njit
 from tqdm import trange
 from pycompressor.estimators import Estimators
+
+log = logging.getLogger(__name__)
 
 
 def randomize_rep(replica, number):
@@ -202,7 +205,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
         float
             Normalization value for each estimator
     """
-    print("\n[+] Computing normalization factors:")
+    log.info("Computing normalization factors:")
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:

@@ -18,6 +18,19 @@ Q0 = 1
 NF = 3
 
 
+def splash():
+    info = """\033[34m
++-------------------------------------------------------------------------+
+|𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗:                                                            |
+|-------                                                                  |
+|Fast python compressor for PDF replicas.                                 |
+|https://n3pdf.github.io/pycompressor/                                    |
+|© N3PDF                                                                  |
++-------------------------------------------------------------------------+ 
+           """
+    print(info + '\033[0m \033[97m')
+
+
 def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     """
     Action that performs the compression. The parameters
@@ -57,6 +70,7 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
         postgans(str(pdf), outfolder, nbgen)
         pdf = str(pdf) + "_enhanced"
 
+    splash()
     # Create output folder
     folder = pathlib.Path().absolute() / pdf
     folder.mkdir(exist_ok=True)
@@ -75,7 +89,7 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     erf_list = []
     final_result = {"pdfset_name": pdf}
 
-    log.info(f"\nCompressing replicas using {minimizer} algorithm:")
+    log.info(f"Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
         nb_iter = 15000
@@ -100,7 +114,7 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
         json.dump(final_result, outfile)
 
     # Fetching ERF and construct reduced PDF grid
-    log.info(f"\nFinal ERF: {erf}\n")
+    log.info(f"Final ERF: {erf}\n")
 
     # Compute final ERFs for the final choosen replicas
     final_err_func = comp.final_erfs(index)

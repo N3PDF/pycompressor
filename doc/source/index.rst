@@ -1,9 +1,18 @@
-pyCompressor documentation
-==========================
+pyCompressor
+============
 
-pyCompressor is a compression code that extracts from an initial PDF set of replicas a subset that
-most truthfully reproduces the statistical properties of the prior. It is an upadted python version
-of a C++ code with more features.
+**pyCompressor** is a fast python compression code that extracts from an initial PDF set of replicas a
+subset that most truthfully reproduces the statistical properties of the prior. It is an upadted python 
+version of a C++ code with additional new features.
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Motivations
+
+
+   intro/motivations
+
 
 .. toctree::
    :maxdepth: 2

@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Why pyCompressor? &mdash; pyCompressor 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Statistical Estimators" href="../theory/estimators.html" />
+    <link rel="prev" title="pyCompressor" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pyCompressor
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why pyCompressor?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#benchmarks">Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Theory</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../theory/estimators.html">Statistical Estimators</a></li>
+</ul>
+<p class="caption"><span class="caption-text">HowTo</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../howto/howto.html">How to use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/howto.html#post-run">Post-run</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Modules</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/pycompressor/modules.html">pycompressor</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pyCompressor</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Why pyCompressor?</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/intro/introduction.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="why-pycompressor">
+<h1>Why pyCompressor?<a class="headerlink" href="#why-pycompressor" title="Permalink to this headline">¶</a></h1>
+<p>The two new main features of the <cite>pyCompressor</cite> package compared to the C++ implementation are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A new minimization algoirthm, <strong>Covariance Matrix Adapation Strategy (CMA-ES)</strong>. In addition to the
+<strong>Genetic Algorithm (GA)</strong>, there is now the possibility to choose as a minimizer the CMA-ES.</p></li>
+<li><p>A <strong>Generative Adversarial (GANs) Strategy</strong> that can be used to enhance the statistices of the prior.
+This relies on another python package called <cite>ganpdfs</cite> which is a standalone code based on tensorflow
+designed specifically to learn the probability distribution of the a prior dataset (PDF replicas) and
+generate new ones that follow the same distribution.</p></li>
+</ul>
+</div></blockquote>
+<p>The new desing flow of the <cite>pyCompressor</cite> package is schematically described in the following diagram.</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/diagram.png" src="../_images/diagram.png" />
+</div>
+</div></blockquote>
+<p>The prior Monte Carlo set of replica of size <span class="math notranslate nohighlight">\(N\)</span> is given as input from which a PDF grid of
+<span class="math notranslate nohighlight">\((N, NF, X)\)</span>-points (where <span class="math notranslate nohighlight">\(NF\)</span> and <span class="math notranslate nohighlight">\(X\)</span> resp. denote the total number of flavors and the size of
+the <span class="math notranslate nohighlight">\(x\)</span>-grid) is computed. If the choice to enhance the statistics is activated, the prior PDF set goes through
+the GANs. This will generate a new Monte Carlo PDF set <span class="math notranslate nohighlight">\(\tilde{N}\)</span> (with <span class="math notranslate nohighlight">\(N &lt; \tilde{N}\)</span>). A subset sample
+of the PDF replicas (prior or ehancend) with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> is then extracted in order to compute the Error Function
+(ERF). The minimization of the ERF is then performed either using the GA or the CMA which can be defined in the input
+runcard. The minimizer basically tries to find a candidate sample that leads to the smallest value of ERF. Once a
+convergence is achieved after a given iteration, the agorithm stops and outputs a compressed Monte Carlo set of PDF
+replicas with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> (with <span class="math notranslate nohighlight">\(\bar{N} &lt; N &lt; \tilde{N}\)</span>).</p>
+</div>
+<div class="section" id="benchmarks">
+<h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline">¶</a></h1>
+<p>The following benchmarks agains the C++ code is done without enhancing the statistics of the prior (i.e. truning
+off the GANs). The input PDF set chosen here is the NNPDF31_nnlo_as_0118_1000 with 1000 replicas. The mahine used
+for testing is a Ryzen 5 2600 (12 threads) with 16 GB of RAM and a GTX 1060.</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/speed_benchmark.png" src="../_images/speed_benchmark.png" />
+</div>
+</div></blockquote>
+<p>As shown below, the performance of the pyCompressor is comparable to the C++ implementation with as slightly
+faster convergence.</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/erf_iterations.png" src="../_images/erf_iterations.png" />
+</div>
+</div></blockquote>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../theory/estimators.html" class="btn btn-neutral float-right" title="Statistical Estimators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="pyCompressor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Stefano Carrazza, Juan Cruz-Martinez, Tanjona R. Rabemananjara
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

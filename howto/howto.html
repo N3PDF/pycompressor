@@ -83,7 +83,12 @@
               
             
             
-              <p class="caption"><span class="caption-text">Theory:</span></p>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html">Why pyCompressor?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/introduction.html#benchmarks">Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Theory</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../theory/estimators.html">Statistical Estimators</a></li>
 </ul>
@@ -162,10 +167,10 @@
             
   <div class="section" id="how-to-use">
 <h1>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline">¶</a></h1>
-<p>Once the <cite>pyCompressor</cite> package is installed, runnig a compression is very easy. It just takes
+<p>Once the <strong>pyCompressor</strong> package is installed, runnig a compression is very easy. It just takes
 an input run card in which all the input parameters are defined. The run card is subdivided into
 two distincts part: the compression and the GANs parameters.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyCompressor runcard.yml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycompressor runcard.yml
 </pre></div>
 </div>
 <p>The compression per-say requires the following keys:</p>
@@ -233,7 +238,7 @@ network, <cite>dnn</cite> for deep neural network</p></li>
  <span class="nt">ng_steps </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
 </pre></div>
 </div>
-<p>If <cite>enhance</cite> is set to <cite>True</cite>, the code will first enhance the statistic the prior using GANs.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is set to <cite>True</cite>, the code will first enhance the statistic the prior using GANs.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>+-------------------------------------------------------------------------+
 <span class="p">|</span>𝖌𝖆𝖓𝖕𝖉𝖋𝖘:                                                                 <span class="p">|</span>
 <span class="p">|</span>-------                                                                  <span class="p">|</span>
@@ -244,11 +249,12 @@ network, <cite>dnn</cite> for deep neural network</p></li>
 </pre></div>
 </div>
 <p>Once the generation of the extra-replicas is finished, the output grids are evolved using
-<cite>evolven3fit</cite>. Then, the <a href="#id1"><span class="problematic" id="id2">:module:`~pyCompressor.postgans`</span></a> module (in a similar fashion as
-postfit) creates a symbolic link of both the original and the generated PDF sets into the
-LHAPDF data directory. The new enhanced Monte Carlo set of PDF replicas is then used as
-input to the compressor. Once the compression is finished, a folder is created in the
-main directory with the folowing structure</p>
+<a class="reference external" href="https://github.com/NNPDF/nnpdf/blob/master/n3fit/evolven3fit/evolven3fit.cc">evolven3fit</a>.
+Then, the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyCompressor.postgans</span></code> module (in a similar fashion as postfit) creates a
+symbolic link of both the original and the generated PDF sets into the LHAPDF data directory.
+The new enhanced Monte Carlo set of PDF replicas is then used as input to the compressor.
+Once the compression is finished, a folder is created in the main directory with the folowing
+structure</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PDF_NAME&gt;_enhanced
 ├── checkpoint
 │   ├── checkpoint
@@ -272,21 +278,21 @@ main directory with the folowing structure</p>
 <p>where:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><cite>checkpoint</cite> stores the evolution of the GANs training. In case a long runnning training is
+<li><p><strong>checkpoint</strong> stores the evolution of the GANs training. In case a long runnning training is
 interupted, the last checkpoint can be restored and the training can re-start from there</p></li>
-<li><p><cite>iterations</cite> contains the evolution of the GANs training for every given iteration step.</p></li>
-<li><p><cite>losses_info.json</cite> stores the losses of the generator and the critic/discriminator for the
+<li><p><strong>iterations</strong> contains the evolution of the GANs training for every given iteration step.</p></li>
+<li><p><strong>losses_info.json</strong> stores the losses of the generator and the critic/discriminator for the
 GANs model.</p></li>
-<li><p><cite>filter.yml</cite> contains the information on the theory ID use to reproduce the prior replicas.</p></li>
-<li><p><cite>input-runcard.json</cite> is a copy of the input parameters that were fed to the GANs.</p></li>
-<li><p><cite>nnfit</cite> has more or less the same folder structure as the output from n3fit. It contains the
+<li><p><strong>filter.yml</strong> contains the information on the theory ID use to reproduce the prior replicas.</p></li>
+<li><p><strong>input-runcard.json</strong> is a copy of the input parameters that were fed to the GANs.</p></li>
+<li><p><strong>nnfit</strong> has more or less the same folder structure as the output from n3fit. It contains the
 a <cite>replica_$REPLICA_INDEX</cite> that contains a <cite>.exportgrid</cite> file used by evolven3fit for the
 evolution. That is where the evolved grid in the format <cite>.dat</cite> is also stored.</p></li>
-<li><p><cite>compress_&lt;PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat</cite> contains the index of
+<li><p><strong>compress_&lt;PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat</strong> contains the index of
 the reduced replicas along with the final ERF value.</p></li>
 </ul>
 </div></blockquote>
-<p>If <cite>enhance</cite> is instead set to <cite>False</cite>, the folder would just simply be:</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is instead set to <cite>False</cite>, the folder would just simply be:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PDF_NAME&gt;_enhanced
 └── compress_&lt;PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat
 </pre></div>
@@ -298,13 +304,19 @@ the reduced replicas along with the final ERF value.</p></li>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./tools/compressed_grid.py &lt;PDF_NAME&gt;<span class="o">(</span>_enhanced<span class="o">)</span>/compressed_&lt;PDF_NAME&gt;<span class="o">(</span>_enhanced<span class="o">)</span>_&lt;NB_COMPRESSED&gt;_output.dat
 </pre></div>
 </div>
-<p>Finally, to check that the reduced Monte Carlo set indeed faithfully reproduce the statistics of the
-prior, ERF plots of each of the estimators can be generated. For the time, this is done using root, but
-this will be changed by a python script. To generate the ERF plots, copy the <cite>compressor_validate.C</cite> file
-in tools into the <cite>erfs_output</cite> folder and run:</p>
+<p>Finally, to check that the reduced Monte Carlo set indeed faithfully reproduces the statistics of the
+prior, ERF plots for each of the estimator can be generated and compared to a random selection. For
+the time, this is done using root, but this will be changed by a python script. To generate the ERF
+plots, copy the <cite>compressor_validate.C</cite> file in tools into the <cite>erfs_output</cite> folder and run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>root -l compressor_validate.C
 </pre></div>
 </div>
+<p>This will generate the following ERF plots:</p>
+<blockquote>
+<div><div class="figure align-center">
+<img alt="../_images/erf_validation.png" src="../_images/erf_validation.png" />
+</div>
+</div></blockquote>
 </div>
 
 

@@ -8,15 +8,15 @@ version of a C++ code with additional new features.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Motivations
+   :caption: Introduction
 
 
-   intro/motivations
+   intro/introduction
 
 
 .. toctree::
    :maxdepth: 2
-   :caption: Theory:
+   :caption: Theory
 
 
    theory/estimators

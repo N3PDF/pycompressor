@@ -52,6 +52,14 @@ pycompressor.pdfgrid module
    :undoc-members:
    :show-inheritance:
 
+pycompressor.postgans module
+----------------------------
+
+.. automodule:: pycompressor.postgans
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

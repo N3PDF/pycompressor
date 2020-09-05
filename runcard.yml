@@ -37,7 +37,7 @@ est_dic:
 # Enhance statistics of Prior                           #
 #########################################################
 enhance  : True
-nbgen    : 83
+nbgen    : 500
 
 #########################################################
 # [Grids]                                               #
@@ -66,7 +66,7 @@ d_act    : leakyrelu
 # [Optimizer]
 d_opt    : rms
 gan_opt  : rms
-epochs   : 20
+epochs   : 5000
 
 # [Batch size]
 batch_size : 32

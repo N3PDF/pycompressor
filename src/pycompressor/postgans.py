@@ -3,6 +3,7 @@ PostFit for GANs replicas
 """
 
 import os
+import re
 import shutil
 import lhapdf
 import logging
@@ -39,6 +40,31 @@ def create_symlink(source, destintation):
         Paht indicating where the linked file is located.
     """
     return os.symlink(source, destintation)
+
+
+def replace_num_members(info_file, nbprior, totrep):
+    """Replace the value of the `NumMembers` key in PDF set .info file
+    by the new total number of MC replicas.
+
+    Parameters
+    ----------
+    info_file : str
+        file containing the information of the PDF
+    nbprior :
+        number of prior MC replicas
+    totrep :
+        total number of the new MC of replicas
+    """
+
+    subst = f"NumMembers: {totrep}"
+    pattern = f"NumMembers: {nbprior}"
+    file_handle = open(info_file, 'r')
+    file_string = file_handle.read()
+    file_handle.close()
+    file_string = (re.sub(pattern, subst, file_string))
+    file_handle = open(info_file, 'w')
+    file_handle.write(file_string)
+    file_handle.close()
 
 
 def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
@@ -87,6 +113,13 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
         shutil.rmtree(gnpdf_path) 
     gnpdf_path.mkdir(exist_ok=True)
     
+    # Get GANs output grid
+    gans_grids = pathlib.Path().absolute() / f"{gan_folder}" / "nnfit"
+    
+    # Count the number of replicas in the prior folder
+    nbfiles_prior = os.listdir(prior_path)
+    nbreplicas_prior = len(nbfiles_prior) - 1
+    
     # TODO: Check if GANs.info file is exactly the same
     # as the prior PDF-info file as they should contain
     # the exact same information.
@@ -94,19 +127,10 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     gdf_info = f"{pdf_name}_enhanced.info"
     prior_info = os.path.join(prior_path, pdf_info)
     gnpdf_info = os.path.join(gnpdf_path, gdf_info)
+    # Replace NumMembers entry
+    replace_num_members(prior_info, nbreplicas_prior, ntotal_rep)
+    # Copy file to LHAPDF datadir
     shutil.copy(prior_info, gnpdf_info)
-    # Compare info files
-    if filecmp.cmp(prior_info, gnpdf_info):
-        pass
-    else:
-        logger.critical("Info files are not the same.")
-    
-    # Get GANs output grid
-    gans_grids = pathlib.Path().absolute() / f"{gan_folder}" / "nnfit"
-    
-    # Count the number of replicas in the prior folder
-    nbfiles_prior = os.listdir(prior_path)
-    nbreplicas_prior = len(nbfiles_prior) - 1
     
     # Loop over the replicas
     for rep in range(ntotal_rep + 1):

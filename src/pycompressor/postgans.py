@@ -127,10 +127,10 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     gdf_info = f"{pdf_name}_enhanced.info"
     prior_info = os.path.join(prior_path, pdf_info)
     gnpdf_info = os.path.join(gnpdf_path, gdf_info)
-    # Replace NumMembers entry
-    replace_num_members(prior_info, nbreplicas_prior, ntotal_rep)
     # Copy file to LHAPDF datadir
     shutil.copy(prior_info, gnpdf_info)
+    # Replace NumMembers entry
+    replace_num_members(gnpdf_info, nbreplicas_prior - 1, ntotal_rep)
     
     # Loop over the replicas
     for rep in range(ntotal_rep + 1):
@@ -153,6 +153,6 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
             logger.info("Try loading enhanced PDFs.")
             gen_name = pdf_name + "_enhanced"
             lhapdf.mkPDFs(gen_name)
-            logger.info("Symbolink link added successfully.")
         except RuntimeError as exp:
             logger.critical(f"{pdf_name} might be corrupted according to {exp}.")
+    logger.info("Symbolink link added successfully.")

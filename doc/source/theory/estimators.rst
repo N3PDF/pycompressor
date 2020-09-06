@@ -66,3 +66,10 @@ where the normalization factor :math:`N_{CV}` is given by
 
 .. math::
    N_{CV} = \frac{1}{N_{rand}} \sum\limits_{d=1}^{N_{rand}} \sum\limits_{i=-nf}^{nf} \sum\limits_{j=1}^{N_x} \left( \frac{r_i^{d,CV}(x_j, Q_0) - g_i^{CV}(x_j, Q_0)}{g_i^{CV}(x_j, Q_0)} \right)^2
+
+
+
+
+.. note::
+
+   Implement documentation for other estimators and the computation of the normalizations

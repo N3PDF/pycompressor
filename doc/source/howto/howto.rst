@@ -114,6 +114,7 @@ structure
    ├── input-runcard.json
    ├── iterations
    │   └── pdf_generated_at_<ITERATION>.png
+   │   └── ...
    ├── losses_info.json
    ├── nnfit
    │    ├── <PDF_NAME>_enhanced.info

@@ -2,6 +2,11 @@ Why pyCompressor?
 =================
 
 
+.. note::
+
+   Add the motivations here.
+
+
 The two new main features of the `pyCompressor` package compared to the C++ implementation are:
 
     - A new minimization algoirthm, **Covariance Matrix Adapation Strategy (CMA-ES)**. In addition to the

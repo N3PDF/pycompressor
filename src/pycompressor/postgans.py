@@ -130,7 +130,7 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     # Copy file to LHAPDF datadir
     shutil.copy(prior_info, gnpdf_info)
     # Replace NumMembers entry
-    replace_num_members(gnpdf_info, nbreplicas_prior - 1, ntotal_rep)
+    replace_num_members(gnpdf_info, nbreplicas_prior, ntotal_rep)
     
     # Loop over the replicas
     for rep in range(ntotal_rep + 1):

@@ -6,7 +6,7 @@ pdf: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 50
+compressed: 75
 
 ###################################################
 # Choice of Minimizer                             #
@@ -37,7 +37,7 @@ est_dic:
 # Enhance statistics of Prior                           #
 #########################################################
 enhance  : True
-nbgen    : 500
+nbgen    : 160
 
 #########################################################
 # [Grids]                                               #
@@ -53,11 +53,15 @@ x_grid   : custom
 #   - dnn : Deep Neural Network                         #
 #   - dcnn: Deep Convolutional Neural Network           #
 #########################################################
-architecture: dcnn
+architecture: dnn
+
+# Architecture
+ddnn_size: 1
+gdnn_size: 1
 
 # [NUmber of Nodes in 1st Layer]
-g_nodes  : 256
-d_nodes  : 128
+g_nodes  : 128
+d_nodes  : 450
 
 # [Activations]
 g_act    : leakyrelu
@@ -69,7 +73,7 @@ gan_opt  : rms
 epochs   : 5000
 
 # [Batch size]
-batch_size : 32
+batch_size : 64
 
 # Intermediate steps to train the
 # Critic & Generator

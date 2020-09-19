@@ -188,15 +188,16 @@ generate new ones that follow the same distribution.</p></li>
 <img alt="../_images/diagram.png" src="../_images/diagram.png" />
 </div>
 </div></blockquote>
-<p>The prior Monte Carlo set of replica of size <span class="math notranslate nohighlight">\(N\)</span> is given as input from which a PDF grid of
-<span class="math notranslate nohighlight">\((N, NF, X)\)</span>-points (where <span class="math notranslate nohighlight">\(NF\)</span> and <span class="math notranslate nohighlight">\(X\)</span> resp. denote the total number of flavors and the size of
+<p>The prior Monte Carlo set of replica of size <span class="math notranslate nohighlight">\(\tilde{N}_{\mathrm{rep}}\)</span> is given as input from which a PDF grid of shape
+<span class="math notranslate nohighlight">\((\tilde{N}_{\mathrm{rep}}, NF, X)\)</span> (where <span class="math notranslate nohighlight">\(NF\)</span> and <span class="math notranslate nohighlight">\(X\)</span> resp. denote the total number of flavors and the size of
 the <span class="math notranslate nohighlight">\(x\)</span>-grid) is computed. If the choice to enhance the statistics is activated, the prior PDF set goes through
-the GANs. This will generate a new Monte Carlo PDF set <span class="math notranslate nohighlight">\(\tilde{N}\)</span> (with <span class="math notranslate nohighlight">\(N &lt; \tilde{N}\)</span>). A subset sample
-of the PDF replicas (prior or ehancend) with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> is then extracted in order to compute the Error Function
+the GANs. This will generate a new Monte Carlo PDF set
+<span class="math notranslate nohighlight">\(\bar{N}_{\mathrm{rep}}\)</span> (with <span class="math notranslate nohighlight">\(\tilde{N}_{\mathrm{rep}} &lt; \bar{N}_{\mathrm{rep}}\)</span>). A subset sample
+of the PDF replicas (prior or ehancend) with size <span class="math notranslate nohighlight">\(N_{\mathrm{rep}}\)</span> is then extracted in order to compute the Error Function
 (ERF). The minimization of the ERF is then performed either using the GA or the CMA which can be defined in the input
 runcard. The minimizer basically tries to find a candidate sample that leads to the smallest value of ERF. Once a
 convergence is achieved after a given iteration, the agorithm stops and outputs a compressed Monte Carlo set of PDF
-replicas with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> (with <span class="math notranslate nohighlight">\(\bar{N} &lt; N &lt; \tilde{N}\)</span>).</p>
+replicas with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> (with <span class="math notranslate nohighlight">\(N_{\mathrm{rep}} &lt; \tilde{N}_{\mathrm{rep}} &lt; \bar{N}_{\mathrm{rep}}\)</span>).</p>
 </div>
 <div class="section" id="benchmarks">
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline">¶</a></h1>

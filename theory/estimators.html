@@ -91,7 +91,9 @@
 <p class="caption"><span class="caption-text">Theory</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Statistical Estimators</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#mean-value">Mean Value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mean-value-variance-higher-moments">Mean Value, Variance, Higher Moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kolmogorov-smirnov">Kolmogorov-Smirnov</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pdf-correlation">PDF Correlation</a></li>
 </ul>
 </li>
 </ul>
@@ -173,16 +175,16 @@
 <p>The error function (ERF) that assesses the goodness of the compression by measuring the
 distance between the prior and the compressed distributions is defined as</p>
 <div class="math notranslate nohighlight">
-\[\text{ERF}^{(ES)} = \frac{1}{N_{ES}} \sum\limits_{i} \left( \frac{C_i^{(ES)} - O_i^{(ES)}}{O_i^{(ES)}} \right)^2\]</div>
+\[\text{ERF}_{(ES)} = \frac{1}{N_{ES}} \sum\limits_{i} \left( \frac{C_i^{(ES)} - O_i^{(ES)}}{O_i^{(ES)}} \right)^2\]</div>
 <p>where <span class="math notranslate nohighlight">\(N_{ES}\)</span> is the normalization factor for a given estimator <span class="math notranslate nohighlight">\(ES\)</span>,
-<span class="math notranslate nohighlight">\(O_i^{(ES)}\)</span> represents the value of that estimator <span class="math notranslate nohighlight">\(ES\)</span> computed at a generic
+<span class="math notranslate nohighlight">\(O_i^{(ES)}\)</span> represents the value of that estimator computed at a generic
 point <span class="math notranslate nohighlight">\(i\)</span> (which could be a given value of <span class="math notranslate nohighlight">\((x,Q)\)</span> in the PDFs), and
 <span class="math notranslate nohighlight">\(C_i^{(ES)}\)</span> is the corresponding value of the same estimator in the compressed set.</p>
 <p>The total value of ERF is then given by</p>
 <div class="math notranslate nohighlight">
-\[\text{ERF}_{TOT} = \frac{1}{N_{est}} \sum\limits_{k} \text{ERF}^{(ES)}\]</div>
+\[\mathrm{ERF}_{\mathrm{TOT}} = \frac{1}{N_{\mathrm{est}}} \sum\limits_{k} \text{ERF}^{(ES)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(k\)</span> runs over the number of statistiacal estimators used to quantify the distance
-between the original and compressed distributions, and <span class="math notranslate nohighlight">\(N_{est}\)</span> is the total number
+between the original and compressed distributions, and <span class="math notranslate nohighlight">\(N_{\mathrm{est}}\)</span> is the total number
 of statistical estimators.</p>
 <p>The estimators taken into account in the computation of the ERF are the following:</p>
 <ol class="arabic simple">
@@ -194,25 +196,88 @@ adjusted.</p></li>
 is important to ensure that PDF-induced correlations in physical cross-sections are
 succesfully maintained.</p></li>
 </ol>
-<div class="section" id="mean-value">
-<h2>Mean Value<a class="headerlink" href="#mean-value" title="Permalink to this headline">¶</a></h2>
-<p>Let us denote by <span class="math notranslate nohighlight">\(g_i^{(k)}(x_j, Q_0)\)</span> and <span class="math notranslate nohighlight">\(f_i^{(k)}(x_j, Q_0)\)</span> respectively the prior
-and the compressed sets for a flavor <span class="math notranslate nohighlight">\(i\)</span> at the position <span class="math notranslate nohighlight">\(j\)</span> of the <span class="math notranslate nohighlight">\(x\)</span>-grid
-containing <span class="math notranslate nohighlight">\(N_x\)</span> points. The central values are defined as</p>
+<div class="section" id="mean-value-variance-higher-moments">
+<h2>Mean Value, Variance, Higher Moments<a class="headerlink" href="#mean-value-variance-higher-moments" title="Permalink to this headline">¶</a></h2>
+<p>Let’s denote by <span class="math notranslate nohighlight">\(g_{i}^{(k)}\left(x_{j},Q_{0}\right)\)</span> and <span class="math notranslate nohighlight">\(f_{i}^{(r)}\left(x_{j},Q_{0}\right)\)</span>
+respectively the prior and the compressed sets of replicas for a flavor <span class="math notranslate nohighlight">\(i\)</span> at the position <span class="math notranslate nohighlight">\(j\)</span>
+of the <span class="math notranslate nohighlight">\(x\)</span>-grid containing <span class="math notranslate nohighlight">\(N_{x}\)</span> points. <span class="math notranslate nohighlight">\(N_{\text {rep }}\)</span> is the number of required
+compressed replicas. We then define the contribution to the ERF from the distances between central values
+of the prior and compressed distributions as follows</p>
 <div class="math notranslate nohighlight">
-\[f_i^{CV}(x_j, Q_0) = \frac{1}{N_{rep}} \sum\limits_{r=1}^{N_{rep}} f_i^{(r)} (x_j, Q_0)\]</div>
+\[\mathrm{ERF}_{\mathrm{CV}}=\frac{1}{N_{\mathrm{CV}}} \sum_{i=-n_{f}}^{n_{f}} \sum_{j=1}^{N_{x}}\left(\frac{f_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)-g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)}{g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)}\right)^{2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{\mathrm{CV}}\)</span> is the normalization factor for this estimator. We only include in the sum
+those points for which the denominator satisfies <span class="math notranslate nohighlight">\(g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right) \neq 0\)</span>.
+As usual, central values are computed as the average over the MC replicas, for the compressed set</p>
 <div class="math notranslate nohighlight">
-\[g_i^{CV}(x_j, Q_0) = \frac{1}{\tilde{N}_{rep}} \sum\limits_{r=1}^{\tilde{N}_{rep}} g_i^{(r)} (x_j, Q_0)\]</div>
-<p>Therefore, <span class="math notranslate nohighlight">\(\text{ERF}^{(ES)}\)</span> is defined as</p>
+\[f_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)=\frac{1}{N_{\text {rep }}} \sum_{r=1}^{N_{\text {rep }}} f_{i}^{(r)}\left(x_{j}, Q_{0}\right)\]</div>
+<p>while for the prior set we have</p>
 <div class="math notranslate nohighlight">
-\[\text{ERF}_{CV} = \frac{1}{N_{CV}} \sum\limits_{i=-nf}^{nf} \sum\limits_{j=1}^{N_x} \left( \frac{f_i^{CV}(x_j, Q_0) - g_i^{CV}(x_j, Q_0)}{g_i^{CV}(x_j, Q_0)} \right)^2\]</div>
-<p>where the normalization factor <span class="math notranslate nohighlight">\(N_{CV}\)</span> is given by</p>
+\[g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)=\frac{1}{\widetilde{N}_{\text {rep }}} \sum_{k=1}^{\tilde{N}_{\text {rep }}} g_{i}^{(k)}\left(x_{j}, Q_{0}\right)\]</div>
+<p>Let us also define <span class="math notranslate nohighlight">\(r_{i}^{t}\left(x_{j}, Q_{0}\right)\)</span> as a random set of replicas extracted from the prior
+set, where <span class="math notranslate nohighlight">\(t\)</span> identifies an ensemble of random extractions. The number of random extraction of random sets
+is denoted by <span class="math notranslate nohighlight">\(N_{\text {rand }}\)</span>. Now, the normalization factors are extracted for all estimators as the lower
+<span class="math notranslate nohighlight">\(68 \%\)</span> confidence-level value obtained after <span class="math notranslate nohighlight">\(N_{\text {rand }}\)</span> realizations of random sets. In
+particular for this estimator we have</p>
 <div class="math notranslate nohighlight">
-\[N_{CV} = \frac{1}{N_{rand}} \sum\limits_{d=1}^{N_{rand}} \sum\limits_{i=-nf}^{nf} \sum\limits_{j=1}^{N_x} \left( \frac{r_i^{d,CV}(x_j, Q_0) - g_i^{CV}(x_j, Q_0)}{g_i^{CV}(x_j, Q_0)} \right)^2\]</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Implement documentation for other estimators and the computation of the normalizations</p>
+\[N_{\mathrm{CV}}=\left.\frac{1}{N_{\text {rand }}} \sum_{d=1}^{N_{\text {rand }}} \sum_{i=-n_{f}}^{n_{f}} \sum_{j=1}^{N_{x}}\left(\frac{r_{i}^{d, \mathrm{CV}}\left(x_{j}, Q_{0}\right)-g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)}{g_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)}\right)^{2}\right|_{68 \% \text { lower band }}\]</div>
+<p>For the contribution to the ERF from the distance between standard deviation, skewness and kurtosis, we can built
+expressions analogous to the above equation  by replacing the central value estimator with the suitable expression
+for the other statistical estimators, which in a Monte Carlo representation can be computed as</p>
+<div class="math notranslate nohighlight">
+\[f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right)=\sqrt{\frac{1}{N_{\mathrm{rep}}-1} \sum_{r=1}^{N_{\mathrm{rep}}}\left(f_{i}^{(r)}\left(x_{j}, Q_{0}\right)-f_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)\right)^{2}}\]</div>
+<div class="math notranslate nohighlight">
+\[f_{i}^{\mathrm{SKE}}\left(x_{j}, Q_{0}\right)=\frac{1}{N_{\mathrm{rep}}} \sum_{r=1}^{N_{\mathrm{rep}}}\left(f_{i}^{(r)}\left(x_{j}, Q_{0}\right)-f_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)\right)^{3} /\left(f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right)\right)^{3}\]</div>
+<div class="math notranslate nohighlight">
+\[f_{i}^{\mathrm{KUR}}\left(x_{j}, Q_{0}\right)=\frac{1}{N_{\mathrm{rep}}} \sum_{r=1}^{N_{\mathrm{rep}}}\left(f_{i}^{(r)}\left(x_{j}, Q_{0}\right)-f_{i}^{\mathrm{CV}}\left(x_{j}, Q_{0}\right)\right)^{4} /\left(f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right)\right)^{4}\]</div>
+<p>for the compressed set, with analogous expressions for the original prior set.</p>
+<p>The normalization factors for these estimators are extracted using the same strategy as above by averaging over random
+extractions of <span class="math notranslate nohighlight">\(N_{\text {rep }}\)</span> replicas, exchanging <span class="math notranslate nohighlight">\(\mathrm{CV}\)</span> by <span class="math notranslate nohighlight">\(\mathrm{STD}, \mathrm{SKE}\)</span>
+and <span class="math notranslate nohighlight">\(\mathrm{KUR}\)</span> respectively.</p>
 </div>
+<div class="section" id="kolmogorov-smirnov">
+<h2>Kolmogorov-Smirnov<a class="headerlink" href="#kolmogorov-smirnov" title="Permalink to this headline">¶</a></h2>
+<p>We define the contribution to the total ERF from the Kolmogorov-Smirnov (KS) distance as follows</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{ERF}_{\mathrm{KS}}=\frac{1}{N_{\mathrm{KS}}} \sum_{i=-n_{f}}^{n_{f}} \sum_{j=1}^{N_{x}} \sum_{k=1}^{(r)}\left(\frac{F_{i}^{k}\left(x_{j}, Q_{0}\right)-G_{i}^{k}\left(x_{j}, Q_{0}\right)}{G_{i}^{k}\left(x_{j}, Q_{0}\right)}\right)^{2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(F_{i}^{k}\left(x_{j}, Q_{0}\right)\)</span> and <span class="math notranslate nohighlight">\(G_{i}^{k}\left(x_{j}, Q_{0}\right)\)</span> are the
+outputs of the test for the compressed and the prior set ofreplicas respectively. The output of the test
+consists in counting the number of replicas containedin the <span class="math notranslate nohighlight">\(k\)</span> regions where the test is performed.
+We count the number of replicas which fall in eachregion and then we normalize by the total number of replicas
+of the respective set. Here we haveconsidered six regions defined as multiples of the standard deviation of
+the distribution for each</p>
+<div class="math notranslate nohighlight">
+\[\left[-\infty,-2 f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right),-f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right), 0, f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right), 2 f_{i}^{\mathrm{STD}}\left(x_{j}, Q_{0}\right),+\infty\right]\]</div>
+<p>where the values of the PDFs have been subtracted from the corresponding central value.</p>
+<p>In this case, the normalization factor is determined from the output of the KS test for randomsets of replicas
+extracted from the prior, denoted <span class="math notranslate nohighlight">\(R_{i}^{k}\left(x_{j}, Q_{0}\right)\)</span> as follows</p>
+<div class="math notranslate nohighlight">
+\[N_{\mathrm{KS}}=\frac{1}{N_{\text {rand }}} \sum_{d=1}^{N_{\text {rand }}} \sum_{i=-n_{f}}^{n_{f}} \sum_{j=1}^{N_{x}} \sum_{k=1}^{6}\left(\frac{R_{i}^{k}\left(x_{j}, Q_{0}\right)-G_{i}^{k}\left(x_{j}, Q_{0}\right)}{G_{i}^{k}\left(x_{j}, Q_{0}\right)}\right)^{2}\]</div>
+<p>and we include in the sum those points for which the denominator satisfies <span class="math notranslate nohighlight">\(G_{i}^{k}\left(x_{j}, Q_{0}\right) \neq 0\)</span>.</p>
+</div>
+<div class="section" id="pdf-correlation">
+<h2>PDF Correlation<a class="headerlink" href="#pdf-correlation" title="Permalink to this headline">¶</a></h2>
+<p>In addition to all the moments of the prior distribution, a sensible compression should also main-tain the
+correlations between values of <span class="math notranslate nohighlight">\(x\)</span> and between flavours of the PDFs. In order to achieve this, correlations
+are taken into account in the ERF by meansof the trace method. We define acorrelation matrix <span class="math notranslate nohighlight">\(C\)</span> for
+any PDF set as follows:</p>
+<div class="math notranslate nohighlight">
+\[C_{i j}=\frac{N_{\text {rep }}}{N_{\text {rep }}-1} \cdot \frac{\langle i j\rangle-\langle i\rangle\langle j\rangle}{\sigma_{i} \cdot \sigma_{j}}\]</div>
+<p>where it is defined that</p>
+<div class="math notranslate nohighlight">
+\[\langle i\rangle=\frac{1}{N_{\text {rep }}} \sum_{r=1}^{N_{\text {rep }}} f_{i}^{(r)}\left(x_{i}, Q_{0}\right), \quad\langle i j\rangle=\frac{1}{N_{\text {rep }}} \sum_{r=1}^{N_{\text {rep }}} f_{i}^{(r)}\left(x_{i}, Q_{0}\right) f_{j}^{(r)}\left(x_{j}, Q_{0}\right)\]</div>
+<p>For each flavornfwe define <span class="math notranslate nohighlight">\(N_{x}^{\text{corr}}\)</span> points distributed in <span class="math notranslate nohighlight">\(x\)</span> where the correlations arecomputed.
+The trace method consists in computing the correlation matrix <span class="math notranslate nohighlight">\(P\)</span> for the prior set and then store its inverse
+<span class="math notranslate nohighlight">\(P^{−1}\)</span>. For <span class="math notranslate nohighlight">\(n_{f}\)</span> flavours and <span class="math notranslate nohighlight">\(N^{\text{corr}}_{x}\)</span> points we obtain:</p>
+<div class="math notranslate nohighlight">
+\[g=\operatorname{Tr}\left(P \cdot P^{-1}\right)=N_{x}^{\text {corr }} \cdot\left(2 \cdot n_{f}+1\right)\]</div>
+<p>After computing the correlation matrix for prior set, for each compressed set a matrix <span class="math notranslate nohighlight">\(C\)</span> iscomputed and the
+trace is determined by</p>
+<div class="math notranslate nohighlight">
+\[f=\operatorname{Tr}\left(C \cdot P^{-1}\right)\]</div>
+<p>The compression algorithm then includes the correlation ERF by minimizing the quantity:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{ERF}_{\mathrm{Corr}}=\frac{1}{N_{\mathrm{Corr}}}\left(\frac{f-g}{g}\right)^{2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(N^{\text{Corr}}\)</span> is computed as usual from the random sets.</p>
 </div>
 </div>
 

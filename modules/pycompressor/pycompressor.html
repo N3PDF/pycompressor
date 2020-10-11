@@ -196,7 +196,7 @@
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
 <em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
 words a subset that gives the best value of the error function).</p>
@@ -205,7 +205,7 @@ words a subset that gives the best value of the error function).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prior</strong> (<em>array_like</em>) – Prior PDF replicas</p></li>
 <li><p><strong>est_dic</strong> (<em>dic</em>) – Dictionary contaning the list of estimators</p></li>
-<li><p><strong>nb_reduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of the reduced/compressed replicas</p></li>
+<li><p><strong>nb_reduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the reduced/compressed replicas</p></li>
 </ul>
 </dd>
 </dl>
@@ -222,7 +222,7 @@ corrresponding ERF value.</p>
 <dd class="field-even"><p>Value of the ERF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -241,7 +241,7 @@ replicas</p>
 and their respective values</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -252,14 +252,14 @@ and their respective values</p>
 <dd><p>Look for the combination of replicas that gives the best ERF value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>
+<dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The first argument is the value of the best ERF while the second
 contains the index of the reduced PDF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a>, array_like)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>, array_like)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -276,7 +276,7 @@ contains the index of the reduced PDF</p>
 <dd class="field-even"><p>Value of the ERF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -295,7 +295,7 @@ redundant way.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>replica</strong> (<em>array_like</em>) – Prior set of replicas shape=(replicas, flavours, x-grid)</p></li>
-<li><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of subset of replicas</p></li>
+<li><p><strong>number</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of subset of replicas</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -340,7 +340,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 <dd class="field-even"><p>Value of the error Estimation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -362,7 +362,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 <dd class="field-even"><p>Value of the error Estimation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -384,7 +384,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 <dd class="field-even"><p>Value of the error Estimation</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -397,14 +397,14 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of shape=(replicas, flavours, x-grid)</p></li>
-<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list ot all estimators</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Contains the list ot all estimators</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Array of shape=(flavours, x-grid)</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -419,17 +419,17 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replica fo shape=(replicas, flavours, x-grid)</p></li>
-<li><p><strong>est_prior</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Dictionary containing the values of the estimated results</p></li>
-<li><p><strong>rndm_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of random replicas</p></li>
-<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list of estimators</p></li>
-<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of random trials</p></li>
+<li><p><strong>est_prior</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Dictionary containing the values of the estimated results</p></li>
+<li><p><strong>rndm_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of random replicas</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Contains the list of estimators</p></li>
+<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of random trials</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Normalization value for each estimator</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -437,7 +437,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 <dl class="py class">
 <dt id="pycompressor.errfunction.ErfComputation">
 <em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
 <p>When this class is initialized, the Estimators and the normalization factors
@@ -446,9 +446,9 @@ are computed.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prior</strong> (<em>array_like</em>) – Prior set of replicas of shape=(replicas, flavours, x-grid)</p></li>
-<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Contains the list of all the Estimators</p></li>
-<li><p><strong>nreduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Size of reduced replicas</p></li>
-<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Number of trials</p></li>
+<li><p><strong>est_dic</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Contains the list of all the Estimators</p></li>
+<li><p><strong>nreduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of reduced replicas</p></li>
+<li><p><strong>trials</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Number of trials</p></li>
 </ul>
 </dd>
 </dl>
@@ -465,7 +465,7 @@ all the normalized estimators.</p>
 <dd class="field-even"><p>Value of the total normalized ERF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -483,7 +483,7 @@ all the normalized estimators.</p>
 <dd class="field-even"><p>Value of the total normalized ERF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -496,7 +496,7 @@ all the normalized estimators.</p>
 <dl class="py class">
 <dt id="pycompressor.estimators.Estimators">
 <em class="property">class </em><code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">Estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">axs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class containing the different types of statistical estimators.</p>
 <p>This class takes a set of PDF replicas (prior/compressed/random)
 with a shape (replicas, flavours, xgrid) and then compute the value
@@ -505,7 +505,7 @@ of the estimators w.r.t to the PDF replicas</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>replicas</strong> (<em>array</em>) – Prior or Reduced PDF replicas of shape=(replicas, flavours, x-grid)</p></li>
-<li><p><strong>axs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Axis to which the estimator is computed. By default is set to zero
+<li><p><strong>axs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Axis to which the estimator is computed. By default is set to zero
 to compute along the direction of the pdf replicas</p></li>
 </ul>
 </dd>
@@ -521,7 +521,7 @@ exactly eq.(11) of the paper.</p>
 <li><p><strong>replicas</strong> (<em>array_like</em>) – Array of PDF replicas (prior/reduced/random)</p></li>
 <li><p><strong>mean</strong> (<em>array_like</em>) – Array with the mean values of replicas</p></li>
 <li><p><strong>stdev</strong> (<em>array_like</em>) – Array with the values of standard deviation of replicas</p></li>
-<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
+<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -550,7 +550,7 @@ replicas, flavours and x-grid.</p>
 <li><p><strong>replicas</strong> (<em>array_like</em>) – PDF replicas (prior/reduced/random)</p></li>
 <li><p><strong>mean</strong> (<em>array_like</em>) – Array with the mean values of replicas</p></li>
 <li><p><strong>stdev</strong> (<em>array_like</em>) – Array with the values of standard deviation of replicas</p></li>
-<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
+<li><p><strong>nb_regions</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of regions. This is by default set to 6</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -587,7 +587,7 @@ replicas, flavours and x-grid.</p>
 to the coorect one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>estm_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Name of the estimator</p>
+<dd class="field-odd"><p><strong>estm_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the estimator</p>
 </dd>
 </dl>
 </dd></dl>

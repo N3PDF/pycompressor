@@ -108,19 +108,16 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     # Prepare output file
     final_result["ERFs"] = erf_list
     final_result["index"] = index.tolist()
-    with open(
-        f"{pdf}/compress_{pdf}_{compressed}_output.dat", "w"
-    ) as outfile:
-        json.dump(final_result, outfile)
-
+    outfile = open(f"{pdf}/compress_{pdf}_{compressed}_output.dat", "w")
+    outfile.write(json.dumps(final_result, indent=2))
+    outfile.close()
     # Fetching ERF and construct reduced PDF grid
     log.info(f"Final ERF: {erf}\n")
 
     # Compute final ERFs for the final choosen replicas
     final_err_func = comp.final_erfs(index)
     serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
-    serfile.write(f"{compressed} ")
-    for err in final_err_func.keys():
-        serfile.write(f"{final_err_func[err]} ")
+    serfile.write(f"{compressed}:")
+    serfile.write(json.dumps(final_err_func))
     serfile.write("\n")
     serfile.close()

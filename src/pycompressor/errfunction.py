@@ -12,8 +12,8 @@ log = logging.getLogger(__name__)
 
 
 def randomize_rep(replica, number):
-    """Extract a subset of random replica from the prior with a nun-
-    redundant way.
+    """Extract a subset of random replica from the prior in a nun-
+    redundant way (no duplicates).
 
     Parameters
     ----------

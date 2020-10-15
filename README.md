@@ -105,11 +105,12 @@ compressed PDF grid, run the following command:
 This will generate a folder `<PDF_NAME>(_enhanced)/compressed_<PDF_NAME>(_enhanced)_<NB_COMPRESSED>` 
 containing the compressed PDF replicas.
 
-Finally, in order to generate ERF plots, copy the file `compressor_validate.C`
-in `tools` into the `erfs_output` folder and run the following as root:
+Finally, in order to generate ERF plots, enter in the `erfs_output` directory and run the following:
 ```bash
-root -l compressor_validate.C
+../tools/pycompressor_validate.py --random erf_randomized.dat --reduced erf_reduced.dat
 ``` 
+This script can also plot the ERF validation from the old compressor code by adding the flag
+`--format ccomp`.
 
 #### Bottlenecks
 

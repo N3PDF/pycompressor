@@ -235,7 +235,7 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
         estmd_stat = erf_vals[list_est[i]]
         estmd_tots = erf_tots[list_est[i]]
         axis.set_title(list_est[i], fontsize=16)
-        axis.ticklabel_format(axis='y', style='scientific', scilimits=(0, 0))
+        axis.set_yscale('log')
         # c.i.
         c50, error50 = compute_errobars(estmd_stat["l50"], estmd_stat["u50"])
         c68, error68 = compute_errobars(estmd_stat["l68"], estmd_stat["u68"])

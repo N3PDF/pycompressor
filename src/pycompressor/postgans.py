@@ -13,6 +13,9 @@ import filecmp
 from subprocess import PIPE
 from subprocess import Popen
 
+from validphys import lhio
+from validphys.core import PDF
+
 logger = logging.getLogger(__name__)
 
 
@@ -56,7 +59,7 @@ def replace_num_members(info_file, nbprior, totrep):
         total number of the new MC of replicas
     """
 
-    subst = f"NumMembers: {totrep}"
+    subst = f"NumMembers: {totrep+1}"
     pattern = f"NumMembers: {nbprior}"
     file_handle = open(info_file, 'r')
     file_string = file_handle.read()
@@ -112,14 +115,14 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
         logger.warning(f"{gnpdf_path} already exists and will be removed.")
         shutil.rmtree(gnpdf_path) 
     gnpdf_path.mkdir(exist_ok=True)
-    
+
     # Get GANs output grid
     gans_grids = pathlib.Path().absolute() / f"{gan_folder}" / "nnfit"
     
     # Count the number of replicas in the prior folder
     nbfiles_prior = os.listdir(prior_path)
     nbreplicas_prior = len(nbfiles_prior) - 1
-    
+
     # TODO: Check if GANs.info file is exactly the same
     # as the prior PDF-info file as they should contain
     # the exact same information.
@@ -131,28 +134,26 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     shutil.copy(prior_info, gnpdf_info)
     # Replace NumMembers entry
     replace_num_members(gnpdf_info, nbreplicas_prior, ntotal_rep)
-    
+
     # Loop over the replicas
-    for rep in range(ntotal_rep + 1):
+    for rep in range(1, ntotal_rep + 1):
         gnpdf = f"{pdf_name}_enhanced_{rep:04}.dat"
         gnpdf_file = os.path.join(gnpdf_path, gnpdf)
-        if rep < nbreplicas_prior:
-            prior_file = f"{pdf_name}_{rep:04}.dat"
-            prior_file = os.path.join(prior_path, prior_file)
-            create_symlink(prior_file, gnpdf_file)
-        elif rep < ntotal_rep + 1:
-            gans_file = gans_grids / f"replica_{rep}"
-            gans_file = os.path.join(gans_file, f"{gan_folder}.dat")
-            create_symlink(gans_file, gnpdf_file)
-        else:
-            logger.warning(f"Replicas with index {rep} is not available.")
+        gans_file = gans_grids / f"replica_{rep}"
+        gans_file = os.path.join(gans_file, f"{gan_folder}.dat")
+        create_symlink(gans_file, gnpdf_file)
+
+    # Compute Replica 0
+    lhapdf.pathsPrepend(lhapdf_pth)
+    generated_pdf = PDF(pdf_name + "_enhanced")
+    lhio.generate_replica0(generated_pdf)
 
     if check:
         # Try to import the PDF
         try:
-            logger.info("Try loading enhanced PDFs.")
+            logger.info("Try loading enhanced Replica 0.")
             gen_name = pdf_name + "_enhanced"
-            lhapdf.mkPDFs(gen_name)
+            lhapdf.mkPDF(gen_name, 0)
         except RuntimeError as exp:
             logger.critical(f"{pdf_name} might be corrupted according to {exp}.")
     logger.info("Symbolink link added successfully.")

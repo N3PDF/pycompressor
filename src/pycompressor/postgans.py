@@ -144,7 +144,7 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
         create_symlink(gans_file, gnpdf_file)
 
     # Compute Replica 0
-    lhapdf.pathsPrepend(lhapdf_pth)
+    lhapdf.pathsPrepend(str(lhapdf_pth))
     generated_pdf = PDF(pdf_name + "_enhanced")
     lhio.generate_replica0(generated_pdf)
 

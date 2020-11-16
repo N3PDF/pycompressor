@@ -1,7 +1,7 @@
 ###################################################
 # PDF Set                                         #
 ###################################################
-pdf: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
+pdf:  130920-nnpdf40_jcm_iterated_70k_epochs
 
 ###################################################
 # Size of compressed PDF replicas                 #
@@ -36,7 +36,7 @@ est_dic:
 #########################################################
 # Enhance statistics of Prior                           #
 #########################################################
-enhance  : True
+enhance  : False
 nbgen    : 160
 
 #########################################################
@@ -73,7 +73,7 @@ gan_opt  : rms
 epochs   : 5000
 
 # [Batch size]
-batch_size : 64
+batch_size : 32
 
 # Intermediate steps to train the
 # Critic & Generator

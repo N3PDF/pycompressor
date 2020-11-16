@@ -36,7 +36,7 @@ else:
 
 
 # Compressor class
-COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
+COMP = compressor.compress(PRIOR, PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
 
 
 def get_subset(n):

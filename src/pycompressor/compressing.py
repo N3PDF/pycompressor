@@ -13,7 +13,7 @@ from pycompressor.compressor import compress
 log = logging.getLogger(__name__)
 
 # Initial scale (in GeV)
-Q0 = 1.65
+Q0 = 1
 # Total number of flavour to 2nf+1=7
 NF = 3
 
@@ -68,7 +68,6 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
         sub.call(["evolven3fit", f"{outfolder}", f"{nbgen}"])
         # Add symbolic Links to LHAPDF dataDir
         postgans(str(pdf), outfolder, nbgen)
-        pdf = str(pdf) + "_enhanced"
 
     splash()
     # Create output folder
@@ -77,14 +76,23 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     # Create output folder for ERF stats
     out_folder = pathlib.Path().absolute() / "erfs_output"
     out_folder.mkdir(exist_ok=True)
-    log.info("Loading PDF set:")
+
+    log.info("Loading PDF sets:")
     xgrid = XGrid().build_xgrid()
+    # Load Prior Sets
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+    # Load Enhanced Sets
+    try:
+        postgan = pdf + "_enhanced"
+        enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+    except RuntimeError as excp:
+        log.warning(excp)
+        enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+
     # Set seed
     np.random.seed(0)
-
     # Init. compressor class
-    comp = compress(prior, est_dic, compressed, out_folder)
+    comp = compress(prior, enhanced, est_dic, compressed, out_folder)
     # Start compression depending on the Evolution Strategy
     erf_list = []
     final_result = {"pdfset_name": pdf}
@@ -92,7 +100,7 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     log.info(f"Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
-        nb_iter = 15000
+        nb_iter = 20000
         with trange(nb_iter) as iter_range:
             for i in iter_range:
                 iter_range.set_description("Compression")

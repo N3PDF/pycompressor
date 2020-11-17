@@ -30,20 +30,20 @@ class compress:
             Size of the reduced/compressed replicas
     """
 
-    def __init__(self, prior, est_dic, nb_reduc, folder):
+    def __init__(self, prior, est_dic, nb_reduc, folder, rndgen):
         self.prior = prior
+        self.rndgen = rndgen
         self.est_dic = est_dic
         self.nb_reduc = nb_reduc
-        # Init. ErfComputation class. This also computes
-        # the one-time computation of the estimators
-        # for the prior
-        self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder)
         # Init. index for ERF computation
-        self.index = np.arange(1, self.nb_reduc + 1, 1)
+        self.index = rndgen.integers(1, prior.shape[0], self.nb_reduc + 1)
+        # Init. ErfComputation class. This also computes the one-time computation
+        # of the estimators for the prior.
+        self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder, rndgen)
 
     def error_function(self, index):
-        """Sample a subset of replicas as given by the index. Then computes the
-        corrresponding ERF value.
+        """Sample a subset of replicas as given by the index. Then computes
+        the corrresponding ERF value.
 
         Parameters
         ----------
@@ -90,8 +90,8 @@ class compress:
         Returns
         -------
             tuple(float, array_like)
-                The first argument is the value of the best ERF while the second
-                contains the index of the reduced PDF
+                The first argument is the value of the best ERF while the
+                second contains the index of the reduced PDF
         """
         nmut = nb_mut
         # Compute ERF
@@ -101,7 +101,8 @@ class compress:
         # Perform mutation
         for i in range(nmut):
             # Define mutation rate
-            r = np.random.uniform(0, 1)
+            # r = np.random.uniform(0, 1)
+            r = self.rndgen.uniform(0, 1)
             if r <= 0.3:
                 _nmut = 1
             elif r > 0.3 and r <= 0.6:
@@ -111,15 +112,15 @@ class compress:
             else:
                 _nmut = 4
             for _ in range(_nmut):
-                p = np.random.randint(1, self.prior.shape[0])
-                k = np.random.randint(1, self.nb_reduc)
+                p = self.rndgen.integers(1, self.prior.shape[0])
+                k = self.rndgen.integers(self.nb_reduc)
                 mut[i][k] = p
         # Compute ERF for the new sample
         erf = np.zeros(nmut)
         for m in range(nmut):
             erf[m] = self.error_function(mut[m])
         # Perform Selection
-        besterf = np.min(erf)  # Find the lowest ERF
+        besterf = np.min(erf)                 # Find the lowest ERF
         idx = np.where(erf == besterf)[0][0]  # Find index of the lowest ERF
         # Update index
         if besterf < berf:
@@ -148,7 +149,7 @@ class compress:
             float
                 Value of the ERF
         """
-        init_index = np.random.choice(
+        init_index = self.rndgen.choice(
                 self.prior.shape[0],
                 self.nb_reduc,
                 replace=False
@@ -210,35 +211,3 @@ class compress:
         selected_modulo = selected_index % self.prior.shape[0]
         erf_cma = self.error_function(selected_modulo)
         return erf_cma, selected_modulo
-
-
-# def cma_erf(index, err_comp, prior):
-#     """Top level function that defines the ERF function that is going
-#     to be minimized.
-# 
-#     Parameters
-#     ----------
-#         index: array_like
-#             Array containing the index of the replicas
-#         err_comp: class
-#             Class containing the method that computes the ERFs
-#         prior: array_like
-#             Array of PDF replicas (prior/reduced/random)
-# 
-#     Returns
-#     -------
-#         result: float
-#             Value of the ERF
-#     """
-#     # TODO: (use) cma_erf(ind, self.err_func, self.prior)
-#     # Convert float array into int
-#     index_int = index.astype(int)
-#     index_modulo = index_int % prior.shape[0]
-#     # Check Duplicates and if so returns NaN
-#     duplicates, counts = np.unique(index_modulo, return_counts=True)
-#     if duplicates[counts > 1].shape[0] != 0:
-#         return np.NaN
-#     reduc_rep = prior[index_modulo]
-#     # Compute Normalized Error function
-#     erf_res = err_comp.compute_tot_erf(reduc_rep)
-#     return erf_res

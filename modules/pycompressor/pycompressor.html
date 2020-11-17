@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pycompressor package &mdash; pyCompressor 0.2.0 documentation</title>
+  <title>pycompressor package &mdash; pyCompressor 1.0.0 documentation</title>
   
 
   
@@ -195,7 +195,7 @@
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -249,7 +249,8 @@ and their respective values</p>
 <dl class="py method">
 <dt id="pycompressor.compressor.compress.genetic_algorithm">
 <code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look for the combination of replicas that gives the best ERF value.</p>
+<dd><p>Look for the combination of replicas that gives the best ERF
+value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>

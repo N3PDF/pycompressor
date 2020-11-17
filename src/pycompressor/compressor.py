@@ -30,11 +30,12 @@ class compress:
             Size of the reduced/compressed replicas
     """
 
-    def __init__(self, prior, est_dic, nb_reduc, folder, rndgen):
+    def __init__(self, prior, enhanced, est_dic, nb_reduc, folder, rndgen):
         self.prior = prior
         self.rndgen = rndgen
         self.est_dic = est_dic
         self.nb_reduc = nb_reduc
+        self.enhanced = enhanced
         # Init. index for ERF computation
         self.index = rndgen.integers(1, prior.shape[0], self.nb_reduc + 1)
         # Init. ErfComputation class. This also computes the one-time computation
@@ -55,7 +56,7 @@ class compress:
             float
                 Value of the ERF
         """
-        reduc_rep = self.prior[index]
+        reduc_rep = self.enhanced[index]
         # Compute Normalized Error function
         erf_res = self.err_func.compute_tot_erf(reduc_rep)
         return erf_res
@@ -75,12 +76,13 @@ class compress:
                 Dictionary containing the list of estimators
                 and their respective values
         """
-        selected_replicas = self.prior[index]
+        selected_replicas = self.enhanced[index]
         erfs = self.err_func.compute_all_erf(selected_replicas)
         return erfs
 
     def genetic_algorithm(self, nb_mut=5):
-        """Look for the combination of replicas that gives the best ERF value.
+        """Look for the combination of replicas that gives the best ERF
+        value.
 
         Parameters
         ----------
@@ -96,12 +98,11 @@ class compress:
         nmut = nb_mut
         # Compute ERF
         berf = self.error_function(self.index)
-        # Construc mutation matrix
+        # Construct mutation matrix
         mut = np.full((nmut, self.index.shape[0]), self.index)
         # Perform mutation
         for i in range(nmut):
             # Define mutation rate
-            # r = np.random.uniform(0, 1)
             r = self.rndgen.uniform(0, 1)
             if r <= 0.3:
                 _nmut = 1

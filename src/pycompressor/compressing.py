@@ -93,7 +93,6 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     # Set seed
     rndgen = Generator(PCG64(seed=0))
     comp = compress(prior, enhanced, est_dic, compressed, out_folder, rndgen)
-    # Set seed
     # Start compression depending on the Evolution Strategy
     erf_list = []
     final_result = {"pdfset_name": pdf}

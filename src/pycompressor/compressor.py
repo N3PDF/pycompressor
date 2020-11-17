@@ -37,7 +37,7 @@ class compress:
         self.nb_reduc = nb_reduc
         self.enhanced = enhanced
         # Init. index for ERF computation
-        self.index = rndgen.integers(1, prior.shape[0], self.nb_reduc + 1)
+        self.index = rndgen.integers(1, enhanced.shape[0], self.nb_reduc + 1)
         # Init. ErfComputation class. This also computes the one-time computation
         # of the estimators for the prior.
         self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder, rndgen)
@@ -113,7 +113,7 @@ class compress:
             else:
                 _nmut = 4
             for _ in range(_nmut):
-                p = self.rndgen.integers(1, self.prior.shape[0])
+                p = self.rndgen.integers(1, self.enhanced.shape[0])
                 k = self.rndgen.integers(self.nb_reduc)
                 mut[i][k] = p
         # Compute ERF for the new sample

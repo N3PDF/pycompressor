@@ -112,7 +112,7 @@ class compress:
                 _nmut = 4
             for _ in range(_nmut):
                 p = np.random.randint(1, self.prior.shape[0])
-                k = np.random.randint(1, self.nb_reduc)
+                k = np.random.randint(self.nb_reduc)
                 mut[i][k] = p
         # Compute ERF for the new sample
         erf = np.zeros(nmut)

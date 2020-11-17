@@ -1,15 +1,19 @@
 # This file contains the modules that computes the Error Function (ERF)
 # by taking the upper 68% from the confidence interval.
 
+import json
+import logging
 import numpy as np
 from numba import njit
 from tqdm import trange
 from pycompressor.estimators import Estimators
 
+log = logging.getLogger(__name__)
+
 
 def randomize_rep(replica, number):
-    """Extract a subset of random replica from the prior with a nun-
-    redundant way.
+    """Extract a subset of random replica from the prior in a nun-
+    redundant way (no duplicates).
 
     Parameters
     ----------
@@ -47,16 +51,16 @@ def compute_cfd68(reslt_trial):
     cfdv[0] = np.mean(reslt_trial)
     # 50% cfd
     cfd50 = int((size * (1 - 0.50) / 2))
-    cfdv[1] = sort[size - cfd50 - 1]
-    cfdv[2] = sort[cfd50]
+    cfdv[1] = sort[size - cfd50 - 1]    # upper
+    cfdv[2] = sort[cfd50]               # lower
     # 68% cfd
     cfd68 = int((size * (1 - 0.68) / 2))
-    cfdv[3] = sort[size - cfd68 - 1]
-    cfdv[4] = sort[cfd68]
+    cfdv[3] = sort[size - cfd68 - 1]    # upper
+    cfdv[4] = sort[cfd68]               # lower
     # 90% cfd
     cfd90 = int((size * (1 - 0.90) / 2))
-    cfdv[5] = sort[size - cfd90 - 1]
-    cfdv[6] = sort[cfd90]
+    cfdv[5] = sort[size - cfd90 - 1]    # upper
+    cfdv[6] = sort[cfd90]               # lower
     # md
     if (size % 2) == 0:
         cfdv[7] = (sort[size // 2 - 1] + sort[size // 2]) / 2
@@ -202,7 +206,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
         float
             Normalization value for each estimator
     """
-    print("\n[+] Computing normalization factors:")
+    log.info("Computing normalization factors:")
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:
@@ -226,25 +230,24 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
                 est_randm = est_cl.compute_for(es)
                 reslt[es][t] = compute_erfc(est_prior[es], est_randm)
     # Compute 65% confidence interval
-    norm = {}
+    norm, rnderfs_dic = {}, {}
     erfile = open(f"{folder}/erf_randomized.dat", "a+")
-    erfile.write(f"{rndm_size} ")
+    erfile.write(f"{rndm_size}:")
     for est, est_val in reslt.items():
         ucfd68 = compute_cfd68(est_val)
         norm[est] = ucfd68[3]
-        erfile.write(
-            "{} {} {} {} {} {} {} {} ".format(
-                ucfd68[0],
-                ucfd68[7],
-                ucfd68[2],
-                ucfd68[1],
-                ucfd68[4],
-                ucfd68[3],
-                ucfd68[6],
-                ucfd68[5],
-            )
-        )
+        rnderfs_dic[est] = {
+                "rcv": ucfd68[0],  # CV
+                "rmd": ucfd68[7],  # MD
+                "l50": ucfd68[2],  # lower 50
+                "u50": ucfd68[1],  # upper 50
+                "l68": ucfd68[4],  # lower 68
+                "u68": ucfd68[3],  # upper 68
+                "l90": ucfd68[6],  # lower 90
+                "u90": ucfd68[5],  # upper 90
+        }
         print(" - {:<18} {:^2} {:> .4e}".format(est, ":", norm[est]))
+    erfile.write(json.dumps(rnderfs_dic))
     erfile.write("\n")
     erfile.close()
     return norm

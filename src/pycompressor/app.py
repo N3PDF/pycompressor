@@ -14,7 +14,6 @@ from reportengine.compat import yaml
 from validphys.config import Environment, Config
 from validphys.config import EnvironmentError_, ConfigError
 
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 log = logging.getLogger(__name__)
 
 APP_CONFIG = dict(actions_=["compressing"])

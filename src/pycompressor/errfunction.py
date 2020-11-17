@@ -11,7 +11,7 @@ from pycompressor.estimators import Estimators
 log = logging.getLogger(__name__)
 
 
-def randomize_rep(replica, number):
+def randomize_rep(replica, number, rndgen):
     """Extract a subset of random replica from the prior in a nun-
     redundant way (no duplicates).
 
@@ -27,7 +27,7 @@ def randomize_rep(replica, number):
         array_like
             Randomized array of shape=(number, flavours, x-grid)
     """
-    index = np.random.choice(replica.shape[0], number, replace=False)
+    index = rndgen.choice(replica.shape[0], number, replace=False)
     return replica[index]
 
 
@@ -183,7 +183,7 @@ def estimate(prior, est_dic):
     return reslt
 
 
-def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
+def normalization(prior, est_prior, rndm_size, est_dic, trials, folder, rndgen):
     """Compute normalization for each Estimator. The normalization is computed
     by calculating the ERF of the given estimator for each trials as given
     generally by eq.(9) of the paper (https://arxiv.org/pdf/1504.06469).
@@ -215,7 +215,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder):
     with trange(trials) as iter_trial:
         for t in iter_trial:
             iter_trial.set_description("Random Trial")
-            randm = randomize_rep(prior, rndm_size)
+            randm = randomize_rep(prior, rndm_size, rndgen)
             est_cl = Estimators(randm)
             # Normalization for Moment Estimators
             for es in est_dic["moment_estimators"]:
@@ -272,13 +272,21 @@ class ErfComputation:
             Number of trials
     """
 
-    def __init__(self, prior, est_dic, nreduc, folder, trials=1000):
+    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000):
         self.prior = prior
         self.est_dic = est_dic
         # Compute estimators for PRIOR replicas
         self.pestm = estimate(prior, est_dic)
         # Compute normalizations for each estimator
-        self.normz = normalization(prior, self.pestm, nreduc, est_dic, trials, folder)
+        self.normz = normalization(
+                prior,
+                self.pestm,
+                nreduc,
+                est_dic,
+                trials,
+                folder,
+                rndgen
+        )
 
     def __repr__(self):
         return "Normalizations: {}".format(self.normz)

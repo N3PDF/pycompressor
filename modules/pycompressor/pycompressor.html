@@ -195,7 +195,7 @@
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -212,8 +212,8 @@ words a subset that gives the best value of the error function).</p>
 <dl class="py method">
 <dt id="pycompressor.compressor.compress.error_function">
 <code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.error_function" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sample a subset of replicas as given by the index. Then computes the
-corrresponding ERF value.</p>
+<dd><p>Sample a subset of replicas as given by the index. Then computes
+the corrresponding ERF value.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
@@ -255,8 +255,8 @@ and their respective values</p>
 <dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>The first argument is the value of the best ERF while the second
-contains the index of the reduced PDF</p>
+<dd class="field-even"><p>The first argument is the value of the best ERF while the
+second contains the index of the reduced PDF</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>, array_like)</p>
@@ -288,7 +288,7 @@ contains the index of the reduced PDF</p>
 <span id="pycompressor-errfunction-module"></span><h2>pycompressor.errfunction module<a class="headerlink" href="#module-pycompressor.errfunction" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="pycompressor.errfunction.randomize_rep">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">randomize_rep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replica</span></em>, <em class="sig-param"><span class="n">number</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.randomize_rep" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">randomize_rep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replica</span></em>, <em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.randomize_rep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a subset of random replica from the prior in a nun-
 redundant way (no duplicates).</p>
 <dl class="field-list simple">
@@ -411,7 +411,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.normalization">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em>, <em class="sig-param"><span class="n">folder</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.normalization" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.normalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute normalization for each Estimator. The normalization is computed
 by calculating the ERF of the given estimator for each trials as given
 generally by eq.(9) of the paper (<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>).</p>
@@ -436,7 +436,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 
 <dl class="py class">
 <dt id="pycompressor.errfunction.ErfComputation">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>

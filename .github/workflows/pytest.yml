@@ -2,7 +2,10 @@
 
 name: pytest
 
-on: [push]
+on:
+  push:
+    branches:
+      - never
 
 jobs:
   build:

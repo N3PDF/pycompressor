@@ -32,7 +32,7 @@ def splash():
     print(info + '\033[0m \033[97m')
 
 
-def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
+def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     """
     Action that performs the compression. The parameters
     for the compression are provided by a `runcard.yml`.
@@ -47,9 +47,10 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
             Dictionary containing the list of estimators
     """
 
-    if not enhance:
-        pdf = str(pdf)
-    else:
+    pdf = str(pdfsetting["pdf"])
+    enhanced_already_exists = pdfsetting.get("existing_enhanced", False)
+
+    if enhance:
         from pycompressor.postgans import postgans
         # Enhance with GANs
         outfolder = str(pdf) + "_enhanced"
@@ -83,11 +84,15 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
     # Load Prior Sets
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
     # Load Enhanced Sets
-    try:
-        postgan = pdf + "_enhanced"
-        enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
-    except RuntimeError as excp:
-        log.warning(excp)
+    if enhanced_already_exists:
+        try:
+            postgan = pdf + "_enhanced"
+            enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+        except RuntimeError as excp:
+            log.warning(excp)
+            log.info("The compressed set will be drawn from the prior samples.")
+            enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+    else:
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
 
     # Set seed

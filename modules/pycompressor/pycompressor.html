@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.estimators">pycompressor.estimators module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-pdfgrid-module">pycompressor.pdfgrid module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-postgans-module">pycompressor.postgans module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.utils">pycompressor.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor">Module contents</a></li>
 </ul>
 </li>
@@ -195,7 +196,7 @@
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -601,6 +602,78 @@ to the coorect one.</p>
 </div>
 <div class="section" id="pycompressor-postgans-module">
 <h2>pycompressor.postgans module<a class="headerlink" href="#pycompressor-postgans-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pycompressor.utils">
+<span id="pycompressor-utils-module"></span><h2>pycompressor.utils module<a class="headerlink" href="#module-pycompressor.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.utils.extract_estvalues">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_estvalues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_estvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the result from the prior for a given
+compressed set (w.r.t the size).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.extract_index">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the list of indices for a given compressed
+set (w.r.t the size)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdfname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the original/input PDF</p></li>
+<li><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.extract_bestErf">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_bestErf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_bestErf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the best/final ERF value for a given
+compressed set (w.r.t the size).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdfname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the original/input PDF</p></li>
+<li><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.compare_estimators">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">compare_estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">est1</span></em>, <em class="sig-param"><span class="n">est2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.compare_estimators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare if the values of all the estimators in <cite>est1</cite> are
+samller or equal than in <cite>est2</cite> (<cite>est1`&lt;`est2</cite>) and returns
+True if it is the case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>est1</strong> – est1</p></li>
+<li><p><strong>est2</strong> – est2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.get_best_estimator">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">get_best_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_ests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.get_best_estimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_best_estimator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>list_ests</strong> – list_ests</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-pycompressor">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycompressor" title="Permalink to this headline">¶</a></h2>

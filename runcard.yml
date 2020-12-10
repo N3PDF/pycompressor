@@ -1,12 +1,14 @@
 ###################################################
 # PDF Set                                         #
 ###################################################
-pdf:  130920-nnpdf40_jcm_iterated_70k_epochs
+pdfsetting:
+  pdf: PN3_Global_nonfittedprepro_1000_compressed_101
+  existing_enhanced: True
 
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 75
+compressed: 40
 
 ###################################################
 # Choice of Minimizer                             #

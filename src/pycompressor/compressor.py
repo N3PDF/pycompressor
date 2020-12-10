@@ -30,14 +30,14 @@ class compress:
             Size of the reduced/compressed replicas
     """
 
-    def __init__(self, prior, enhanced, est_dic, nb_reduc, folder, rndgen):
+    def __init__(self, prior, enhanced, est_dic, nb_reduc, idx, folder, rndgen):
         self.prior = prior
         self.rndgen = rndgen
         self.est_dic = est_dic
         self.nb_reduc = nb_reduc
         self.enhanced = enhanced
         # Init. index for ERF computation
-        self.index = rndgen.integers(1, enhanced.shape[0], self.nb_reduc + 1)
+        self.index = idx
         # Init. ErfComputation class. This also computes the one-time computation
         # of the estimators for the prior.
         self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder, rndgen)

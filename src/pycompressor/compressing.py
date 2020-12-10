@@ -10,6 +10,8 @@ from numpy.random import Generator, PCG64
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import compress
+from pycompressor.utils import extract_index
+from pycompressor.utils import extract_estvalues
 
 log = logging.getLogger(__name__)
 
@@ -72,6 +74,9 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
         postgans(str(pdf), outfolder, nbgen)
 
     splash()
+    # Set seed
+    rndgen = Generator(PCG64(seed=0))
+
     # Create output folder
     folder = pathlib.Path().absolute() / pdf
     folder.mkdir(exist_ok=True)
@@ -92,12 +97,13 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             log.warning(excp)
             log.info("The compressed set will be drawn from the prior samples.")
             enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+        init_index = np.array(extract_index(pdf, compressed))
+        ref_estimators = None
     else:
+        init_index = rndgen.integers(1, prior.shape[0], compressed + 1)
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
 
-    # Set seed
-    rndgen = Generator(PCG64(seed=0))
-    comp = compress(prior, enhanced, est_dic, compressed, out_folder, rndgen)
+    comp = compress(prior, enhanced, est_dic, compressed, init_index,  out_folder, rndgen)
     # Start compression depending on the Evolution Strategy
     erf_list = []
     final_result = {"pdfset_name": pdf}

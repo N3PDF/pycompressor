@@ -30,17 +30,18 @@ class compress:
             Size of the reduced/compressed replicas
     """
 
-    def __init__(self, prior, enhanced, est_dic, nb_reduc, idx, folder, rndgen):
-        self.prior = prior
-        self.rndgen = rndgen
-        self.est_dic = est_dic
-        self.nb_reduc = nb_reduc
-        self.enhanced = enhanced
-        # Init. index for ERF computation
+    def __init__(self, prior, enhanced, estdic, nbred, idx, estm, fldr, rnd):
         self.index = idx
-        # Init. ErfComputation class. This also computes the one-time computation
-        # of the estimators for the prior.
-        self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder, rndgen)
+        self.rndgen = rnd
+        self.prior = prior
+        self.est_dic = estdic
+        self.nb_reduc = nbred
+        self.enhanced = enhanced
+        self.ref_estimators = estm
+        # Init. index for ERF computation
+        # Init. ErfComputation class. This also computes the one-time
+        # computation of the estimators for the prior.
+        self.err_func = ErfComputation(prior, estdic, nbred, fldr, rnd)
 
     def error_function(self, index):
         """Sample a subset of replicas as given by the index. Then computes

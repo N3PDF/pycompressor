@@ -46,7 +46,7 @@ def extract_index(pdfname, comp_size):
         with open(infile) as results_file:
             results = json.load(results_file)
     except FileNotFoundError as err:
-        log.critical(f"{err}")
+        log.critical(err)
     index = results["index"]
     return index
 
@@ -68,7 +68,7 @@ def extract_bestErf(pdfname, comp_size):
         with open(infile) as results_file:
             results = json.load(results_file)
     except FileNotFoundError as err:
-        log.critical(f"{err}")
+        log.critical(err)
     bestErf = results["ERFs"]
     return bestErf[-1]
 

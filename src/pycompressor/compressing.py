@@ -77,13 +77,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     # Set seed
     rndgen = Generator(PCG64(seed=0))
 
-    # Create output folder
-    folder = pathlib.Path().absolute() / pdf
-    folder.mkdir(exist_ok=True)
-    # Create output folder for ERF stats
-    out_folder = pathlib.Path().absolute() / "erfs_output"
-    out_folder.mkdir(exist_ok=True)
-
     log.info("Loading PDF sets:")
     xgrid = XGrid().build_xgrid()
     # Load Prior Sets
@@ -97,13 +90,32 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             log.warning(excp)
             log.info("The compressed set will be drawn from the prior samples.")
             enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+        ref_estimators = extract_estvalues(compressed)
         init_index = np.array(extract_index(pdf, compressed))
-        ref_estimators = None
     else:
+        ref_estimators = None
         init_index = rndgen.integers(1, prior.shape[0], compressed + 1)
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
 
-    comp = compress(prior, enhanced, est_dic, compressed, init_index,  out_folder, rndgen)
+    # Create output folder
+    outrslt = postgan if enhanced_already_exists else pdf
+    folder = pathlib.Path().absolute() / outrslt
+    folder.mkdir(exist_ok=True)
+    # Create output folder for ERF stats
+    out_folder = pathlib.Path().absolute() / "erfs_output"
+    out_folder.mkdir(exist_ok=True)
+
+    # Init. Compressor class
+    comp = compress(
+        prior,
+        enhanced,
+        est_dic,
+        compressed,
+        init_index,
+        ref_estimators,
+        out_folder,
+        rndgen
+    )
     # Start compression depending on the Evolution Strategy
     erf_list = []
     final_result = {"pdfset_name": pdf}
@@ -127,7 +139,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     # Prepare output file
     final_result["ERFs"] = erf_list
     final_result["index"] = index.tolist()
-    outfile = open(f"{pdf}/compress_{pdf}_{compressed}_output.dat", "w")
+    outfile = open(f"{outrslt}/compress_{pdf}_{compressed}_output.dat", "w")
     outfile.write(json.dumps(final_result, indent=2))
     outfile.close()
     # Fetching ERF and construct reduced PDF grid

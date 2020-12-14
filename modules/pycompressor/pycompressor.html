@@ -229,6 +229,24 @@ the corrresponding ERF value.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="pycompressor.compressor.compress.all_error_function">
+<code class="sig-name descname">all_error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.all_error_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample a subset of replicas as given by the index. Then computes
+the corrresponding ERFs for all estimators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pycompressor.compressor.compress.final_erfs">
 <code class="sig-name descname">final_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.final_erfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the final ERF after minimization.</p>
@@ -666,10 +684,12 @@ True if it is the case.</p>
 <dl class="py function">
 <dt id="pycompressor.utils.get_best_estimator">
 <code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">get_best_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_ests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.get_best_estimator" title="Permalink to this definition">¶</a></dt>
-<dd><p>get_best_estimator.</p>
+<dd><p>Get the best estimator from a list of dictionaries
+containing values of all the different estimators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>list_ests</strong> – list_ests</p>
+<dd class="field-odd"><p><strong>list_ests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of dictionaries containing the results of
+all the statistical estimators</p>
 </dd>
 </dl>
 </dd></dl>

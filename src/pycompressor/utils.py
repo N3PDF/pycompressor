@@ -85,17 +85,23 @@ def compare_estimators(est1, est2):
     est2 :
         est2
     """
-    diffkeys = [k for k in est1 if est1[k] > est2[k]]
+
+    if est2 == None:
+        return True
+    else:
+        diffkeys = [k for k in est1 if est1[k] > est2[k]]
     return len(diffkeys) == 0
 
 
 def get_best_estimator(list_ests):
-    """get_best_estimator.
+    """Get the best estimator from a list of dictionaries
+    containing values of all the different estimators.
 
     Parameters
     ----------
-    list_ests :
-        list_ests
+    list_ests: list 
+        List of dictionaries containing the results of
+        all the statistical estimators
     """
     if len(list_ests) == 1:
         return list_ests[0]

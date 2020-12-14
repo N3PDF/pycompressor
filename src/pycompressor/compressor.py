@@ -10,6 +10,7 @@
 import cma
 import logging
 import numpy as np
+from pycompressor.utils import compare_estimators
 from pycompressor.errfunction import ErfComputation
 
 log = logging.getLogger(__name__)
@@ -60,6 +61,25 @@ class compress:
         reduc_rep = self.enhanced[index]
         # Compute Normalized Error function
         erf_res = self.err_func.compute_tot_erf(reduc_rep)
+        return erf_res
+
+    def all_error_function(self, index):
+        """Sample a subset of replicas as given by the index. Then computes
+        the corrresponding ERFs for all estimators.
+
+        Parameters
+        ----------
+            index: array_like
+                Array containing the index of the replicas
+
+        Returns
+        -------
+            float
+                Value of the ERF
+        """
+        reduc_rep = self.enhanced[index]
+        # Compute NON-Normalized Error functions
+        erf_res = self.err_func.compute_all_erf(reduc_rep)
         return erf_res
 
     def final_erfs(self, index):
@@ -125,7 +145,8 @@ class compress:
         besterf = np.min(erf)                 # Find the lowest ERF
         idx = np.where(erf == besterf)[0][0]  # Find index of the lowest ERF
         # Update index
-        if besterf < berf:
+        estvl = self.all_error_function(mut[idx])
+        if besterf < berf and compare_estimators(estvl, self.ref_estimators):
             self.index = mut[idx]
         else:
             besterf = berf

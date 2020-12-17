@@ -60,14 +60,6 @@ pycompressor.postgans module
    :undoc-members:
    :show-inheritance:
 
-pycompressor.utils module
--------------------------
-
-.. automodule:: pycompressor.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 

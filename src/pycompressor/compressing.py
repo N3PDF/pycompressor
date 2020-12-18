@@ -3,6 +3,7 @@ import shutil
 import logging
 import pathlib
 import numpy as np
+import NNPDF as nnpath
 import subprocess as sub
 
 from tqdm import trange
@@ -51,6 +52,8 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
         pdf = str(pdf)
     else:
         from pycompressor.postgans import postgans
+        resultspath = nnpath.get_results_path()
+        resultspath = resultspath + f"{str(pdf)}/filter.yml" 
         # Enhance with GANs
         outfolder = str(pdf) + "_enhanced"
         sub.call(
@@ -65,7 +68,7 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
             ]
         )
         # Evolve Generated Grids
-        shutil.copy("filter.yml", f"{outfolder}/filter.yml")
+        shutil.copy(resultspath, f"{outfolder}/filter.yml")
         sub.call(["evolven3fit", f"{outfolder}", f"{nbgen}"])
         # Add symbolic Links to LHAPDF dataDir
         postgans(str(pdf), outfolder, nbgen)

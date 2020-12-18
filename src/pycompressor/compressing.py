@@ -33,7 +33,7 @@ def splash():
     print(info + '\033[0m \033[97m')
 
 
-def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
+def compressing(pdf, compressed, minimizer, est_dic, gans):
     """
     Action that performs the compression. The parameters
     for the compression are provided by a `runcard.yml`.
@@ -48,18 +48,24 @@ def compressing(pdf, compressed, minimizer, est_dic, enhance, nbgen):
             Dictionary containing the list of estimators
     """
 
-    if not enhance:
+    if not gans["enhance"]:
         pdf = str(pdf)
     else:
         from pycompressor.postgans import postgans
+        runcard = gans["runcard"]
+        nbgen = gans["total_replicas"]
         resultspath = nnpath.get_results_path()
         resultspath = resultspath + f"{str(pdf)}/filter.yml" 
+        # Write PDF name into gans runcard
+        ganruncard = open(f"{runcard}.yml", "a+")
+        ganruncard.write(f"pdf: {str(pdf)}")
+        ganruncard.close()
         # Enhance with GANs
         outfolder = str(pdf) + "_enhanced"
         sub.call(
             [
                 "ganpdfs",
-                "runcard.yml",
+                f"{runcard}.yml",
                 "-o",
                 f"{outfolder}",
                 "-k",

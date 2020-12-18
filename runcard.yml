@@ -2,13 +2,13 @@
 # PDF Set                                         #
 ###################################################
 pdfsetting:
-  pdf: PN3_Global_nonfittedprepro_1000_compressed_101
-  existing_enhanced: True
+  pdf: NNPDF40_nnlo_as_0118_1000rep_enhanced
+  existing_enhanced: False
 
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 40
+compressed: 200
 
 ###################################################
 # Choice of Minimizer                             #

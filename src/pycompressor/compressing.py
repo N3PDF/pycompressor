@@ -81,6 +81,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     xgrid = XGrid().build_xgrid()
     # Load Prior Sets
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+    rndindex = rndgen.integers(1, prior.shape[0], compressed + 1)
     # Load Enhanced Sets
     if enhanced_already_exists:
         try:
@@ -95,8 +96,9 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
         init_index = np.array(extract_index(pdf, compressed))
     else:
         ref_estimators = None
-        init_index = rndgen.integers(1, prior.shape[0], compressed + 1)
+        init_index = rndindex
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+        # init_index = rndgen.integers(1, prior.shape[0], compressed + 1)
 
     # Create output folder
     outrslt = postgan if enhanced_already_exists else pdf

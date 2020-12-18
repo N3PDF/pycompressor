@@ -36,46 +36,7 @@ est_dic:
 #########################################################
 # Enhance statistics of Prior                           #
 #########################################################
-enhance  : False
-nbgen    : 160
-
-#########################################################
-# [Grids]                                               #
-# Options:                                              #
-# - custom: Custom GANs xgrid as defined in the Module  #
-# - lhapdf: Use the same xgrid as in the input PDF      #
-#########################################################
-q        : 1.65
-x_grid   : custom
-
-#########################################################
-# * Architecture:                                       #
-#   - dnn : Deep Neural Network                         #
-#   - dcnn: Deep Convolutional Neural Network           #
-#########################################################
-architecture: dnn
-
-# Architecture
-ddnn_size: 1
-gdnn_size: 1
-
-# [NUmber of Nodes in 1st Layer]
-g_nodes  : 128
-d_nodes  : 450
-
-# [Activations]
-g_act    : leakyrelu
-d_act    : leakyrelu
-
-# [Optimizer]
-d_opt    : rms
-gan_opt  : rms
-epochs   : 5000
-
-# [Batch size]
-batch_size : 64
-
-# Intermediate steps to train the
-# Critic & Generator
-nd_steps : 4
-ng_steps : 3
+gans  :
+  enhance : False
+  runcard : ganpdfs
+  total_replicas: 2000

@@ -3,6 +3,8 @@
 import os
 import pytest
 import numpy as np
+from numpy.random import PCG64
+from numpy.random import Generator
 from pycompressor import compressor
 from pycompressor import errfunction
 
@@ -15,7 +17,7 @@ PDFSIZE = 10
 NB_REDUCED = 4
 
 # Seed
-np.random.seed(0)
+RDM = Generator(PCG64(seed=0))
 
 # Create Toy prior PDF
 PRIOR = np.random.uniform(0, 1, size=[PDFSIZE, FLAVS, XGRID])
@@ -36,13 +38,19 @@ else:
 
 
 # Compressor class
-COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
+COMP = compressor.compress(
+    PRIOR,
+    ESTIMATORS,
+    NB_REDUCED,
+    "TEST",
+    RDM
+)
 
 
 def get_subset(n):
     """ Extract random set of replicas from the prior
     using the `randomize_rep` method. """
-    subset = errfunction.randomize_rep(PRIOR, n)
+    subset = errfunction.randomize_rep(PRIOR, n, RDM)
     return subset
 
 
@@ -78,7 +86,13 @@ def test_normalization(random_size=4, trial=2):
     are positive. """
     est_prior = test_estimate()
     norm = errfunction.normalization(
-            PRIOR, est_prior, random_size, ESTIMATORS, trial, "TEST"
+        PRIOR,
+        est_prior,
+        random_size,
+        ESTIMATORS,
+        trial,
+        "TEST",
+        RDM
     )
     for _, val in norm.items():
         assert val > 0

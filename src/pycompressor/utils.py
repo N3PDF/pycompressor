@@ -2,8 +2,18 @@
 
 import json
 import logging
+import numpy as np
 
 log = logging.getLogger(__name__)
+
+
+def remap_index(index, shuffled):
+    new_idx = []
+    for idx in index:
+        # TODO: Implement exception
+        pos = np.where(shuffled == idx)[0][0]
+        new_idx.append(pos)
+    return np.array(new_idx)
 
 
 def extract_estvalues(comp_size):

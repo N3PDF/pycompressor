@@ -2,7 +2,7 @@
 # PDF Set                                         #
 ###################################################
 pdfsetting:
-  pdf: NNPDF40_nnlo_as_0118_1000rep_enhanced
+  pdf: NNPDF40_nnlo_as_0118_1000rep
   existing_enhanced: False
 
 ###################################################

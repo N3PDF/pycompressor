@@ -10,6 +10,7 @@ from numpy.random import Generator, PCG64
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import compress
+from pycompressor.utils import remap_index
 from pycompressor.utils import extract_index
 from pycompressor.utils import extract_estvalues
 
@@ -91,10 +92,17 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             log.warning(excp)
             log.info("The compressed set will be drawn from the prior samples.")
             enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
-        # ref_estimators = None
-        ref_estimators = extract_estvalues(compressed)
+        # shuffler = rndgen.choice(enhanced.shape[0], enhanced.shape[0], replace=False)
+        # enhanced = enhanced[shuffler]
         init_index = np.array(extract_index(pdf, compressed))
+        # init_index = remap_index(init_index, shuffler)
+        # ref_estimators = None
+        # init_index = rndindex
+        # TODO: Pay attention to below
+        ref_estimators = None
+        # ref_estimators = extract_estvalues(compressed)
     else:
+        # rdm = rndgen.choice(3001, 3001, replace=False)
         ref_estimators = None
         init_index = rndindex
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()

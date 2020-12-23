@@ -46,6 +46,19 @@ def axes_width(ax, lw=1):
         ax.spines[axis].set_linewidth(lw)
 
 
+def sort_index(lst):
+    """sort_index.
+
+    :param lst:
+    """
+
+    new_lst = []
+    srt_lst = sorted(lst)
+    for n in lst:
+        new_lst.append(srt_lst.index(n) + 1)
+    return new_lst
+
+
 def compute_errobars(lower, upper):
     """Given a lower and upper value, compute the
     central value and the error.
@@ -100,7 +113,7 @@ def parse_cccomp_random(infile):
 
     new_dic = {}
     results = extract_data(infile)
-    index_comp = [row[0] for row in results]
+    index_comp = [int(row[0]) for row in results]
     for position, est in enumerate(LIST_ESTM):
         position *= 8
         stat_dic = {}
@@ -124,7 +137,7 @@ def parse_cccomp_reduced(infile):
 
     new_dic = {}
     results = extract_data(infile)
-    index_comp = [row[0] for row in results]
+    index_comp = [int(row[0]) for row in results]
     for position, est in enumerate(LIST_ESTM, start=1):
         arr_vals = []
         for res in results:
@@ -231,6 +244,7 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
     fig, axes = plt.subplots(ncols=2, nrows=3, figsize=[20.8, 20.8])
 
     # Loop over the grid
+    nticks = sort_index(indx)
     for i, axis in enumerate(axes.reshape(-1)):
         estmd_stat = erf_vals[list_est[i]]
         estmd_tots = erf_tots[list_est[i]]
@@ -242,7 +256,7 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
         c90, error90 = compute_errobars(estmd_stat["l90"], estmd_stat["u90"])
         # Actual Plotting
         axis.errorbar(
-                indx,
+                nticks,
                 c90,
                 yerr=error90,
                 linestyle="",
@@ -250,10 +264,10 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
                 elinewidth=2.25,
                 capsize=6,
                 zorder=1,
-                label="Raondom 50% c.l. (1k)"
+                label="Random 50% c.l. (1k)"
         )
         axis.errorbar(
-                indx,
+                nticks,
                 c68,
                 yerr=error68,
                 linestyle="",
@@ -261,10 +275,10 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
                 elinewidth=2.25,
                 capsize=6,
                 zorder=2,
-                label="Raondom 68% c.l. (1k)"
+                label="Random 68% c.l. (1k)"
         )
         axis.errorbar(
-                indx,
+                nticks,
                 c50,
                 yerr=error50,
                 linestyle="",
@@ -272,10 +286,10 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
                 elinewidth=2.25,
                 capsize=6,
                 zorder=3,
-                label="Raondom 90% c.l. (1k)"
+                label="Random 90% c.l. (1k)"
         )
         axis.scatter(
-                indx,
+                nticks,
                 estmd_stat["rcv"],
                 s=80,
                 color="#ff00ff",
@@ -283,7 +297,7 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
                 label="Random Mean (1k)"
         )
         axis.scatter(
-                indx,
+                nticks,
                 estmd_stat["rmd"],
                 s=80,
                 color="#0000ff",
@@ -292,7 +306,7 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
         )
         # Total ERFs
         axis.scatter(
-                indx,
+                nticks,
                 estmd_tots,
                 s=80,
                 color="#d62728",
@@ -301,8 +315,10 @@ def plot_erfs(erf_random, erf_reduced, formatting="pycomp"):
         )
         # Parameters
         axes_width(axis, lw=1.5)
+        axis.xaxis.set_ticks(nticks)
         axis.grid(alpha=0.1, linewidth=1.5)
         axis.tick_params(length=7, width=1.5)
+        axis.xaxis.set_ticklabels(indx)
         axis.tick_params(which='minor', length=4, width=1)
         handles, labels = axis.get_legend_handles_labels()
     fig.legend(handles, labels, loc='lower center', ncol=3, fontsize=16)

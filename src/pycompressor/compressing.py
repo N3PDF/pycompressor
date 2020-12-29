@@ -94,19 +94,17 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
         # shuffler = rndgen.choice(enhanced.shape[0], enhanced.shape[0], replace=False)
         # enhanced = enhanced[shuffler]
-        init_index = np.array(extract_index(pdf, compressed))
         # init_index = remap_index(init_index, shuffler)
-        # ref_estimators = None
-        # init_index = rndindex
-        # TODO: Pay attention to below
+        init_index = np.array(extract_index(pdf, compressed))
+        # init_index = rndgen.integers(1, enhanced.shape[0], compressed + 1)
+        # init_index = np.arange(1, compressed + 1, 1)
         ref_estimators = None
+        # TODO: Check to below
         # ref_estimators = extract_estvalues(compressed)
     else:
-        # rdm = rndgen.choice(3001, 3001, replace=False)
         ref_estimators = None
         init_index = rndindex
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
-        # init_index = rndgen.integers(1, prior.shape[0], compressed + 1)
 
     # Create output folder
     outrslt = postgan if enhanced_already_exists else pdf
@@ -134,7 +132,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     log.info(f"Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
-        nb_iter = 25000
+        nb_iter = 15000
         with trange(nb_iter) as iter_range:
             for i in iter_range:
                 iter_range.set_description("Compression")

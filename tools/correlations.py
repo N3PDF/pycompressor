@@ -4,11 +4,17 @@
 import math
 import pylab
 import lhapdf
+import pathlib
 import logging
 import argparse
 import numpy as np
 import matplotlib.cm as cmx
 import matplotlib.pyplot as plt
+
+from numba import njit
+from scipy.stats import spearmanr
+from pycompressor.pdfgrid import XGrid
+from pycompressor.pdfgrid import PdfSet
 
 
 logging.basicConfig(
@@ -124,6 +130,12 @@ def generate_pdf(pdfname):
     return pdf, pdf_index
 
 
+def onetime_pdf_generation(pdfname, xgrid, Nf=3, q0=1):
+    init_pdf = PdfSet(pdfname, xgrid, q0, Nf) 
+    init_pdf = init_pdf.build_pdf()
+    pdf_indx = np.arange(init_pdf.shape[0])
+    return init_pdf
+
 def plot_correlation(x, prior, cmprior, enhanced, size, q=100):
     for fl in FLS:
         plt.figure(figsize=[10, 8])
@@ -148,6 +160,78 @@ def plot_correlation(x, prior, cmprior, enhanced, size, q=100):
         plt.savefig(f"correlations/{TAGS[fl[0]]}-{TAGS[fl[1]]}_correlation.png", dpi=350)
         plt.close()
 
+@njit
+def correlations(x1, x2, fl1, fl2, pdf, nrep):
+    """Compute correlations between two flavors for a
+    given value of x. Exact copy of the function here:
+    https://github.com/scarrazza/compressor/tree/master/tools
+
+    Parameters:
+    ----------
+    x1: float
+        momentum fraction x
+    x2: float
+        momentum fraction x
+    q: float
+        Energy scale
+    fl1: int
+        Flavor index
+    fl2: int
+        Flavor index
+    pdf: lhapdf.mkPDF
+        LHAPDF instance
+    ind: list
+        List of PDF indexes
+    """
+    a = b = ab = sq_a = sq_b = 0.0
+    for rp in range(nrep):
+        v1 = pdf[rp][fl1][x1]
+        v2 = pdf[rp][fl2][x2]
+        a  += v1
+        b  += v2
+        ab += v1*v2
+        sq_a += v1*v1
+        sq_b += v2*v2
+    a /= nrep
+    b /= nrep
+    ab /= nrep
+    sig1 = np.sqrt(sq_a / (nrep - 1.0) - nrep / (nrep - 1.0) * a * a)
+    sig2 = np.sqrt(sq_b / (nrep - 1.0) - nrep / (nrep - 1.0) * b * b)
+    return nrep / (nrep - 1.0) * (ab - a * b) / (sig1 * sig2)
+
+
+@njit
+def compute_corrMatrix(x, pdfset):
+    nrep, nflv, nxgd = pdfset.shape
+    assert nxgd == x.size
+    corr = np.zeros(shape=(nflv * nxgd, nflv * nxgd))
+    for fl1 in range(nflv):
+        for fl2 in range(nflv):
+            for xi in range(nxgd):
+                for xj in range(nxgd):
+                    pi = fl1 * nxgd + xi
+                    pj = fl2 * nxgd + xj
+                    if (pj >= pi):                
+                        # prior
+                        corr[pi, pj] = correlations(
+                            xi,
+                            xj,
+                            fl1,
+                            fl2,
+                            pdfset,
+                            nrep
+                        )
+                        corr[pj, pi] = corr[pi, pj]
+    return corr
+
+
+def plot_corrMatrix(corr_mat, size, title=None, name=None):
+    fig, axis = plt.subplots(figsize=[8, 8])
+    plt.imshow(corr_mat, cmap='RdBu', vmin=-1, vmax=1)
+    plt.title(title)
+    plt.savefig(f"correlations/{name}.png", dpi=350)
+    plt.close("all")
+
 
 def arg_parser():
     """Parse inputs data file"""
@@ -162,16 +246,37 @@ if __name__ == "__main__":
     args = arg_parser()
     pdf_name = args.pdf
     comp_size = args.cmpsize
+
+    # Create output folder
+    folder = pathlib.Path().absolute() / "correlations"
+    folder.mkdir(exist_ok=True)
+
     # Get PDF names
     prior_name = str(pdf_name)
     cmprior_name = f"{prior_name}_compressed_{comp_size + 1}"
     enhanced_name = f"{prior_name}_enhanced_compressed_{comp_size + 1}"
+
     # Call PDFs
     logger.info("Generating PDFs.")
+    # Usual calls
     prior = generate_pdf(prior_name)
     cmprior = generate_pdf(cmprior_name)
     enhanced = generate_pdf(enhanced_name)
+    # Using pyCompressor calls. Generate the Grid ahead
+    # in order to use Numba.
+    mprior = onetime_pdf_generation(prior_name, XGRID)
+    mcmprior = onetime_pdf_generation(cmprior_name, XGRID)
+    menhanced = onetime_pdf_generation(enhanced_name, XGRID)
 
-    # Actual plotting
-    logger.info("Plot resutls.")
+    # Correlation Plots
+    logger.info("Plot correlations.")
     plot_correlation(XGRID, prior, cmprior, enhanced, comp_size)
+
+    # Compute Correlation Matrix
+    logger.info("Compute & plot correlation matrix.")
+    corr_prior = compute_corrMatrix(XGRID, mprior)
+    corr_stand = compute_corrMatrix(XGRID, mprior)
+    corr_enhcd = compute_corrMatrix(XGRID, mprior)
+    plot_corrMatrix(corr_prior, comp_size, title="Prior", name="prior")
+    plot_corrMatrix(corr_stand, comp_size, title="Standard", name="standard")
+    plot_corrMatrix(corr_enhcd, comp_size, title="Enhanced", name="enhanced")

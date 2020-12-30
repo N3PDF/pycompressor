@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import lhapdf
 import logging
 import argparse
 import numpy as np
+from numba import njit
 from scipy import interpolate
 from scipy.linalg import sqrtm
 import matplotlib.pyplot as plt
@@ -36,8 +38,20 @@ np.random.seed(0)
 lhapdf.setVerbosity(0)
 
 
-def fid(prior, generated):
-    """Similarity Metric Measure that measures the quality of the generated PDF replicas
+def posint(value):
+    """Checks that a given number is positive.
+    """
+
+    ivalue = int(value)
+    if ivalue <= 0:
+        raise argparse.ArgumentTypeError(
+            f"Negative values are not allowed, received: {value}"
+        )
+    return ivalue
+
+
+def fid(prior, compressed):
+    """Similarity Metric Measure that measures the quality of the compressed PDF replicas
     using the `Fréchet Inception Distance` (FID).
 
     TODO: Check how the total/final FIDs is computed.
@@ -46,8 +60,8 @@ def fid(prior, generated):
     ----------
     prior : np.array(float)
         Prior MC PDF replicas of shape (Nf, N, X)
-    generated : np.array(float)
-        Generated MC PDF replicas of shape (Nf, \tilde{N}, X)
+    compressed : np.array(float)
+        Compressed MC PDF replicas of shape (Nf, \tilde{N}, X)
 
     Returns
     -------
@@ -55,14 +69,14 @@ def fid(prior, generated):
         FID
     """
     fid_arr = np.zeros(prior.shape[0])
-    def compute_fid_per_fl(fl_prior, fl_generated):
-        """Measure the quality of the generated PDF using the `Fréchet Inception Distance`
+    def compute_fid_per_fl(fl_prior, fl_compressed):
+        """Measure the quality of the compressed PDF using the `Fréchet Inception Distance`
         (FID). The Frechet distance between two multivariate Gaussians X_1 ~ N(mu_1, C_1)
         and X_2 ~ N(mu_2, C_2) is:
             d^2 = ||mu_1 - mu_2||^2 + Tr(C_1 + C_2 - 2*sqrt(C_1*C_2)).
 
-        If the generated PDF replica is exactly the same as the prior, the value of the FID 
-        is zero; that means that the smaller the value of the FID is, the similar the generated 
+        If the compressed PDF replica is exactly the same as the prior, the value of the FID 
+        is zero; that means that the smaller the value of the FID is, the similar the compressed 
         replica is to the prior.
 
         For details about the FID's Inception Score measure, refer to the following:
@@ -72,18 +86,17 @@ def fid(prior, generated):
         ----------
         fl_prior : np.array(float)
             Array of prior PDF replica for a given flavor
-        fl_generated : np.array(float)
-            Array of generated PDF replica for a given flavor
+        fl_compressed : np.array(float)
+            Array of compressed PDF replica for a given flavor
 
         Returns
         -------
         float:
             FID value
         """
-
         # calculate mean and covariance statistics
         mu1, sigma1 = fl_prior.mean(axis=0), np.cov(fl_prior, rowvar=False)
-        mu2, sigma2 = fl_generated.mean(axis=0), np.cov(fl_generated, rowvar=False)
+        mu2, sigma2 = fl_compressed.mean(axis=0), np.cov(fl_compressed, rowvar=False)
         # Check if Infs or NaNs and return a big nnumber
         if (np.isnan(mu2).any() or np.isnan(sigma2).any()):
             return np.random.randint(400, 1000)
@@ -100,12 +113,13 @@ def fid(prior, generated):
         return fid
 
     for fl in range(prior.shape[0]):
-        fid_arr[fl] = compute_fid_per_fl(prior[fl], generated[fl])
+        fid_arr[fl] = compute_fid_per_fl(prior[fl], compressed[fl])
 
     return fid_arr
 
 
-def plot_fids(fid_rnd, fid_prior, fid_enhcd, labels=IDS, width=.55):
+def plot_hists(fid_rnd, fid_prior, fid_enhcd, info, width=.55):
+    plotName = info["plotName"]
     x = np.arange(1, 2 * len(fid_rnd), step=2)
     fig, axis = plt.subplots(figsize=(14,8))
     # Plot bars
@@ -115,30 +129,36 @@ def plot_fids(fid_rnd, fid_prior, fid_enhcd, labels=IDS, width=.55):
     # Legends & Labels
     axis.set_xticks(x)
     axis.set_yscale("log")
-    axis.set_ylabel("FID(PRIOR)")
-    axis.set_title("FID Comparisons")
-    axis.set_xticklabels(labels)
+    axis.set_xlabel(info["xlabel"])
+    axis.set_ylabel(info["ylabel"])
+    axis.set_title(info["plotTitle"])
+    axis.grid(alpha=0.1, linewidth=1.5)
+    axis.tick_params(length=7, width=1.5)
+    axis.set_xticklabels(info["xticksLabels"])
     axis.legend()
     fig.tight_layout()
-    plt.savefig("FIDs.png", dpi=250)
+    plt.savefig(f"{plotName}.png", dpi=250)
     plt.close("all")
 
 
 def arg_parser():
     """Parse inputs data file"""
     parser = argparse.ArgumentParser(description="Plot ERFs validation plot.")
-    parser.add_argument("--prior", help="Original Prior", required=True)
-    parser.add_argument("--cmprior", help="Compressed from Prior", required=True)
-    parser.add_argument("--enhanced", help="Compressed from GAN-enhanced", required=True)
+    parser.add_argument("--pdf", help="PDF name", required=True)
+    parser.add_argument("--cmpsize", help="Size of compressed PDF", required=True, type=posint)
     arguments = parser.parse_args()
     return arguments
 
 
 if __name__ == "__main__":
     args = arg_parser()
-    prior = args.prior
-    comp_prior = args.cmprior
-    comp_enhanced = args.enhanced
+    pdf_name = args.pdf
+    comp_size = args.cmpsize
+
+    # Get PDF names
+    prior = str(pdf_name)
+    comp_prior = f"{prior}_compressed_{comp_size + 1}"
+    comp_enhanced = f"{prior}_enhanced_compressed_{comp_size + 1}"
 
     logger.info("Generateing PDF grids.")
     xgrid = XGrid().build_xgrid()
@@ -156,11 +176,19 @@ if __name__ == "__main__":
     rndprior = np.transpose(rndprior, axes=[1, 0, 2])
     enhanced = np.transpose(enhanced, axes=[1, 0, 2])
 
+    # FIDs
+    logger.info("Generate FID plots.")
     # Compute FIDs
     fid_prior = fid(prior, cmprior)
     fid_rprior = fid(prior, rndprior)
     fid_enhanced = fid(prior, enhanced)
-
-    # Plot FIDs
-    logger.info("Generate FID plots.")
-    plot_fids(fid_rprior, fid_prior, fid_enhanced)
+    # Plot info
+    fid_info = {
+        # Plot info
+        "xlabel": "Flavours",
+        "ylabel": "FID Values",
+        "xticksLabels": IDS,
+        "plotTitle": "Frechet Inception Distance (FID)",
+        "plotName": "FID"
+    }
+    plot_hists(fid_rprior, fid_prior, fid_enhanced, fid_info)

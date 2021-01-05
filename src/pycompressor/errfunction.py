@@ -86,9 +86,8 @@ def compute_erfm(prior, nset):
         float
             Value of the error Estimation
     """
-    flv_size = prior.shape[0]
-    xgd_size = prior.shape[1]
     reslt = 0
+    flv_size, xgd_size = prior.shape
     for fl in range(flv_size):
         for xg in range(xgd_size):
             if prior[fl][xg] != 0:
@@ -117,10 +116,8 @@ def compute_erfs(prior, nset):
         float
             Value of the error Estimation
     """
-    flv_size = prior.shape[0]
-    xgd_size = prior.shape[1]
-    region_size = prior.shape[2]
     reslt = 0
+    flv_size, xgd_size, region_size = prior.shape
     for fl in range(flv_size):
         for xg in range(xgd_size):
             for rg in range(region_size):

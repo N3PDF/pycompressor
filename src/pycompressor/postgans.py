@@ -23,7 +23,6 @@ def get_lhapdf_dir():
     """`get_lhapdf_dir` retrieves the path where the LHAPDF
     data are located.
     """
-
     lhapdf_dir = Popen(["lhapdf-config", "--datadir"], stdout=PIPE)
     lhapdf_pathdir, _ = lhapdf_dir.communicate()
     lhapdf_pathdir = lhapdf_pathdir.decode("utf-8")
@@ -58,7 +57,6 @@ def replace_num_members(info_file, nbprior, totrep):
     totrep :
         total number of the new MC of replicas
     """
-
     subst = f"NumMembers: {totrep+1}"
     pattern = f"NumMembers: {nbprior}"
     file_handle = open(info_file, 'r')
@@ -97,7 +95,6 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
         Choose to whether or not make a check by importing the
         enhanced PDF.
     """
-
     print("\033[36m ####################")
     print("\033[36m # postgans starts. #")
     print("\033[36m ####################\033[97m")

@@ -3,6 +3,7 @@ import shutil
 import logging
 import pathlib
 import numpy as np
+import NNPDF as nnpath
 import subprocess as sub
 
 from tqdm import trange
@@ -35,7 +36,7 @@ def splash():
     print(info + '\033[0m \033[97m')
 
 
-def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
+def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """
     Action that performs the compression. The parameters
     for the compression are provided by a `runcard.yml`.
@@ -55,12 +56,19 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
 
     if enhance:
         from pycompressor.postgans import postgans
-        # Enhance with GANs
+        runcard = gans["runcard"]
+        nbgen = gans["total_replicas"]
+        resultspath = nnpath.get_results_path()
+        resultspath = resultspath + f"{str(pdf)}/filter.yml"
+        # Write PDF name into gans runcard
+        ganruncard = open(f"{runcard}.yml", "a+")
+        ganruncard.write(f"pdf: {str(pdf)}")
+        ganruncard.close()
         outfolder = str(pdf) + "_enhanced"
         sub.call(
             [
                 "ganpdfs",
-                "runcard.yml",
+                f"{runcard}.yml",
                 "-o",
                 f"{outfolder}",
                 "-k",
@@ -69,7 +77,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             ]
         )
         # Evolve Generated Grids
-        shutil.copy("filter.yml", f"{outfolder}/filter.yml")
+        shutil.copy(resultspath, f"{outfolder}/filter.yml")
         sub.call(["evolven3fit", f"{outfolder}", f"{nbgen}"])
         # Add symbolic Links to LHAPDF dataDir
         postgans(str(pdf), outfolder, nbgen)
@@ -89,19 +97,21 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
             postgan = pdf + "_enhanced"
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
         except RuntimeError as excp:
+            # TODO: Replace the below with an error & an error message:
+            # "Enhanced PDF not found, please set enhance to True in ganpdfs.yml"
             log.warning(excp)
             log.info("The compressed set will be drawn from the prior samples.")
             enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+        nb_iter, ref_estimators = 50000, None
+        init_index = np.array(extract_index(pdf, compressed))
         # shuffler = rndgen.choice(enhanced.shape[0], enhanced.shape[0], replace=False)
         # enhanced = enhanced[shuffler]
         # init_index = remap_index(init_index, shuffler)
-        init_index = np.array(extract_index(pdf, compressed))
         # init_index = rndgen.integers(1, enhanced.shape[0], compressed + 1)
         # init_index = np.arange(1, compressed + 1, 1)
-        ref_estimators = None
-        # TODO: Check to below
         # ref_estimators = extract_estvalues(compressed)
     else:
+        nb_iter = 15000
         ref_estimators = None
         init_index = rndindex
         enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
@@ -132,7 +142,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, enhance, nbgen):
     log.info(f"Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA
-        nb_iter = 15000
         with trange(nb_iter) as iter_range:
             for i in iter_range:
                 iter_range.set_description("Compression")

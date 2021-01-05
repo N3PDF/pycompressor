@@ -54,7 +54,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     pdf = str(pdfsetting["pdf"])
     enhanced_already_exists = pdfsetting.get("existing_enhanced", False)
 
-    if enhance:
+    if gans["enhance"]:
         from pycompressor.postgans import postgans
         runcard = gans["runcard"]
         nbgen = gans["total_replicas"]
@@ -96,6 +96,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         try:
             postgan = pdf + "_enhanced"
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            print(f"[+] Enhanced PDF set with {enhanced.shape[0]} loaded.")
         except RuntimeError as excp:
             # TODO: Replace the below with an error & an error message:
             # "Enhanced PDF not found, please set enhance to True in ganpdfs.yml"

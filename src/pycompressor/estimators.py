@@ -135,8 +135,10 @@ class Estimators:
             array_like
                 Correlation matrix
         """
+        nxcorr = 5
         nrep, nflv, nxgd = replicas.shape
-        nxcorr, size = 5, nxcorr * nflv
+        size = nxcorr * nflv
+        # Select x's in the grid
         xs = [int(i / (nxcorr) * nxgd) for i in range(1, nxcorr)]
         xs.append(int(nflv - 1))
         nx = len(xs)

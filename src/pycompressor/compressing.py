@@ -23,6 +23,11 @@ Q0 = 1
 NF = 3
 
 
+class LoadingEnhancedError(Exception):
+    """Compressor error."""
+    pass
+
+
 def splash():
     info = """\033[34m
 +-------------------------------------------------------------------------+
@@ -95,27 +100,17 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     if enhanced_already_exists:
         try:
             postgan = pdf + "_enhanced"
+            final_result = {"pdfset_name": postgan}
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
             print(f"[+] Enhanced PDF set with {enhanced.shape[0]} loaded.")
         except RuntimeError as excp:
-            # TODO: Replace the below with an error & an error message:
-            # "Enhanced PDF not found, please set enhance to True in ganpdfs.yml"
-            log.warning(excp)
-            log.info("The compressed set will be drawn from the prior samples.")
-            enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
-        nb_iter, ref_estimators = 50000, None
+            raise LoadingEnhancedError(f"{excp}")
+        nb_iter, ref_estimators = 30000, None
         init_index = np.array(extract_index(pdf, compressed))
-        # shuffler = rndgen.choice(enhanced.shape[0], enhanced.shape[0], replace=False)
-        # enhanced = enhanced[shuffler]
-        # init_index = remap_index(init_index, shuffler)
-        # init_index = rndgen.integers(1, enhanced.shape[0], compressed + 1)
-        # init_index = np.arange(1, compressed + 1, 1)
-        # ref_estimators = extract_estvalues(compressed)
     else:
-        nb_iter = 15000
-        ref_estimators = None
-        init_index = rndindex
-        enhanced = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
+        final_result = {"pdfset_name": pdf}
+        nb_iter, ref_estimators = 15000, None
+        init_index, enhanced = rndindex, prior
 
     # Create output folder
     outrslt = postgan if enhanced_already_exists else pdf
@@ -138,8 +133,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     )
     # Start compression depending on the Evolution Strategy
     erf_list = []
-    final_result = {"pdfset_name": pdf}
-
     log.info(f"Compressing replicas using {minimizer} algorithm:")
     if minimizer == "genetic":
         # Run compressor using GA

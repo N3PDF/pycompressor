@@ -52,7 +52,7 @@ def posint(value):
     return ivalue
 
 
-def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit):
+def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
     plotName = info["plotName"]
     fig, axes = plt.subplots(ncols=2, nrows=3, figsize=(20, 18))
     xind = [5, 10, 15, 45, 55, 68]
@@ -117,22 +117,20 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit):
         axis.tick_params(length=7, width=1.5)
         axis.legend(fontsize=14)
     fig.suptitle(info["figTitle"])
-    fig.savefig(f"distributions/{plotName}.png", dpi=250)
+    fig.savefig(f"{folder}/{plotName}.png", dpi=250)
     plt.close("all")
 
 
-def plot_dists(x, prior, stand, ehncd, bins=10, fit=False):
+def plot_dists(x, prior, stand, ehncd, folder, bins=10, fit=False):
     info = {
         "bins": bins,
         "xlabel": "x",
         "ylabel": "y",
     }
-    folder = pathlib.Path().absolute() / "distributions"
-    folder.mkdir(exist_ok=True)
     for fl in range(prior.shape[0]):
         info["figTitle"] = IDS[fl]
-        info["plotName"] = f"dist_{IDS[fl]}"
-        plot_dists_per_fl(x, prior[fl], stand[fl], ehncd[fl], info, fit)
+        info["plotName"] = f"{IDS[fl]}"
+        plot_dists_per_fl(x, prior[fl], stand[fl], ehncd[fl], info, fit, folder)
 
 
 def arg_parser():
@@ -154,6 +152,10 @@ if __name__ == "__main__":
     comp_prior = f"{prior}_compressed_{comp_size + 1}"
     comp_enhanced = f"{prior}_enhanced_compressed_{comp_size + 1}"
 
+    # Create output folder
+    folder = pathlib.Path().absolute() / f"xDistributions_N{comp_size}"
+    folder.mkdir(exist_ok=True)
+
     logger.info("Generateing PDF grids.")
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(prior, xgrid, Q0, NF).build_pdf()
@@ -166,4 +168,4 @@ if __name__ == "__main__":
     enhanced = np.transpose(enhanced, axes=[1, 0, 2])
 
     logger.info("Plot distributions.")
-    plot_dists(xgrid, prior, cmprior, enhanced)
+    plot_dists(xgrid, prior, cmprior, enhanced, folder)

@@ -149,8 +149,8 @@ if __name__ == "__main__":
 
     # Get PDF names
     prior = str(pdf_name)
-    comp_prior = f"{prior}_compressed_{comp_size + 1}"
-    comp_enhanced = f"{prior}_enhanced_compressed_{comp_size + 1}"
+    comp_prior = f"{prior}_compressed_{comp_size}"
+    comp_enhanced = f"{prior}_enhanced_compressed_{comp_size}"
 
     # Create output folder
     folder = pathlib.Path().absolute() / f"xDistributions_N{comp_size}"

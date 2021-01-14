@@ -25,9 +25,9 @@ class compress:
     ----------
         prior: array_like
             Prior PDF replicas
-        est_dic: dic
+        estdic: dic
             Dictionary contaning the list of estimators
-        nb_reduc: int
+        nbred: int
             Size of the reduced/compressed replicas
     """
 

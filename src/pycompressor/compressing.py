@@ -7,6 +7,8 @@ import NNPDF as nnpath
 import subprocess as sub
 
 from tqdm import trange
+from rich.table import Table
+from rich.console import Console
 from numpy.random import Generator, PCG64
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
@@ -15,6 +17,7 @@ from pycompressor.utils import remap_index
 from pycompressor.utils import extract_index
 from pycompressor.utils import extract_estvalues
 
+console = Console()
 log = logging.getLogger(__name__)
 
 # Initial scale (in GeV)
@@ -91,7 +94,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     # Set seed
     rndgen = Generator(PCG64(seed=0))
 
-    log.info("Loading PDF sets:")
+    console.print("\n• Load PDF sets & Printing Summary:", style="bold blue")
     xgrid = XGrid().build_xgrid()
     # Load Prior Sets
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
@@ -102,7 +105,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
             postgan = pdf + "_enhanced"
             final_result = {"pdfset_name": postgan}
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
-            print(f"[+] Enhanced PDF set with {enhanced.shape[0]} loaded.")
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
         nb_iter, ref_estimators = 25000, None
@@ -120,6 +122,23 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     out_folder = pathlib.Path().absolute() / "erfs_output"
     out_folder.mkdir(exist_ok=True)
 
+    # Output Summary
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Parameter", justify="left", width=24)
+    table.add_column("Description", justify="left", width=50)
+    table.add_row("PDF set name", f"{pdf}")
+    table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
+    if enhanced_already_exists:
+        table.add_row("Size of enhanced", f"{enhanced.shape[0] - 1} replicas")
+    table.add_row("Size of compression", f"{compressed} replicas")
+    table.add_row("Input energy Q0", f"{Q0} GeV")
+    table.add_row(
+        "x-grid size",
+        f"{xgrid.shape[0]} points, x=({xgrid[0]:.4e}, {xgrid[-1]:.4e})"
+    )
+    table.add_row("Minimizer", f"{minimizer}")
+    console.print(table)
+
     # Init. Compressor class
     comp = compress(
         prior,
@@ -133,7 +152,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     )
     # Start compression depending on the Evolution Strategy
     erf_list = []
-    log.info(f"Compressing replicas using {minimizer} algorithm:")
+    console.print("\n• Compressing MC PDF replicas:", style="bold blue")
     if minimizer == "genetic":
         # Run compressor using GA
         with trange(nb_iter) as iter_range:
@@ -155,7 +174,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     outfile.write(json.dumps(final_result, indent=2))
     outfile.close()
     # Fetching ERF and construct reduced PDF grid
-    log.info(f"Final ERF: {erf}\n")
+    console.print(f"\n• Final ERF: {erf}.", style="bold red")
 
     # Compute final ERFs for the final choosen replicas
     final_err_func = comp.final_erfs(index)

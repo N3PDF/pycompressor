@@ -7,7 +7,11 @@ import lhapdf
 from tqdm import trange
 from subprocess import PIPE
 from subprocess import Popen
+from rich.table import Table
+from rich.console import Console
 
+console = Console()
+lhapdf.setVerbosity(0)
 
 compressed_file = sys.argv[1]
 # Reading results from file
@@ -37,7 +41,7 @@ dst_str = output + "/" + output
 
 # Copy the LHAPDF replicas to the output file
 cindex = []
-print("\n[+] Copying the selected replicas to compressed set:")
+console.print("\n• Copying the selected replicas to compressed set:", style="bold blue")
 with trange(nbcomp) as iter_index:
     for ix, idx in enumerate(iter_index):
         indx = int(index[idx])  # Make sure it's an integer
@@ -82,7 +86,7 @@ dst_file.close()
 src_file.close()
 
 # Fetching info from Prior Central PDF
-print("\n[+] Fetching information from original central PDF:")
+console.print("\n• Fetching information from original central PDF.", style="bold blue")
 w = open(src_str + "_0000.dat", "r")
 xpdf = []
 xgrid, qgrid, fgrid = [], [], []
@@ -95,6 +99,9 @@ for _ in range(0, 10):
 
 # Init grid size count
 s = 0
+table = Table(show_header=True, header_style="bold magenta")
+table.add_column("N", justify="left")
+table.add_column("Subgrids", justify="center", width=35)
 while True:
     textxs.append(w.readline())
     xs = [float(el) for el in textxs[s].split()]
@@ -109,18 +116,21 @@ while True:
     fgrid.append(fs)
     nx = len(xgrid[s])
     nq = len(qgrid[s])
-    print(f" - Subgrid {s} {len(xgrid[s])} {len(qgrid[s])} {len(fgrid[s])}")
+    table.add_row(
+        f"{s}",
+        f"{len(xgrid[s])} {len(qgrid[s])} {len(fgrid[s])}"
+    )
     for ix in range(0, nx):
         for iq in range(0, nq):
             w.readline().split()
     w.readline()
     s += 1
 w.close()
+console.print(table)
 
 # Reading XPDF
-print("\n[+] Computing PDF from LHAPDF:")
+console.print("\n• Extract grid information from compressed set:", style="bold blue")
 pdf = lhapdf.mkPDFs(pdfset_name)
-print("\n[+] Computing x-pdf:")
 with trange(len(cindex)) as iter_index:
     for irep in iter_index:
         iter_index.set_description(f"Reading Replica {irep}")
@@ -140,7 +150,7 @@ with trange(len(cindex)) as iter_index:
 
 
 # Construct commpressed central PDF
-print("\n[+] Computing central replicas for compressed set.\n")
+console.print("\n• Computing central replicas.", style="bold blue")
 w = open(dst_str + "_0000.dat", "w")
 w.write("PdfType: central\n")
 w.write("Format: lhagrid1\n---\n")

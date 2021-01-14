@@ -11,13 +11,15 @@ from scipy import interpolate
 from scipy.linalg import sqrtm
 import matplotlib.pyplot as plt
 
+from rich.logging import RichHandler
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 
 
 logging.basicConfig(
         level=logging.INFO,
-        format="\033[0;32m[%(levelname)s]\033[97m %(message)s"
+        format="\033[0;32m[%(levelname)s]\033[97m %(message)s",
+        handlers=[RichHandler()]
     )
 logger = logging.getLogger(__name__)
 

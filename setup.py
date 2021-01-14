@@ -23,10 +23,10 @@ PACKAGE = "pycompressor"
 
 # Used for pytest and code coverage
 TESTS_REQUIEREMENTS = ["pytest"]
+# Dependencies for the packages
+PACKAGE_REQUIEREMENTS = ["cma", "tqdm", "scipy", "numpy", "numba", "rich"]
 # Depending on the documents more dependencies can be added
 DOCS_REQUIEREMENTS = ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"]
-# Dependencies for the packages
-PACKAGE_REQUIEREMENTS = ["cma", "tqdm", "scipy", "numpy", "numba"]
 
 # Check if LHAPDF is installed
 try:

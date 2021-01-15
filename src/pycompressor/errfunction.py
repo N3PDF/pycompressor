@@ -211,7 +211,7 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder, rndgen):
         for es in est_list:
             reslt[es] = np.zeros(trials)
     # Loop over the random trials
-    console.print("\n• Evaluate estimators for random sampling", style="bold blue")
+    console.print("\n• Evaluate estimators for random sampling:", style="bold blue")
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("Estimators", justify="left", width=24)
     table.add_column("Values from random sampling", justify="left", width=50)

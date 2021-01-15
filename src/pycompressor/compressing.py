@@ -8,6 +8,7 @@ import subprocess as sub
 
 from tqdm import trange
 from rich.table import Table
+from rich.style import Style
 from rich.console import Console
 from numpy.random import Generator, PCG64
 from pycompressor.pdfgrid import XGrid
@@ -32,16 +33,16 @@ class LoadingEnhancedError(Exception):
 
 
 def splash():
-    info = """\033[34m
-+-------------------------------------------------------------------------+
-|𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗:                                                            |
-|-------                                                                  |
-|Fast python compressor for PDF replicas.                                 |
-|https://n3pdf.github.io/pycompressor/                                    |
-|© N3PDF                                                                  |
-+-------------------------------------------------------------------------+ 
-           """
-    print(info + '\033[0m \033[97m')
+    """Splash information."""
+
+    style = Style(color="blue")
+    logo = Table(show_header=True, header_style="bold blue", style=style)
+    logo.add_column("𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗", justify="center", width=60)
+    logo.add_row("[bold blue]Fast python compressor for PDF replicas.")
+    logo.add_row("[bold blue]https://n3pdf.github.io/pycompressor/")
+    logo.add_row("[bold blue]© N3PDF 2021")
+    logo.add_row("[bold blue]Authors: Stefano Carrazza, Juan E. Cruz-Martinez, Tanjona R. Rabemananjara")
+    console.print(logo)
 
 
 def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
@@ -124,7 +125,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
 
     # Output Summary
     table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Parameter", justify="left", width=24)
+    table.add_column("Parameters", justify="left", width=24)
     table.add_column("Description", justify="left", width=50)
     table.add_row("PDF set name", f"{pdf}")
     table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
@@ -174,7 +175,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     outfile.write(json.dumps(final_result, indent=2))
     outfile.close()
     # Fetching ERF and construct reduced PDF grid
-    console.print(f"\n• Final ERF: {erf}.", style="bold red")
+    console.print(f"\n• Final ERF: [bold red]{erf}.", style="bold red")
 
     # Compute final ERFs for the final choosen replicas
     final_err_func = comp.final_erfs(index)

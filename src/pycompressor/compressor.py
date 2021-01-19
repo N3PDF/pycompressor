@@ -102,8 +102,9 @@ class compress:
         return erfs
 
     def genetic_algorithm(self, nb_mut=5):
-        """Look for the combination of replicas that gives the best ERF
-        value.
+        """Look for the combination of replicas that gives the best total
+        ERF value. When `enhanced_already_exists` is set to True, the starting
+        index is set to be the best from the standard compression.
 
         Parameters
         ----------
@@ -172,6 +173,7 @@ class compress:
             float
                 Value of the ERF
         """
+        log.warning("This minimization is deprecated.")
         init_index = self.rndgen.choice(
                 self.prior.shape[0],
                 self.nb_reduc,
@@ -214,9 +216,7 @@ class compress:
                 "verb_disp": 0
             }
         cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
-        count_it = 0
         while not cma_es.stop() and cma_es.best.f > 1.4e-2:
-            count_it += 1
             pop_solutions, erf_values = [], []
             while len(pop_solutions) < cma_es.popsize:
                 current_erf = ind = np.NaN

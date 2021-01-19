@@ -276,21 +276,22 @@ class ErfComputation:
             Number of trials
     """
 
-    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000):
+    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000, norm=True):
         self.prior = prior
         self.est_dic = est_dic
         # Compute estimators for PRIOR replicas
         self.pestm = estimate(prior, est_dic)
         # Compute normalizations for each estimator
-        self.normz = normalization(
-                prior,
-                self.pestm,
-                nreduc,
-                est_dic,
-                trials,
-                folder,
-                rndgen
-        )
+        if norm:
+            self.normz = normalization(
+                    prior,
+                    self.pestm,
+                    nreduc,
+                    est_dic,
+                    trials,
+                    folder,
+                    rndgen
+            )
 
     def __repr__(self):
         return "Normalizations: {}".format(self.normz)

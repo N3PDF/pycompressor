@@ -272,8 +272,9 @@ and their respective values</p>
 <dl class="py method">
 <dt id="pycompressor.compressor.compress.genetic_algorithm">
 <code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look for the combination of replicas that gives the best ERF
-value.</p>
+<dd><p>Look for the combination of replicas that gives the best total
+ERF value. When <cite>enhanced_already_exists</cite> is set to True, the starting
+index is set to be the best from the standard compression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>

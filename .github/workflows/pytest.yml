@@ -48,7 +48,7 @@ jobs:
       shell: bash --login {0}
       run: |
         pip install .[tests]
-        pytest -v tests/ --cov=./src/checkpwd --cov-report=xml
+        pytest tests/
     - name: Upload coverage report
       uses: codecov/codecov-action@v1
       with:

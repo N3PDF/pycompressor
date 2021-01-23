@@ -2,22 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import math
-import pylab
 import lhapdf
 import pathlib
 import logging
 import argparse
 import numpy as np
-import matplotlib.cm as cmx
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-from matplotlib.font_manager import FontProperties
 
 from numba import njit
 from matplotlib.ticker import *
-from scipy.stats import spearmanr
 from rich.logging import RichHandler
-from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 
 
@@ -30,27 +24,27 @@ logger = logging.getLogger(__name__)
 
 
 FLS = [
-    [21,1],
-    [21,2],
-    [21,3],
-    [1,2],
-    [1,3],
-    [2,3],
-    [21,-1],
-    [21,-2],
-    [21,-3],
-    [-1,-2],
-    [-1,-3],
-    [-2,-3],
-    [1,-1],
-    [2,-2],
-    [3,-3],
-    [1,-2],
-    [-1,2],
-    [-2,3],
-    [2,-3],
-    [1,-3],
-    [-1,3]
+    [21, 1],
+    [21, 2],
+    [21, 3],
+    [1, 2],
+    [1, 3],
+    [2, 3],
+    [21, -1],
+    [21, -2],
+    [21, -3],
+    [-1, -2],
+    [-1, -3],
+    [-2, -3],
+    [1, -1],
+    [2, -2],
+    [3, -3],
+    [1, -2],
+    [-1, 2],
+    [-2, 3],
+    [2, -3],
+    [1, -3],
+    [-1, 3]
 ]
 
 TAGS = {
@@ -78,8 +72,8 @@ Y_FORMATTER = [
     '\n\n' + r'$\bar{u}$',
     '\n\n' + r'$\bar{d}$',
     '\n\n$g$',
-    '\n\n$d$', 
-    '\n\n$u$', 
+    '\n\n$d$',
+    '\n\n$u$',
     '\n\n$s$'
 ]
 
@@ -130,8 +124,8 @@ def correlation(x, q, fl1, fl2, pdf, ind):
     for r in range(0, nrep):
         v1 = pdf[ind[r]].xfxQ(fl1, x, q)
         v2 = pdf[ind[r]].xfxQ(fl2, x, q)
-        a  += v1
-        b  += v2
+        a += v1
+        b += v2
         ab += v1 * v2
         sq_a += v1 * v1
         sq_b += v2 * v2
@@ -171,10 +165,11 @@ def generate_random_pdf(pdfname, compression_size):
 
 
 def onetime_pdf_generation(pdfname, xgrid, Nf=3, q0=100):
-    init_pdf = PdfSet(pdfname, xgrid, q0, Nf) 
+    init_pdf = PdfSet(pdfname, xgrid, q0, Nf)
     init_pdf = init_pdf.build_pdf()
-    pdf_indx = np.arange(init_pdf.shape[0])
+    # pdf_indx = np.arange(init_pdf.shape[0])
     return init_pdf
+
 
 def plot_correlation(x, prior, random, cmprior, enhanced, size, folder, q=100):
     subfolder = folder / "PDF-Correlations"
@@ -205,6 +200,7 @@ def plot_correlation(x, prior, random, cmprior, enhanced, size, folder, q=100):
         plt.title(f"{TAGS[fl[0]]}-{TAGS[fl[1]]} correlation (Compression to {size})")
         plt.savefig(f"{subfolder}/{TAGS[fl[0]]}-{TAGS[fl[1]]}_correlation.png", dpi=350)
         plt.close()
+
 
 @njit
 def correlations(x1, x2, fl1, fl2, pdf, nrep):
@@ -257,7 +253,7 @@ def compute_corrMatrix(x, pdfset):
                 for xj in range(nxgd):
                     pi = fl1 * nxgd + xi
                     pj = fl2 * nxgd + xj
-                    if (pj >= pi):                
+                    if (pj >= pi):
                         # prior
                         corr[pi, pj] = correlations(
                             xi,
@@ -271,7 +267,7 @@ def compute_corrMatrix(x, pdfset):
     return corr
 
 
-def plot_corrMatrix(corr_mat, size, folder, v=[-1,1], title=None, name=None):
+def plot_corrMatrix(corr_mat, size, folder, v=[-1, 1], title=None, name=None):
     subfolder = folder / "CorrMatrix"
     subfolder.mkdir(exist_ok=True)
 
@@ -377,7 +373,7 @@ if __name__ == "__main__":
     plot_corrMatrix(corr_prior, comp_size, folder, title="Prior", name="prior")
     plot_corrMatrix(corr_stand, comp_size, folder, title="Standard", name="standard")
     plot_corrMatrix(corr_enhcd, comp_size, folder, title="Enhanced", name="enhanced")
-    
+
     # DIfference
     prior_vs_stand = corr_stand - corr_prior
     prior_vs_enhcd = corr_enhcd - corr_prior
@@ -385,7 +381,7 @@ if __name__ == "__main__":
         prior_vs_stand,
         comp_size,
         folder,
-        v=[-2e-1,2e-1],
+        v=[-2e-1, 2e-1],
         title="Prior-Standard",
         name="P_vs_S"
     )
@@ -393,10 +389,10 @@ if __name__ == "__main__":
         prior_vs_enhcd,
         comp_size,
         folder,
-        v=[-2e-1,2e-1],
+        v=[-2e-1, 2e-1],
         title="Prior-Enhanced",
         name="P_vs_E"
     )
-    
+
     logger.info("Project heatmaps into histograms.")
     plot_DiffCorrMat(prior_vs_stand, prior_vs_enhcd, folder, name="hist_project")

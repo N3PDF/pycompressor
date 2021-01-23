@@ -98,6 +98,13 @@ setup(
     entry_points={"console_scripts": ["pycompressor = pycompressor.app:main",]},
     package_dir={"": "src"},
     packages=find_packages("src"),
+    scripts=[
+        "scripts/compare_fids.py",
+        "scripts/compressed_grid.py",
+        "scripts/compare_correlations.py",
+        "scripts/compare_distributions.py",
+        "scripts/pycompressor_validate.py"
+    ],
     classifiers=[
         "Operating System :: Unix",
         "Programming Language :: Python",

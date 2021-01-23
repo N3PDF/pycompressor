@@ -6,8 +6,6 @@ import pathlib
 import logging
 import argparse
 import numpy as np
-from numba import njit
-from scipy import interpolate
 from scipy.linalg import sqrtm
 import matplotlib.pyplot as plt
 
@@ -72,6 +70,7 @@ def fid(prior, compressed):
         FID
     """
     fid_arr = np.zeros(prior.shape[0])
+
     def compute_fid_per_fl(fl_prior, fl_compressed):
         """Measure the quality of the compressed PDF using the `Fréchet Inception Distance`
         (FID). The Frechet distance between two multivariate Gaussians X_1 ~ N(mu_1, C_1)

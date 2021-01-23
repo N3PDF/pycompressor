@@ -6,10 +6,7 @@ import logging
 import pathlib
 import argparse
 import numpy as np
-from numba import njit
 from scipy import stats
-from scipy import interpolate
-from scipy.linalg import sqrtm
 import matplotlib.pyplot as plt
 
 from rich.logging import RichHandler
@@ -59,9 +56,9 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
     fig, axes = plt.subplots(ncols=2, nrows=3, figsize=(20, 18))
     xind = [5, 10, 15, 45, 55, 68]
     for i, axis in enumerate(axes.reshape(-1)):
-        pprior = prior_fl[:,xind[i]]
-        sstand = stand_fl[:,xind[i]]
-        eenhcd = enhcd_fl[:,xind[i]]
+        pprior = prior_fl[:, xind[i]]
+        sstand = stand_fl[:, xind[i]]
+        eenhcd = enhcd_fl[:, xind[i]]
         mp, sp = stats.norm.fit(pprior)
         ms, ss = stats.norm.fit(sstand)
         me, se = stats.norm.fit(eenhcd)
@@ -108,9 +105,9 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
         )
         if fit:
             # Plot fits
-            axis.plot(lnP, pfit, "--", color="green", linewidth=2)
-            axis.plot(lnP, sfit, "--", color="deeppink", linewidth=2)
-            axis.plot(lnP, efit, "--", color="dodgerblue", linewidth=2)
+            axis.plot(lnp, pfit, "--", color="green", linewidth=2)
+            axis.plot(lnp, sfit, "--", color="deeppink", linewidth=2)
+            axis.plot(lnp, efit, "--", color="dodgerblue", linewidth=2)
         # Params & Info
         # axis.set_xlabel(info["xlabel"])
         # axis.set_ylabel(info["ylabel"])

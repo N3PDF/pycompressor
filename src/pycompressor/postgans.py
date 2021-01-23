@@ -72,7 +72,7 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     """`postgans` Links the generated PDF grids in the run directory
     to the correct directory where the LHAPDF data are located. This
     is done by first requesting the path to the LHAPDF `datadir` using
-    `get_lhapdf_dir` and then creates a folder where the enhanced PDFs 
+    `get_lhapdf_dir` and then creates a folder where the enhanced PDFs
     replicas will be placed. If the latter already exists, then removes
     it. The linking is done in two steps:
 
@@ -110,12 +110,12 @@ def postgans(pdf_name, gan_folder, ntotal_rep, check=False):
     # already existing and replace by a new one.
     if gnpdf_path.is_dir():
         logger.warning(f"{gnpdf_path} already exists and will be removed.")
-        shutil.rmtree(gnpdf_path) 
+        shutil.rmtree(gnpdf_path)
     gnpdf_path.mkdir(exist_ok=True)
 
     # Get GANs output grid
     gans_grids = pathlib.Path().absolute() / f"{gan_folder}" / "nnfit"
-    
+
     # Count the number of replicas in the prior folder
     nbfiles_prior = os.listdir(prior_path)
     nbreplicas_prior = len(nbfiles_prior) - 1

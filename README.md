@@ -36,7 +36,7 @@ python setup.py develop
 The input parameters that define the compression is contained in a YAML file. To run
 the `pycompressor` code, just type the following: 
 ```bash
-pycompressor runcard.yml
+pycomp runcard.yml
 ```
 A detailed instruction on how to set the different parameters in the runcard can be found here.
 
@@ -45,7 +45,7 @@ A detailed instruction on how to set the different parameters in the runcard can
 The code will create a folder named after the prior PDF sets. To generate the
 compressed PDF grid, run the following command:
 ```bash
-./tools/compressed_grid.py <PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>_output.dat
+get-grid <PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>_output.dat
 ```
 This will generate a folder `<PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>` 
 containing the compressed PDF replicas. Note that if the compression is done from an enhanced set,
@@ -53,7 +53,7 @@ the output folder will be append by `_enhanced`.
 
 Finally, in order to generate ERF plots, enter in the `erfs_output` directory and run the following:
 ```bash
-../tools/pycompressor_validate.py --random erf_randomized.dat --reduced erf_reduced.dat
+validate --random erf_randomized.dat --reduced erf_reduced.dat
 ``` 
 This script can also plot the ERF validation from the old compressor code by adding the flag
 `--format ccomp`.

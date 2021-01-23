@@ -141,7 +141,7 @@ def arg_parser():
     return arguments
 
 
-if __name__ == "__main__":
+def main():
     args = arg_parser()
     pdf_name = args.pdf
     comp_size = args.cmpsize
@@ -168,3 +168,7 @@ if __name__ == "__main__":
 
     logger.info("Plot distributions.")
     plot_dists(xgrid, prior, cmprior, enhanced, folder)
+
+
+if __name__ == "__main__":
+    main()

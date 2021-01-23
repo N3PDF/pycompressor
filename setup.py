@@ -95,16 +95,18 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=PACKAGE_REQUIEREMENTS,
-    entry_points={"console_scripts": ["pycompressor = pycompressor.app:main",]},
+    entry_points={"console_scripts":
+        [
+            "pycomp = pycompressor.scripts.main:main",
+            "validate = pycompressor.scripts.validate:main",
+            "cmp-fids = pycompressor.scripts.fids:main",
+            "cmp-dist = pycompressor.scripts.distributions:main",
+            "cmp-corr = pycompressor.scripts.correlations:main",
+            "get-grid = pycompressor.scripts.compressed_set:main"
+        ]
+    },
     package_dir={"": "src"},
     packages=find_packages("src"),
-    scripts=[
-        "scripts/compare_fids.py",
-        "scripts/compressed_grid.py",
-        "scripts/compare_correlations.py",
-        "scripts/compare_distributions.py",
-        "scripts/pycompressor_validate.py"
-    ],
     classifiers=[
         "Operating System :: Unix",
         "Programming Language :: Python",

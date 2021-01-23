@@ -321,10 +321,14 @@ def arg_parser():
     return arguments
 
 
-if __name__ == "__main__":
+def main():
     args = arg_parser()
     random = args.random
     reduced = args.reduced
     formatting = args.format
 
     plot_erfs(random, reduced, formatting=formatting)
+
+
+if __name__ == "__main__":
+    main()

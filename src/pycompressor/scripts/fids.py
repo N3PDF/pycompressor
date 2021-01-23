@@ -152,7 +152,7 @@ def arg_parser():
     return arguments
 
 
-if __name__ == "__main__":
+def main():
     args = arg_parser()
     pdf_name = args.pdf
     comp_size = args.cmpsize
@@ -198,3 +198,7 @@ if __name__ == "__main__":
         "plotName": f"FID_N{comp_size}"
     }
     plot_hists(fid_rprior, fid_prior, fid_enhanced, fid_info)
+
+
+if __name__ == "__main__":
+    main()

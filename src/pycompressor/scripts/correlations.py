@@ -326,7 +326,7 @@ def arg_parser():
     return arguments
 
 
-if __name__ == "__main__":
+def main():
     args = arg_parser()
     pdf_name = args.pdf
     comp_size = args.cmpsize
@@ -396,3 +396,7 @@ if __name__ == "__main__":
 
     logger.info("Project heatmaps into histograms.")
     plot_DiffCorrMat(prior_vs_stand, prior_vs_enhcd, folder, name="hist_project")
+
+
+if __name__ == "__main__":
+    main()

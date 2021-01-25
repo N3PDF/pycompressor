@@ -10,6 +10,8 @@ from rich.table import Table
 from rich.style import Style
 from rich.console import Console
 from numpy.random import Generator, PCG64
+from reportengine.checks import CheckError, make_argcheck
+
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import compress
@@ -44,6 +46,18 @@ def splash():
     console.print(logo)
 
 
+@make_argcheck
+def check_validity(pdfsetting, gans):
+    # How many members has this PDF? Can we get enough replicas from it?
+    members = pdfsetting["pdf"].get_members()
+    requested_replicas = gans["total_replicas"]
+    if members < requested_replicas:
+        # Only valid if number if in enhancing mode or if enhanced exists
+        if not gans["enhance"] and not pdfsetting["existing_enhanced"]:
+            raise CheckError(f"Cannot get {requested_replicas} replicas from {members} members if enhancing is not active")
+
+
+@check_validity
 def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """
     Action that performs the compression. The parameters

@@ -2,7 +2,7 @@
 # PDF Set                                         #
 ###################################################
 pdfsetting:
-  pdf: NNPDF40_nnlo_as_0118_1000rep
+  pdf: NNPDF40_nnlo_as_0118_1000
   existing_enhanced: False
 
 ###################################################
@@ -39,6 +39,6 @@ est_dic:
 # Enhance statistics of Prior                     #
 ###################################################
 gans  :
-  enhance : False
+  enhance : True
   runcard : ganpdfs
   total_replicas: 3000

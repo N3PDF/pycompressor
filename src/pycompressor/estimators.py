@@ -39,7 +39,7 @@ class Estimators:
     def moment(replicas, mean, stdev, order):
         """Compute skewness in the standard way following
         exactly eq.(11) of the paper.
-    
+
         Parameters
         ----------
             replicas: array_like
@@ -50,7 +50,7 @@ class Estimators:
                 Array with the values of standard deviation of replicas
             nb_regions: int, optional
                 Number of regions. This is by default set to 6
-        
+
         Returns
         -------
             array_like
@@ -72,16 +72,16 @@ class Estimators:
     def kolmogorov(replicas, mean, stdev, nb_regions=6):
         """Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
         of the compressor:
-    
+
         https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122
-        
+
         This function counts the number of replicas (for all fl and x in xgrid)
         which fall in the region given by eq.(14) of https://arxiv.org/abs/1504.06469
         and normalize the result by the total number of replicas.
-    
+
         As opposed to the above implementation, this computes the KS for all
         replicas, flavours and x-grid.
-    
+
         Parameters
         ----------
             replicas: array_like
@@ -92,7 +92,7 @@ class Estimators:
                 Array with the values of standard deviation of replicas
             nb_regions: int, optional
                 Number of regions. This is by default set to 6
-    
+
         Returns
         -------
             array_like
@@ -125,7 +125,7 @@ class Estimators:
     def correlation(replicas):
         """ Compute the correlation matrix of a given PDF replicas as in eq.(16) of
         https://arxiv.org/pdf/1504.06469.
-    
+
         Parameters
         ----------
             replicas: array_like
@@ -135,9 +135,8 @@ class Estimators:
             array_like
                 Correlation matrix
         """
-        nrep, nflv, nxgd = replicas.shape
-        # Define nxcorr
         nxcorr = 5
+        nrep, nflv, nxgd = replicas.shape
         size = nxcorr * nflv
         # Select x's in the grid
         xs = [int(i / (nxcorr) * nxgd) for i in range(1, nxcorr)]

@@ -1,7 +1,7 @@
 # File containing the modules that compute the total values of the Error
 # function and try to minimize its value using a Minimizer: a Genetic
 # Algorithm (GA) or a Covariance Matrix Adaptation (CMA) EWvolution
-# Strategy. 
+# Strategy.
 #
 # This file also generates an output file that contains the statistical
 # evlation of the random trials. Such a file is used afterward in order
@@ -10,6 +10,7 @@
 import cma
 import logging
 import numpy as np
+from pycompressor.utils import compare_estimators
 from pycompressor.errfunction import ErfComputation
 
 log = logging.getLogger(__name__)
@@ -24,22 +25,24 @@ class compress:
     ----------
         prior: array_like
             Prior PDF replicas
-        est_dic: dic
+        estdic: dic
             Dictionary contaning the list of estimators
-        nb_reduc: int
+        nbred: int
             Size of the reduced/compressed replicas
     """
 
-    def __init__(self, prior, est_dic, nb_reduc, folder, rndgen):
+    def __init__(self, prior, enhanced, estdic, nbred, idx, estm, fldr, rnd):
+        self.index = idx
+        self.rndgen = rnd
         self.prior = prior
-        self.rndgen = rndgen
-        self.est_dic = est_dic
-        self.nb_reduc = nb_reduc
+        self.est_dic = estdic
+        self.nb_reduc = nbred
+        self.enhanced = enhanced
+        self.ref_estimators = estm
         # Init. index for ERF computation
-        self.index = rndgen.integers(1, prior.shape[0], self.nb_reduc + 1)
-        # Init. ErfComputation class. This also computes the one-time computation
-        # of the estimators for the prior.
-        self.err_func = ErfComputation(prior, est_dic, nb_reduc, folder, rndgen)
+        # Init. ErfComputation class. This also computes the one-time
+        # computation of the estimators for the prior.
+        self.err_func = ErfComputation(prior, estdic, nbred, fldr, rnd)
 
     def error_function(self, index):
         """Sample a subset of replicas as given by the index. Then computes
@@ -55,9 +58,28 @@ class compress:
             float
                 Value of the ERF
         """
-        reduc_rep = self.prior[index]
+        reduc_rep = self.enhanced[index]
         # Compute Normalized Error function
         erf_res = self.err_func.compute_tot_erf(reduc_rep)
+        return erf_res
+
+    def all_error_function(self, index):
+        """Sample a subset of replicas as given by the index. Then computes
+        the corrresponding ERFs for all estimators.
+
+        Parameters
+        ----------
+            index: array_like
+                Array containing the index of the replicas
+
+        Returns
+        -------
+            float
+                Value of the ERF
+        """
+        reduc_rep = self.enhanced[index]
+        # Compute NON-Normalized Error functions
+        erf_res = self.err_func.compute_all_erf(reduc_rep)
         return erf_res
 
     def final_erfs(self, index):
@@ -75,12 +97,14 @@ class compress:
                 Dictionary containing the list of estimators
                 and their respective values
         """
-        selected_replicas = self.prior[index]
+        selected_replicas = self.enhanced[index]
         erfs = self.err_func.compute_all_erf(selected_replicas)
         return erfs
 
     def genetic_algorithm(self, nb_mut=5):
-        """Look for the combination of replicas that gives the best ERF value.
+        """Look for the combination of replicas that gives the best total
+        ERF value. When `enhanced_already_exists` is set to True, the starting
+        index is set to be the best from the standard compression.
 
         Parameters
         ----------
@@ -96,12 +120,11 @@ class compress:
         nmut = nb_mut
         # Compute ERF
         berf = self.error_function(self.index)
-        # Construc mutation matrix
+        # Construct mutation matrix
         mut = np.full((nmut, self.index.shape[0]), self.index)
         # Perform mutation
         for i in range(nmut):
             # Define mutation rate
-            # r = np.random.uniform(0, 1)
             r = self.rndgen.uniform(0, 1)
             if r <= 0.3:
                 _nmut = 1
@@ -112,7 +135,7 @@ class compress:
             else:
                 _nmut = 4
             for _ in range(_nmut):
-                p = self.rndgen.integers(1, self.prior.shape[0])
+                p = self.rndgen.integers(1, self.enhanced.shape[0])
                 k = self.rndgen.integers(self.nb_reduc)
                 mut[i][k] = p
         # Compute ERF for the new sample
@@ -123,7 +146,8 @@ class compress:
         besterf = np.min(erf)                 # Find the lowest ERF
         idx = np.where(erf == besterf)[0][0]  # Find index of the lowest ERF
         # Update index
-        if besterf < berf:
+        estvl = self.all_error_function(mut[idx])
+        if besterf < berf and compare_estimators(estvl, self.ref_estimators):
             self.index = mut[idx]
         else:
             besterf = berf
@@ -149,6 +173,7 @@ class compress:
             float
                 Value of the ERF
         """
+        log.warning("This minimization is deprecated.")
         init_index = self.rndgen.choice(
                 self.prior.shape[0],
                 self.nb_reduc,
@@ -191,9 +216,7 @@ class compress:
                 "verb_disp": 0
             }
         cma_es = cma.CMAEvolutionStrategy(init_index, std_dev, options)
-        count_it = 0
         while not cma_es.stop() and cma_es.best.f > 1.4e-2:
-            count_it += 1
             pop_solutions, erf_values = [], []
             while len(pop_solutions) < cma_es.popsize:
                 current_erf = ind = np.NaN

@@ -1,12 +1,14 @@
 ###################################################
 # PDF Set                                         #
 ###################################################
-pdf: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
+pdfsetting:
+  pdf: NNPDF40_nnlo_as_0118_1000rep
+  existing_enhanced: False
 
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 75
+compressed: 200
 
 ###################################################
 # Choice of Minimizer                             #
@@ -33,10 +35,10 @@ est_dic:
     - skewness
     - kurtosis
 
-#########################################################
-# Enhance statistics of Prior                           #
-#########################################################
+###################################################
+# Enhance statistics of Prior                     #
+###################################################
 gans  :
   enhance : False
   runcard : ganpdfs
-  total_replicas: 2000
+  total_replicas: 3000

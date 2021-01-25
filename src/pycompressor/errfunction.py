@@ -6,8 +6,11 @@ import logging
 import numpy as np
 from numba import njit
 from tqdm import trange
+from rich.table import Table
+from rich.console import Console
 from pycompressor.estimators import Estimators
 
+console = Console()
 log = logging.getLogger(__name__)
 
 
@@ -86,8 +89,8 @@ def compute_erfm(prior, nset):
         float
             Value of the error Estimation
     """
-    flv_size, xgd_size = prior.shape
     reslt = 0
+    flv_size, xgd_size = prior.shape
     for fl in range(flv_size):
         for xg in range(xgd_size):
             if prior[fl][xg] != 0:
@@ -203,12 +206,15 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder, rndgen):
         float
             Normalization value for each estimator
     """
-    log.info("Computing normalization factors:")
     reslt = {}
     for _, est_list in est_dic.items():
         for es in est_list:
             reslt[es] = np.zeros(trials)
     # Loop over the random trials
+    console.print("\n• Evaluate estimators for random sampling:", style="bold blue")
+    table = Table(show_header=True, header_style="bold magenta")
+    table.add_column("Estimators", justify="left", width=24)
+    table.add_column("Values from random sampling", justify="left", width=50)
     with trange(trials) as iter_trial:
         for t in iter_trial:
             iter_trial.set_description("Random Trial")
@@ -243,7 +249,8 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder, rndgen):
                 "l90": ucfd68[6],  # lower 90
                 "u90": ucfd68[5],  # upper 90
         }
-        print(" - {:<18} {:^2} {:> .4e}".format(est, ":", norm[est]))
+        table.add_row(f"{est}", f"{norm[est]:.4e}")
+    console.print(table)
     erfile.write(json.dumps(rnderfs_dic))
     erfile.write("\n")
     erfile.close()
@@ -269,21 +276,22 @@ class ErfComputation:
             Number of trials
     """
 
-    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000):
+    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000, norm=True):
         self.prior = prior
         self.est_dic = est_dic
         # Compute estimators for PRIOR replicas
         self.pestm = estimate(prior, est_dic)
         # Compute normalizations for each estimator
-        self.normz = normalization(
-                prior,
-                self.pestm,
-                nreduc,
-                est_dic,
-                trials,
-                folder,
-                rndgen
-        )
+        if norm:
+            self.normz = normalization(
+                    prior,
+                    self.pestm,
+                    nreduc,
+                    est_dic,
+                    trials,
+                    folder,
+                    rndgen
+            )
 
     def __repr__(self):
         return "Normalizations: {}".format(self.normz)

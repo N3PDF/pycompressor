@@ -1,12 +1,14 @@
 ###################################################
 # PDF Set                                         #
 ###################################################
-pdf: PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001
+pdfsetting:
+  pdf: NNPDF40_nnlo_as_0118_1000rep
+  existing_enhanced: False
 
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 75
+compressed: 200
 
 ###################################################
 # Choice of Minimizer                             #
@@ -33,49 +35,10 @@ est_dic:
     - skewness
     - kurtosis
 
-#########################################################
-# Enhance statistics of Prior                           #
-#########################################################
-enhance  : False
-nbgen    : 160
-
-#########################################################
-# [Grids]                                               #
-# Options:                                              #
-# - custom: Custom GANs xgrid as defined in the Module  #
-# - lhapdf: Use the same xgrid as in the input PDF      #
-#########################################################
-q        : 1.65
-x_grid   : custom
-
-#########################################################
-# * Architecture:                                       #
-#   - dnn : Deep Neural Network                         #
-#   - dcnn: Deep Convolutional Neural Network           #
-#########################################################
-architecture: dnn
-
-# Architecture
-ddnn_size: 1
-gdnn_size: 1
-
-# [NUmber of Nodes in 1st Layer]
-g_nodes  : 128
-d_nodes  : 450
-
-# [Activations]
-g_act    : leakyrelu
-d_act    : leakyrelu
-
-# [Optimizer]
-d_opt    : rms
-gan_opt  : rms
-epochs   : 5000
-
-# [Batch size]
-batch_size : 64
-
-# Intermediate steps to train the
-# Critic & Generator
-nd_steps : 4
-ng_steps : 3
+###################################################
+# Enhance statistics of Prior                     #
+###################################################
+gans  :
+  enhance : False
+  runcard : ganpdfs
+  total_replicas: 3000

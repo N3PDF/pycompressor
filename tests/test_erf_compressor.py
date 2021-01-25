@@ -5,6 +5,8 @@ import pytest
 import numpy as np
 from pycompressor import compressor
 from pycompressor import errfunction
+from numpy.random import PCG64
+from numpy.random import Generator
 
 # Define test values
 FLAVS = 3
@@ -15,10 +17,10 @@ PDFSIZE = 10
 NB_REDUCED = 4
 
 # Seed
-np.random.seed(0)
+RNDM = Generator(PCG64(seed=0))
 
 # Create Toy prior PDF
-PRIOR = np.random.uniform(0, 1, size=[PDFSIZE, FLAVS, XGRID])
+PRIOR = RNDM.uniform(0, 1, size=[PDFSIZE, FLAVS, XGRID])
 
 # List of estimators
 ESTIMATORS = {
@@ -35,14 +37,27 @@ else:
     pass
 
 
+# Random init indices
+INIT_INDEX = RNDM.choice(PRIOR.shape[0], NB_REDUCED, replace=False)
+
+
 # Compressor class
-COMP = compressor.compress(PRIOR, ESTIMATORS, NB_REDUCED, "TEST")
+COMP = compressor.compress(
+        PRIOR,
+        PRIOR,
+        ESTIMATORS,
+        NB_REDUCED,
+        INIT_INDEX,
+        None,
+        "TEST",
+        RNDM
+    )
 
 
 def get_subset(n):
     """ Extract random set of replicas from the prior
     using the `randomize_rep` method. """
-    subset = errfunction.randomize_rep(PRIOR, n)
+    subset = errfunction.randomize_rep(PRIOR, n, RNDM)
     return subset
 
 
@@ -78,7 +93,13 @@ def test_normalization(random_size=4, trial=2):
     are positive. """
     est_prior = test_estimate()
     norm = errfunction.normalization(
-            PRIOR, est_prior, random_size, ESTIMATORS, trial, "TEST"
+            PRIOR,
+            est_prior,
+            random_size,
+            ESTIMATORS,
+            trial,
+            "TEST",
+            RNDM
     )
     for _, val in norm.items():
         assert val > 0

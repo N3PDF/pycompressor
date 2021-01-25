@@ -27,9 +27,6 @@ class Estimators:
     def __init__(self, replicas, axs=0):
         self.axs = axs
         self.replicas = replicas
-        self.nrep = replicas.shape[0]
-        self.nflv = replicas.shape[1]
-        self.nxgd = replicas.shape[2]
         # Compute mean and std estimators first
         # as they are repeatedly called by the
         # other estimators.
@@ -59,9 +56,7 @@ class Estimators:
             array_like
                 Array of the value of the n-order moment
         """
-        nrep = replicas.shape[0]
-        nflv = replicas.shape[1]
-        nxgd = replicas.shape[2]
+        nrep, nflv, nxgd = replicas.shape
         result = np.zeros((nflv, nxgd))
         for fl in range(nflv):
             for x in range(nxgd):
@@ -103,10 +98,7 @@ class Estimators:
             array_like
                 Array containing the number of replicas that fall into a region
         """
-        nrep = replicas.shape[0]
-        nflv = replicas.shape[1]
-        nxgd = replicas.shape[2]
-
+        nrep, nflv, nxgd = replicas.shape
         st_ks = np.zeros((nflv, nxgd, nb_regions))
         for fl in range(nflv):
             for x in range(nxgd):
@@ -143,11 +135,8 @@ class Estimators:
             array_like
                 Correlation matrix
         """
-        nrep = replicas.shape[0]
-        nflv = replicas.shape[1]
-        nxgd = replicas.shape[2]
-        # Define nxcorr
         nxcorr = 5
+        nrep, nflv, nxgd = replicas.shape
         size = nxcorr * nflv
         # Select x's in the grid
         xs = [int(i / (nxcorr) * nxgd) for i in range(1, nxcorr)]

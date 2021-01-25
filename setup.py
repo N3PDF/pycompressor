@@ -22,11 +22,31 @@ from setuptools import find_packages
 PACKAGE = "pycompressor"
 
 # Used for pytest and code coverage
-TESTS_REQUIEREMENTS = ["pytest"]
-# Depending on the documents more dependencies can be added
-DOCS_REQUIEREMENTS = ["recommonmark", "sphinx_rtd_theme", "sphinxcontrib-bibtex"]
+TESTS_REQUIEREMENTS = [
+        "pylint",
+        "pytest",
+        "pytest-cov",
+        "pytest-env",
+        "pygit2",
+        "semver"
+    ]
+
 # Dependencies for the packages
-PACKAGE_REQUIEREMENTS = ["cma", "tqdm", "scipy", "numpy", "numba"]
+PACKAGE_REQUIEREMENTS = [
+        "cma",
+        "tqdm",
+        "scipy",
+        "numpy",
+        "numba",
+        "rich"
+    ]
+
+# Depending on the documents more dependencies can be added
+DOCS_REQUIEREMENTS = [
+        "recommonmark",
+        "sphinx_rtd_theme",
+        "sphinxcontrib-bibtex"
+    ]
 
 # Check if LHAPDF is installed
 try:
@@ -75,7 +95,16 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=PACKAGE_REQUIEREMENTS,
-    entry_points={"console_scripts": ["pycompressor = pycompressor.app:main",]},
+    entry_points={"console_scripts":
+        [
+            "pycomp = pycompressor.scripts.main:main",
+            "validate = pycompressor.scripts.validate:main",
+            "cmp-fids = pycompressor.scripts.fids:main",
+            "cmp-dist = pycompressor.scripts.distributions:main",
+            "cmp-corr = pycompressor.scripts.correlations:main",
+            "get-grid = pycompressor.scripts.compressed_set:main"
+        ]
+    },
     package_dir={"": "src"},
     packages=find_packages("src"),
     classifiers=[

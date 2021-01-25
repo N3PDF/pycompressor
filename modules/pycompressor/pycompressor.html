@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pycompressor package &mdash; pyCompressor 0.2.0 documentation</title>
+  <title>pycompressor package &mdash; pyCompressor 1.0.0 documentation</title>
   
 
   
@@ -39,6 +39,7 @@
     
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="pycompressor.scripts package" href="pycompressor.scripts.html" />
     <link rel="prev" title="pycompressor" href="modules.html" /> 
 </head>
 
@@ -102,6 +103,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">pycompressor</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pycompressor package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pycompressor.scripts.html">pycompressor.scripts package</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-app-module">pycompressor.app module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-compressing-module">pycompressor.compressing module</a></li>
@@ -110,6 +115,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.estimators">pycompressor.estimators module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-pdfgrid-module">pycompressor.pdfgrid module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#pycompressor-postgans-module">pycompressor.postgans module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pycompressor.utils">pycompressor.utils module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pycompressor">Module contents</a></li>
 </ul>
 </li>
@@ -186,6 +192,24 @@
             
   <div class="section" id="pycompressor-package">
 <h1>pycompressor package<a class="headerlink" href="#pycompressor-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pycompressor.scripts.html">pycompressor.scripts package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-compressed-set-module">pycompressor.scripts.compressed_set module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-correlations-module">pycompressor.scripts.correlations module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-distributions-module">pycompressor.scripts.distributions module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-fids-module">pycompressor.scripts.fids module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-main-module">pycompressor.scripts.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#pycompressor-scripts-validate-module">pycompressor.scripts.validate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pycompressor.scripts.html#module-pycompressor.scripts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -199,7 +223,7 @@
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nb_reduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">estdic</span></em>, <em class="sig-param"><span class="n">nbred</span></em>, <em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">estm</span></em>, <em class="sig-param"><span class="n">fldr</span></em>, <em class="sig-param"><span class="n">rnd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -208,8 +232,8 @@ words a subset that gives the best value of the error function).</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>prior</strong> (<em>array_like</em>) – Prior PDF replicas</p></li>
-<li><p><strong>est_dic</strong> (<em>dic</em>) – Dictionary contaning the list of estimators</p></li>
-<li><p><strong>nb_reduc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the reduced/compressed replicas</p></li>
+<li><p><strong>estdic</strong> (<em>dic</em>) – Dictionary contaning the list of estimators</p></li>
+<li><p><strong>nbred</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the reduced/compressed replicas</p></li>
 </ul>
 </dd>
 </dl>
@@ -218,6 +242,24 @@ words a subset that gives the best value of the error function).</p>
 <code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.error_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a subset of replicas as given by the index. Then computes
 the corrresponding ERF value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Value of the ERF</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="pycompressor.compressor.compress.all_error_function">
+<code class="sig-name descname">all_error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.all_error_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample a subset of replicas as given by the index. Then computes
+the corrresponding ERFs for all estimators.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>index</strong> (<em>array_like</em>) – Array containing the index of the replicas</p>
@@ -253,7 +295,9 @@ and their respective values</p>
 <dl class="py method">
 <dt id="pycompressor.compressor.compress.genetic_algorithm">
 <code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Look for the combination of replicas that gives the best ERF value.</p>
+<dd><p>Look for the combination of replicas that gives the best total
+ERF value. When <cite>enhanced_already_exists</cite> is set to True, the starting
+index is set to be the best from the standard compression.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>nb_mut</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>, </em><em>optional</em>) – Number of mutation</p>
@@ -440,7 +484,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 
 <dl class="py class">
 <dt id="pycompressor.errfunction.ErfComputation">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">norm</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -605,6 +649,85 @@ to the coorect one.</p>
 <div class="section" id="pycompressor-postgans-module">
 <h2>pycompressor.postgans module<a class="headerlink" href="#pycompressor-postgans-module" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-pycompressor.utils">
+<span id="pycompressor-utils-module"></span><h2>pycompressor.utils module<a class="headerlink" href="#module-pycompressor.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.utils.remap_index">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">remap_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">shuffled</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.remap_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.extract_estvalues">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_estvalues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_estvalues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the result from the prior for a given
+compressed set (w.r.t the size).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.extract_index">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the list of indices for a given compressed
+set (w.r.t the size)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdfname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the original/input PDF</p></li>
+<li><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.extract_bestErf">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_bestErf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_bestErf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the best/final ERF value for a given
+compressed set (w.r.t the size).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdfname</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Name of the original/input PDF</p></li>
+<li><p><strong>comp_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Size of the compressed set</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.compare_estimators">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">compare_estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">est1</span></em>, <em class="sig-param"><span class="n">est2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.compare_estimators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compare if the values of all the estimators in <cite>est1</cite> are
+samller or equal than in <cite>est2</cite> (<cite>est1`&lt;`est2</cite>) and returns
+True if it is the case.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>est1</strong> – est1</p></li>
+<li><p><strong>est2</strong> – est2</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.get_best_estimator">
+<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">get_best_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_ests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.get_best_estimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the best estimator from a list of dictionaries
+containing values of all the different estimators.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>list_ests</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a>) – List of dictionaries containing the results of
+all the statistical estimators</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 <div class="section" id="module-pycompressor">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pycompressor" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -616,6 +739,7 @@ to the coorect one.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pycompressor.scripts.html" class="btn btn-neutral float-right" title="pycompressor.scripts package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="modules.html" class="btn btn-neutral float-left" title="pycompressor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

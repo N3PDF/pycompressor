@@ -1,6 +1,14 @@
 pycompressor package
 ====================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pycompressor.scripts
+
 Submodules
 ----------
 
@@ -56,6 +64,14 @@ pycompressor.postgans module
 ----------------------------
 
 .. automodule:: pycompressor.postgans
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pycompressor.utils module
+-------------------------
+
+.. automodule:: pycompressor.utils
    :members:
    :undoc-members:
    :show-inheritance:

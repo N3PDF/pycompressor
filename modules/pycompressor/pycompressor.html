@@ -222,8 +222,8 @@
 <div class="section" id="module-pycompressor.compressor">
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
-<dt id="pycompressor.compressor.compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">estdic</span></em>, <em class="sig-param"><span class="n">nbred</span></em>, <em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">estm</span></em>, <em class="sig-param"><span class="n">fldr</span></em>, <em class="sig-param"><span class="n">rnd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress">
+<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">Compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">estdic</span></em>, <em class="sig-param"><span class="n">nbred</span></em>, <em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">estm</span></em>, <em class="sig-param"><span class="n">fldr</span></em>, <em class="sig-param"><span class="n">rnd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -238,8 +238,8 @@ words a subset that gives the best value of the error function).</p>
 </dd>
 </dl>
 <dl class="py method">
-<dt id="pycompressor.compressor.compress.error_function">
-<code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.error_function" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress.error_function">
+<code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.error_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a subset of replicas as given by the index. Then computes
 the corrresponding ERF value.</p>
 <dl class="field-list simple">
@@ -256,8 +256,8 @@ the corrresponding ERF value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycompressor.compressor.compress.all_error_function">
-<code class="sig-name descname">all_error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.all_error_function" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress.all_error_function">
+<code class="sig-name descname">all_error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.all_error_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a subset of replicas as given by the index. Then computes
 the corrresponding ERFs for all estimators.</p>
 <dl class="field-list simple">
@@ -274,8 +274,8 @@ the corrresponding ERFs for all estimators.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycompressor.compressor.compress.final_erfs">
-<code class="sig-name descname">final_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.final_erfs" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress.final_erfs">
+<code class="sig-name descname">final_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.final_erfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the final ERF after minimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -293,8 +293,8 @@ and their respective values</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycompressor.compressor.compress.genetic_algorithm">
-<code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress.genetic_algorithm">
+<code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look for the combination of replicas that gives the best total
 ERF value. When <cite>enhanced_already_exists</cite> is set to True, the starting
 index is set to be the best from the standard compression.</p>
@@ -313,8 +313,8 @@ second contains the index of the reduced PDF</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="pycompressor.compressor.compress.cma_algorithm">
-<code class="sig-name descname">cma_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">std_dev</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_itereval</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">max_itereval</span><span class="o">=</span><span class="default_value">15000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.compress.cma_algorithm" title="Permalink to this definition">¶</a></dt>
+<dt id="pycompressor.compressor.Compress.cma_algorithm">
+<code class="sig-name descname">cma_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">std_dev</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_itereval</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">max_itereval</span><span class="o">=</span><span class="default_value">15000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.cma_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define the ERF function that is going to be minimized.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

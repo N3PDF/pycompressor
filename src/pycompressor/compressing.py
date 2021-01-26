@@ -1,5 +1,4 @@
 import json
-import shutil
 import logging
 import pathlib
 import numpy as np
@@ -14,7 +13,7 @@ from reportengine.checks import CheckError, make_argcheck
 
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
-from pycompressor.compressor import compress
+from pycompressor.compressor import Compress
 from pycompressor.utils import remap_index
 from pycompressor.utils import extract_index
 from pycompressor.utils import extract_estvalues
@@ -150,7 +149,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     console.print(table)
 
     # Init. Compressor class
-    comp = compress(
+    comp = Compress(
         prior,
         enhanced,
         est_dic,
@@ -166,7 +165,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     if minimizer == "genetic":
         # Run compressor using GA
         with trange(nb_iter) as iter_range:
-            for i in iter_range:
+            for _ in iter_range:
                 iter_range.set_description("Compression")
                 erf, index = comp.genetic_algorithm(nb_mut=5)
                 erf_list.append(erf)

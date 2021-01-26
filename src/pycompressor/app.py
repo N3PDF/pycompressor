@@ -1,16 +1,13 @@
 # implement ValidPhys application
 
-import re
 import sys
-import shutil
 import pathlib
 import logging
-import hashlib
 import warnings
 
-from validphys.app import App
 from reportengine import colors
 from reportengine.compat import yaml
+from validphys.app import App
 from validphys.config import Environment, Config
 from validphys.config import EnvironmentError_, ConfigError
 
@@ -34,9 +31,8 @@ class CompressorEnvironment(Environment):
         # check file exists, is a file, has extension.
         if not self.config_yml.exists():
             raise CompressorError("Invalid runcard. File not found.")
-        else:
-            if not self.config_yml.is_file():
-                raise CompressorError("Invalid runcard. Must be a file.")
+        if not self.config_yml.is_file():
+            raise CompressorError("Invalid runcard. Must be a file.")
         # Check if results folder exists
         self.output_path = pathlib.Path(self.output_path).absolute()
         try:

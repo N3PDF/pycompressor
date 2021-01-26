@@ -16,7 +16,7 @@ from pycompressor.errfunction import ErfComputation
 log = logging.getLogger(__name__)
 
 
-class compress:
+class Compress:
     """Compress the Prior set of replicas into a subset of replicas that
     faithfully contains the statistical properties of the prior (in other
     words a subset that gives the best value of the error function).

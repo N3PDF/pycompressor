@@ -98,8 +98,7 @@ def compare_estimators(est1, est2):
 
     if est2 == None:
         return True
-    else:
-        diffkeys = [k for k in est1 if est1[k] > est2[k]]
+    diffkeys = [k for k in est1 if est1[k] > est2[k]]
     return len(diffkeys) == 0
 
 
@@ -115,8 +114,8 @@ def get_best_estimator(list_ests):
     """
     if len(list_ests) == 1:
         return list_ests[0]
-    else:
-        indx, best_est = 0, list_ests[0]
+
+    indx, best_est = 0, list_ests[0]
 
     for est in range(1, len(list_ests)):
         if compare_estimators(list_ests[est], best_est):

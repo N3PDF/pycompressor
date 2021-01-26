@@ -20,9 +20,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install packages 📦
         run: |
-          # install pip
           python -m pip install --upgrade pip
-          pip install .[docs]
+          pip install -r docs-requirements.txt
       - name: Build 🔨
         run: |
           cd doc/

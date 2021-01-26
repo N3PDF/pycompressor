@@ -91,12 +91,12 @@ def compare_estimators(est1, est2):
     Parameters
     ----------
     est1 :
-        est1
+        Value of the first estimator
     est2 :
-        est2
+        Value of the second estimator
     """
 
-    if est2 == None:
+    if est2 is None:
         return True
     diffkeys = [k for k in est1 if est1[k] > est2[k]]
     return len(diffkeys) == 0

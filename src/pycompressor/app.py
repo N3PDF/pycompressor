@@ -1,4 +1,4 @@
-# implement ValidPhys application
+# ValidPhys Action
 
 import sys
 import pathlib

@@ -17,11 +17,11 @@ class Estimators:
 
     Parameters
     ----------
-        replicas: array
-            Prior or Reduced PDF replicas of shape=(replicas, flavours, x-grid)
-        axs: int
-            Axis to which the estimator is computed. By default is set to zero
-            to compute along the direction of the pdf replicas
+    replicas: array
+        Prior or Reduced PDF replicas of shape=(replicas, flavours, x-grid)
+    axs: int
+        Axis to which the estimator is computed. By default is set to zero
+        to compute along the direction of the pdf replicas
     """
 
     def __init__(self, replicas, axs=0):
@@ -42,19 +42,19 @@ class Estimators:
 
         Parameters
         ----------
-            replicas: array_like
-                Array of PDF replicas (prior/reduced/random)
-            mean: array_like
-                Array with the mean values of replicas
-            stdev: array_like
-                Array with the values of standard deviation of replicas
-            nb_regions: int, optional
-                Number of regions. This is by default set to 6
+        replicas: array_like
+            Array of PDF replicas (prior/reduced/random)
+        mean: array_like
+            Array with the mean values of replicas
+        stdev: array_like
+            Array with the values of standard deviation of replicas
+        nb_regions: int, optional
+            Number of regions. This is by default set to 6
 
         Returns
         -------
-            array_like
-                Array of the value of the n-order moment
+        array_like
+            Array of the value of the n-order moment
         """
         nrep, nflv, nxgd = replicas.shape
         result = np.zeros((nflv, nxgd))
@@ -84,14 +84,14 @@ class Estimators:
 
         Parameters
         ----------
-            replicas: array_like
-                PDF replicas (prior/reduced/random)
-            mean: array_like
-                Array with the mean values of replicas
-            stdev: array_like
-                Array with the values of standard deviation of replicas
-            nb_regions: int, optional
-                Number of regions. This is by default set to 6
+        replicas: array_like
+            PDF replicas (prior/reduced/random)
+        mean: array_like
+            Array with the mean values of replicas
+        stdev: array_like
+            Array with the values of standard deviation of replicas
+        nb_regions: int, optional
+            Number of regions. This is by default set to 6
 
         Returns
         -------
@@ -128,12 +128,13 @@ class Estimators:
 
         Parameters
         ----------
-            replicas: array_like
-                Array of PDF replicas (prior/reduced/random)
+        replicas: array_like
+            Array of PDF replicas (prior/reduced/random)
+
         Returns
         -------
-            array_like
-                Correlation matrix
+        array_like
+            Correlation matrix
         """
         nxcorr = 5
         nrep, nflv, nxgd = replicas.shape
@@ -181,8 +182,8 @@ class Estimators:
 
         Parameters
         ----------
-            estm_name: str
-                Name of the estimator
+        estm_name: str
+            Name of the estimator
         """
         if estm_name == "mean":
             return self._mean

@@ -1,5 +1,6 @@
 # Utils
 
+import ast
 import json
 import logging
 import numpy as np
@@ -33,7 +34,7 @@ def extract_estvalues(comp_size):
             infoline = line.strip("\n").split(":", 1)
             rep_size = int(infoline[0])
             if rep_size == comp_size:
-                dic_estm = eval(infoline[1])
+                dic_estm = ast.literal_eval(infoline[1])
     except FileNotFoundError as err:
         log.critical(f"{err}")
     return dic_estm

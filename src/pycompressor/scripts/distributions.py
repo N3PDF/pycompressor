@@ -6,20 +6,25 @@ import logging
 import pathlib
 import argparse
 import numpy as np
-from scipy import stats
+import seaborn as sns
 import matplotlib.pyplot as plt
 
+from scipy import stats
 from rich.logging import RichHandler
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 
 
 logging.basicConfig(
-        level=logging.INFO,
-        format="\033[0;32m[%(levelname)s]\033[97m %(message)s",
-        handlers=[RichHandler()]
-    )
-logger = logging.getLogger(__name__)
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)]
+)
+
+logger = logging.getLogger("rich")
+
+sns.set_style("whitegrid")
 
 
 Q0 = 1  # Initial scale (in GeV)
@@ -53,7 +58,7 @@ def posint(value):
 
 def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
     plotName = info["plotName"]
-    fig, axes = plt.subplots(ncols=2, nrows=3, figsize=(20, 18))
+    fig, axes = plt.subplots(ncols=2, nrows=3, figsize=(18, 18))
     xind = [5, 10, 15, 45, 55, 68]
     for i, axis in enumerate(axes.reshape(-1)):
         pprior = prior_fl[:, xind[i]]
@@ -89,7 +94,7 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
             bins=info.get("bins", 20),
             color="deeppink",
             alpha=1,
-            label=f"Standard  KL(v={kl_stand[0]:.4f}, p={kl_stand[1]:.4f})",
+            label=f"Standard  KL(s={kl_stand[0]:.4f}, p={kl_stand[1]:.4f})",
             linewidth=2.5,
             density=True
         )
@@ -99,7 +104,7 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
             bins=info.get("bins", 20),
             color="dodgerblue",
             alpha=1,
-            label=f"Enhanced KL(v={kl_enhcd[0]:.4f}, p={kl_enhcd[1]:.4f})",
+            label=f"Enhanced KL(s={kl_enhcd[0]:.4f}, p={kl_enhcd[1]:.4f})",
             linewidth=2.5,
             density=True
         )
@@ -108,14 +113,10 @@ def plot_dists_per_fl(x, prior_fl, stand_fl, enhcd_fl, info, fit, folder):
             axis.plot(lnp, pfit, "--", color="green", linewidth=2)
             axis.plot(lnp, sfit, "--", color="deeppink", linewidth=2)
             axis.plot(lnp, efit, "--", color="dodgerblue", linewidth=2)
-        # Params & Info
-        # axis.set_xlabel(info["xlabel"])
-        # axis.set_ylabel(info["ylabel"])
-        axis.set_title(f"x={x[xind[i]]:.4f}", fontsize=16)
-        axis.grid(alpha=0.1, linewidth=1.5)
+        axis.set_title(rf"$x$={x[xind[i]]:.4f}", fontsize=16)
         axis.tick_params(length=7, width=1.5)
         axis.legend(fontsize=14)
-    fig.suptitle(info["figTitle"])
+    fig.tight_layout()
     fig.savefig(f"{folder}/{plotName}.png", dpi=250)
     plt.close("all")
 
@@ -155,7 +156,7 @@ def main():
     folder = pathlib.Path().absolute() / f"xDistributions_N{comp_size}"
     folder.mkdir(exist_ok=True)
 
-    logger.info("Generateing PDF grids.")
+    logger.info("Generating PDF grids.")
     xgrid = XGrid().build_xgrid()
     prior = PdfSet(prior, xgrid, Q0, NF).build_pdf()
     cmprior = PdfSet(comp_prior, xgrid, Q0, NF).build_pdf()

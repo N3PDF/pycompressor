@@ -48,7 +48,7 @@ setup(
         "Source": "https://github.com/N3PDF/pyCompressor"
     },
     entry_points={
-        "console_scripts":[
+        "console_scripts": [
             "pycomp = pycompressor.scripts.main:main",
             "validate = pycompressor.scripts.validate:main",
             "cmp-fids = pycompressor.scripts.fids:main",

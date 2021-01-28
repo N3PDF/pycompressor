@@ -5,7 +5,7 @@ pyCompressor is q python package for Monte Carlo Parton Distribution Functions
 This program has been developed within the N3PDF group. (n3pdf.mi.infn.it/)
 
 Authors: - Stefano Carrazza
-         - Juan E. Cruz-Martinez
+         - Juan M. Cruz-Martinez
          - Tanjona R. Rabemananjara
 
 License: GPL-3.0, 2020

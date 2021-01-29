@@ -7,6 +7,7 @@ import pathlib
 import logging
 import argparse
 import numpy as np
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 from numba import njit
@@ -16,12 +17,15 @@ from pycompressor.pdfgrid import PdfSet
 
 
 logging.basicConfig(
-        level=logging.INFO,
-        format="\033[0;32m[%(levelname)s]\033[97m %(message)s",
-        handlers=[RichHandler()]
-    )
-logger = logging.getLogger(__name__)
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)]
+)
 
+logger = logging.getLogger("rich")
+
+sns.set_style("whitegrid")
 
 FLS = [
     [21, 1],
@@ -190,13 +194,11 @@ def plot_correlation(x, prior, random, cmprior, enhanced, size, folder, q=100):
         plt.plot(x, r_arr, '--', color='g', linewidth=2.0, label="Random")
         plt.plot(x, c_arr, '--', color='b', linewidth=2.0, label="Standard")
         plt.plot(x, e_arr, '--', color='r', linewidth=2.0, label="Enhanced")
-
-        plt.grid(True)
         plt.xlabel('x')
         plt.xscale('log')
         plt.xlim([x[0], x[-1]])
         plt.ylabel('Correlation')
-        legend = plt.legend(loc=0, fancybox=True, framealpha=0.5)
+        plt.legend(loc=0, fancybox=True, framealpha=0.5)
         plt.title(f"{TAGS[fl[0]]}-{TAGS[fl[1]]} correlation (Compression to {size})")
         plt.savefig(f"{subfolder}/{TAGS[fl[0]]}-{TAGS[fl[1]]}_correlation.png", dpi=350)
         plt.close()
@@ -308,7 +310,6 @@ def plot_DiffCorrMat(corr_stand, corr_enhcd, folder, name=None):
         label="Prior-Enhanced"
     )
     plt.legend(fontsize=16)
-    plt.grid(alpha=0.45)
     standtitle = f"mean={corr_stand.mean():.4f}, std={corr_stand.std():.4f}"
     enchdtitle = f"mean={corr_enhcd.mean():.4f}, std={corr_enhcd.std():.4f}"
     plt.title(f"Prior-Standard : {standtitle}\nPrior-Enhanced: {enchdtitle}", fontsize=18)

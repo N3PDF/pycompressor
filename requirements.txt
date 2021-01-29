@@ -1,0 +1,6 @@
+cma
+numpy
+numba
+rich
+scipy
+tqdm

@@ -15,11 +15,13 @@ from pycompressor.pdfgrid import PdfSet
 
 
 logging.basicConfig(
-        level=logging.INFO,
-        format="\033[0;32m[%(levelname)s]\033[97m %(message)s",
-        handlers=[RichHandler()]
-    )
-logger = logging.getLogger(__name__)
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)]
+)
+
+logger = logging.getLogger("rich")
 
 
 Q0 = 1  # Initial scale (in GeV)

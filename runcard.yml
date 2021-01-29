@@ -39,6 +39,6 @@ est_dic:
 # Enhance statistics of Prior                     #
 ###################################################
 gans  :
-  enhance : True
+  enhance : False
   runcard : ganpdfs
   total_replicas: 3000

@@ -42,7 +42,7 @@ INIT_INDEX = RNDM.choice(PRIOR.shape[0], NB_REDUCED, replace=False)
 
 
 # Compressor class
-COMP = compressor.compress(
+COMP = compressor.Compress(
         PRIOR,
         PRIOR,
         ESTIMATORS,

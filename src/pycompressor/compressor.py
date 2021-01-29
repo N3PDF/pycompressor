@@ -16,19 +16,19 @@ from pycompressor.errfunction import ErfComputation
 log = logging.getLogger(__name__)
 
 
-class compress:
+class Compress:
     """Compress the Prior set of replicas into a subset of replicas that
     faithfully contains the statistical properties of the prior (in other
     words a subset that gives the best value of the error function).
 
     Parameters
     ----------
-        prior: array_like
-            Prior PDF replicas
-        estdic: dic
-            Dictionary contaning the list of estimators
-        nbred: int
-            Size of the reduced/compressed replicas
+    prior: array_like
+        Prior PDF replicas
+    estdic: dic
+        Dictionary contaning the list of estimators
+    nbred: int
+        Size of the reduced/compressed replicas
     """
 
     def __init__(self, prior, enhanced, estdic, nbred, idx, estm, fldr, rnd):
@@ -50,13 +50,13 @@ class compress:
 
         Parameters
         ----------
-            index: array_like
-                Array containing the index of the replicas
+        index: array_like
+            Array containing the index of the replicas
 
         Returns
         -------
-            float
-                Value of the ERF
+        float
+            Value of the ERF
         """
         reduc_rep = self.enhanced[index]
         # Compute Normalized Error function
@@ -69,13 +69,13 @@ class compress:
 
         Parameters
         ----------
-            index: array_like
-                Array containing the index of the replicas
+        index: array_like
+            Array containing the index of the replicas
 
         Returns
         -------
-            float
-                Value of the ERF
+        float
+            Value of the ERF
         """
         reduc_rep = self.enhanced[index]
         # Compute NON-Normalized Error functions
@@ -87,15 +87,14 @@ class compress:
 
         Parameters
         ----------
-            index: array_like
-                Array containing the index of the selected
-                replicas
+        index: array_like
+            Array containing the index of the selected replicas
 
         Returns
         -------
-            dict
-                Dictionary containing the list of estimators
-                and their respective values
+        dict
+            Dictionary containing the list of estimators and their respective
+            values.
         """
         selected_replicas = self.enhanced[index]
         erfs = self.err_func.compute_all_erf(selected_replicas)
@@ -108,14 +107,14 @@ class compress:
 
         Parameters
         ----------
-            nb_mut: int, optional
-                Number of mutation
+        nb_mut: int, optional
+            Number of mutation
 
         Returns
         -------
-            tuple(float, array_like)
-                The first argument is the value of the best ERF while the
-                second contains the index of the reduced PDF
+        tuple(float, array_like)
+            The first argument is the value of the best ERF while the second
+            contains the index of the reduced PDF
         """
         nmut = nb_mut
         # Compute ERF
@@ -165,13 +164,13 @@ class compress:
 
         Parameters
         ----------
-            index: array_like
-                Array containing the index of the replicas
+        index: array_like
+            Array containing the index of the replicas
 
         Returns
         -------
-            float
-                Value of the ERF
+        float
+            Value of the ERF
         """
         log.warning("This minimization is deprecated.")
         init_index = self.rndgen.choice(
@@ -185,13 +184,13 @@ class compress:
 
             Parameters
             ----------
-                index: array_like
-                    Array containing the index of the replicas
+            index: array_like
+                Array containing the index of the replicas
 
             Returns
             -------
-                float
-                    Value of the ERF
+            float
+                Value of the ERF
             """
             # Convert float array into int
             index_int = index.astype(int)

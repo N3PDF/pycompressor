@@ -1,5 +1,6 @@
 # Utils
 
+import ast
 import json
 import logging
 import numpy as np
@@ -33,7 +34,7 @@ def extract_estvalues(comp_size):
             infoline = line.strip("\n").split(":", 1)
             rep_size = int(infoline[0])
             if rep_size == comp_size:
-                dic_estm = eval(infoline[1])
+                dic_estm = ast.literal_eval(infoline[1])
     except FileNotFoundError as err:
         log.critical(f"{err}")
     return dic_estm
@@ -91,15 +92,14 @@ def compare_estimators(est1, est2):
     Parameters
     ----------
     est1 :
-        est1
+        Value of the first estimator
     est2 :
-        est2
+        Value of the second estimator
     """
 
-    if est2 == None:
+    if est2 is None:
         return True
-    else:
-        diffkeys = [k for k in est1 if est1[k] > est2[k]]
+    diffkeys = [k for k in est1 if est1[k] > est2[k]]
     return len(diffkeys) == 0
 
 
@@ -115,8 +115,8 @@ def get_best_estimator(list_ests):
     """
     if len(list_ests) == 1:
         return list_ests[0]
-    else:
-        indx, best_est = 0, list_ests[0]
+
+    indx, best_est = 0, list_ests[0]
 
     for est in range(1, len(list_ests)):
         if compare_estimators(list_ests[est], best_est):

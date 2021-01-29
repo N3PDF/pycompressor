@@ -1,5 +1,4 @@
 import json
-import shutil
 import logging
 import pathlib
 import numpy as np
@@ -10,12 +9,13 @@ from rich.table import Table
 from rich.style import Style
 from rich.console import Console
 from numpy.random import Generator, PCG64
+from reportengine.checks import CheckError
+from reportengine.checks import make_argcheck
+
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
-from pycompressor.compressor import compress
-from pycompressor.utils import remap_index
+from pycompressor.compressor import Compress
 from pycompressor.utils import extract_index
-from pycompressor.utils import extract_estvalues
 
 console = Console()
 log = logging.getLogger(__name__)
@@ -44,6 +44,17 @@ def splash():
     console.print(logo)
 
 
+@make_argcheck
+def check_validity(pdfsetting, compressed, gans):
+    members = pdfsetting["pdf"].load().GetMembers()
+    if members < compressed:
+        if not gans["enhance"] and not pdfsetting["existing_enhanced"]:
+            raise CheckError(
+                    f" Cannot get {compressed} replicas from"
+                    f" {members} members if enhancing is not active.")
+
+
+@check_validity
 def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """
     Action that performs the compression. The parameters
@@ -51,12 +62,12 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
 
     Parameters
     ----------
-        pdf: str
-            pdf/PDF name
-        compressed: int
-            Size of the compressed set
-        est_dic: dict
-            Dictionary containing the list of estimators
+    pdf: str
+        pdf/PDF name
+    compressed: int
+        Size of the compressed set
+    est_dic: dict
+        Dictionary containing the list of estimators
     """
 
     pdf = str(pdfsetting["pdf"])
@@ -136,7 +147,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     console.print(table)
 
     # Init. Compressor class
-    comp = compress(
+    comp = Compress(
         prior,
         enhanced,
         est_dic,
@@ -152,7 +163,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     if minimizer == "genetic":
         # Run compressor using GA
         with trange(nb_iter) as iter_range:
-            for i in iter_range:
+            for _ in iter_range:
                 iter_range.set_description("Compression")
                 erf, index = comp.genetic_algorithm(nb_mut=5)
                 erf_list.append(erf)

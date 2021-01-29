@@ -79,15 +79,15 @@ def compute_erfm(prior, nset):
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of replicas of shape=(flavours, x-grid)
-        nset : array_like
-            Reduced or Random set of replica shape=(flavours, x-grid)
+    prior: array_like
+        Prior set of replicas of shape=(flavours, x-grid)
+    nset : array_like
+        Reduced or Random set of replica shape=(flavours, x-grid)
 
     Returns
     -------
-        float
-            Value of the error Estimation
+    float
+        Value of the error Estimation
     """
     reslt = 0
     flv_size, xgd_size = prior.shape
@@ -109,15 +109,15 @@ def compute_erfs(prior, nset):
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of replicas of shape=(flavours, x-grid)
-        nset: array_like
-            Array of shape (flavor, x-grid, regions)
+    prior: array_like
+        Prior set of replicas of shape=(flavours, x-grid)
+    nset: array_like
+        Array of shape (flavor, x-grid, regions)
 
     Returns
     -------
-        float
-            Value of the error Estimation
+    float
+        Value of the error Estimation
     """
     reslt = 0
     flv_size, xgd_size, region_size = prior.shape
@@ -140,15 +140,15 @@ def compute_erfc(prior, nset):
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of replicas of shape=(flavours, x-grid)
-        nset: array_like
-            Array of shape (NxCorr*flavors, NxCorr*flavors)
+    prior: array_like
+        Prior set of replicas of shape=(flavours, x-grid)
+    nset: array_like
+        Array of shape (NxCorr*flavors, NxCorr*flavors)
 
     Returns
     -------
-        float
-            Value of the error Estimation
+    float
+        Value of the error Estimation
     """
     # Compute inverse of prior
     prior_inv = np.linalg.inv(prior)
@@ -165,15 +165,15 @@ def estimate(prior, est_dic):
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of shape=(replicas, flavours, x-grid)
-        est_dic: dict
-            Contains the list ot all estimators
+    prior: array_like
+        Prior set of shape=(replicas, flavours, x-grid)
+    est_dic: dict
+        Contains the list ot all estimators
 
     Returns
     -------
-        float
-            Array of shape=(flavours, x-grid)
+    float
+        Array of shape=(flavours, x-grid)
     """
     est_res = Estimators(prior)
     reslt = {}
@@ -190,21 +190,21 @@ def normalization(prior, est_prior, rndm_size, est_dic, trials, folder, rndgen):
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of replica fo shape=(replicas, flavours, x-grid)
-        est_prior: dict
-            Dictionary containing the values of the estimated results
-        rndm_size: int
-            Size of random replicas
-        est_dic: dict
-            Contains the list of estimators
-        trials: int
-            Number of random trials
+    prior: array_like
+        Prior set of replica fo shape=(replicas, flavours, x-grid)
+    est_prior: dict
+        Dictionary containing the values of the estimated results
+    rndm_size: int
+        Size of random replicas
+    est_dic: dict
+        Contains the list of estimators
+    trials: int
+        Number of random trials
 
     Returns
     -------
-        float
-            Normalization value for each estimator
+    float
+        Normalization value for each estimator
     """
     reslt = {}
     for _, est_list in est_dic.items():
@@ -266,14 +266,14 @@ class ErfComputation:
 
     Parameters
     ----------
-        prior: array_like
-            Prior set of replicas of shape=(replicas, flavours, x-grid)
-        est_dic: dict
-            Contains the list of all the Estimators
-        nreduc: int
-            Size of reduced replicas
-        trials: int
-            Number of trials
+    prior: array_like
+        Prior set of replicas of shape=(replicas, flavours, x-grid)
+    est_dic: dict
+        Contains the list of all the Estimators
+    nreduc: int
+        Size of reduced replicas
+    trials: int
+        Number of trials
     """
 
     def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000, norm=True):
@@ -302,13 +302,13 @@ class ErfComputation:
 
         Parameters
         ----------
-            reduc: array_like
-                Reduced set of replicas of shape=(replica, flavours, x-grid)
+        reduc: array_like
+            Reduced set of replicas of shape=(replica, flavours, x-grid)
 
         Returns
         -------
-            float
-                Value of the total normalized ERF
+        float
+            Value of the total normalized ERF
         """
         erf = {}
         reduc_cl = Estimators(reduc)
@@ -336,13 +336,13 @@ class ErfComputation:
 
         Parameters
         ----------
-            reduc: array_like
-                Reduced set of replicas of shape=(replica, flavours, x-grid)
+        reduc: array_like
+            Reduced set of replicas of shape=(replica, flavours, x-grid)
 
         Returns
         -------
-            float
-                Value of the total normalized ERF
+        float
+            Value of the total normalized ERF
         """
         erf = {}
         reduc_cl = Estimators(reduc)

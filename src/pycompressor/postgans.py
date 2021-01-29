@@ -1,6 +1,4 @@
-"""
-PostFit for GANs replicas
-"""
+# PostFit for GANs replicas
 
 import os
 import re
@@ -8,7 +6,6 @@ import shutil
 import lhapdf
 import logging
 import pathlib
-import filecmp
 
 from subprocess import PIPE
 from subprocess import Popen

@@ -10,8 +10,8 @@ class XGrid:
 
     Returns
     -------
-        result: array_like
-            Numpy array containg the x-grid
+    result: array_like
+        Numpy array containg the x-grid
     """
 
     def __init__(self):
@@ -103,14 +103,19 @@ class PdfSet:
 
     Parameters
     ----------
-        pdf_name: str
-            Name of the input PDF replicas
-        xgrid: array
-            Array of x-grid
-        q_value: float
-            Value of intial energy scale Q
-        nf: int
-            Total number of flavors
+    pdf_name: str
+        Name of the input PDF replicas
+    xgrid: array
+        Array of x-grid
+    q_value: float
+        Value of intial energy scale Q
+    nf: int
+        Total number of flavors
+
+    Returns
+    -------
+    np.array:
+        PDF grid of shape (Nrep, 2nf+1, xgrid-size)
     """
 
     def __init__(self, pdf_name, xgrid, q_value, nf):

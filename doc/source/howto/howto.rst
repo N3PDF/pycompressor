@@ -179,3 +179,17 @@ This will generate the following ERF plots:
 
  .. figure:: ../img-src/erf_validation.png
     :align: center
+
+
+
+Controlling the parallelization
+===============================
+
+The backend of pycompressor is the JIT compiler [numba](https://numba.pydata.org) and it is numba who controls the parallelization of the calculations within the code.
+The number of cores to be used can be controlled with the appropiate settings to the following environmental variables:
+
+.. code-block:: bash
+
+    export NUMBA_NUM_THREADS=4
+    export OMP_NUM_THREADS=4
+    export MKL_NUM_THREADS=4

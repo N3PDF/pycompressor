@@ -98,6 +98,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#post-run">Post-run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#controlling-the-parallelization">Controlling the parallelization</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Modules</span></p>
 <ul>
@@ -322,6 +323,16 @@ plots, copy the <cite>compressor_validate.C</cite> file in tools into the <cite>
 <img alt="../_images/erf_validation.png" src="../_images/erf_validation.png" />
 </div>
 </div></blockquote>
+</div>
+<div class="section" id="controlling-the-parallelization">
+<h1>Controlling the parallelization<a class="headerlink" href="#controlling-the-parallelization" title="Permalink to this headline">¶</a></h1>
+<p>The backend of pycompressor is the JIT compiler [numba](<a class="reference external" href="https://numba.pydata.org">https://numba.pydata.org</a>) and it is numba who controls the parallelization of the calculations within the code.
+The number of cores to be used can be controlled with the appropiate settings to the following environmental variables:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">NUMBA_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span> <span class="nv">MKL_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
+</pre></div>
+</div>
 </div>
 
 

@@ -1,6 +1,12 @@
 # ValidPhys Action
 
+import numba as nb
+
+nb.config.THREADING_LAYER = "omp"
+
+import os
 import sys
+import argparse
 import pathlib
 import logging
 import warnings
@@ -57,8 +63,7 @@ class CompressorConfig(Config):
             raise ConfigError(f"Failed to parse yaml file: {e}")
         if not isinstance(file_content, dict):
             raise ConfigError(
-                f"Expecting input runcard to be a mapping, "
-                f"not '{type(file_content)}'."
+                f"Expecting input runcard to be a mapping, " f"not '{type(file_content)}'."
             )
         file_content.update(APP_CONFIG)
         return cls(file_content, *args, **kwargs)
@@ -77,19 +82,33 @@ class CompressorApp(App):
     def argparser(self):
         parser = super().argparser
         parser.add_argument("-o", "--output", help="Output folder", default=None)
+
+        def check_int_threads(value):
+            """ Checks the argument is a valid int """
+            ival = int(value)
+            if ival < 1:
+                raise argparse.ArgumentTypeError("Number of threads must be positive integer")
+            environ_threads = os.environ.get("NUMBA_NUM_THREADS")
+            if environ_threads is not None and ival > int(environ_threads):
+                raise argparse.ArgumentTypeError(
+                    f"The number of threads cannot be greater than the environment variable NUMBA_NUM_THREADS ({environ_threads})"
+                )
+            return ival
+
+        parser.add_argument("--threads", help="Set the number of theads", type=check_int_threads)
         return parser
 
     def get_commandline_arguments(self, cmdline=None):
         args = super().get_commandline_arguments(cmdline)
         if args["output"] is None:
             args["output"] = pathlib.Path(args["config_yml"]).stem
+        if args["threads"] is not None:
+            nb.set_num_threads(args["threads"])
         return args
 
     def run(self):
         try:
-            self.environment.config_yml = pathlib.Path(
-                self.args["config_yml"]
-            ).absolute()
+            self.environment.config_yml = pathlib.Path(self.args["config_yml"]).absolute()
             super().run()
         except CompressorError as err:
             log.error(f"Error in pyCompressor:\n{err}")

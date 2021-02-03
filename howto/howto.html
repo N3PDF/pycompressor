@@ -333,6 +333,11 @@ The number of cores to be used can be controlled with the appropiate settings to
 <span class="nb">export</span> <span class="nv">MKL_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
 </pre></div>
 </div>
+<p>An interface to control the numba number of threads is also provided as the command line argument <code class="docutils literal notranslate"><span class="pre">threads</span></code>.
+Note that in no case can <code class="docutils literal notranslate"><span class="pre">threads</span></code> be greater than the environmental variable (if given) <code class="docutils literal notranslate"><span class="pre">NUMBA_NUM_THREADS</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycomp runcard.yml --threads <span class="m">4</span>
+</pre></div>
+</div>
 </div>
 
 

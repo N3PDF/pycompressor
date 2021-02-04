@@ -2,7 +2,14 @@
 
 import numba as nb
 
-nb.config.THREADING_LAYER = "omp"
+# If access to openmp is provided, set it as the threading layer
+try:
+    from numba.np.ufunc import omppool
+
+    nb.config.THREADING_LAYER = "omp"
+except ImportError:
+    pass
+
 
 import os
 import sys

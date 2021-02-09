@@ -4,7 +4,7 @@
 import json
 import logging
 import numpy as np
-from numba import njit
+from numba import njit, prange
 from tqdm import trange
 from rich.table import Table
 from rich.console import Console
@@ -72,7 +72,7 @@ def compute_cfd68(reslt_trial):
     return cfdv
 
 
-@njit
+@njit(parallel=True, fastmath=True)
 def compute_erfm(prior, nset):
     """Non-normalized error function. The ERF of the moment estimators
     given by eq.(6) of https://arxiv.org/pdf/1504.06469.
@@ -91,8 +91,8 @@ def compute_erfm(prior, nset):
     """
     reslt = 0
     flv_size, xgd_size = prior.shape
-    for fl in range(flv_size):
-        for xg in range(xgd_size):
+    for fl in prange(flv_size):
+        for xg in prange(xgd_size):
             if prior[fl][xg] != 0:
                 fi = nset[fl][xg]
                 gi = prior[fl][xg]
@@ -100,7 +100,7 @@ def compute_erfm(prior, nset):
     return reslt
 
 
-@njit
+@njit(parallel=True, fastmath=True)
 def compute_erfs(prior, nset):
     """Non-normalized error function for Statistical estimators.
 
@@ -121,9 +121,9 @@ def compute_erfs(prior, nset):
     """
     reslt = 0
     flv_size, xgd_size, region_size = prior.shape
-    for fl in range(flv_size):
-        for xg in range(xgd_size):
-            for rg in range(region_size):
+    for fl in prange(flv_size):
+        for xg in prange(xgd_size):
+            for rg in prange(region_size):
                 if prior[fl][xg][rg] != 0:
                     fi = nset[fl][xg][rg]
                     gi = prior[fl][xg][rg]
@@ -131,7 +131,7 @@ def compute_erfs(prior, nset):
     return reslt
 
 
-@njit
+@njit(fastmath=True)
 def compute_erfc(prior, nset):
     """Non-normalized error function for correlation estimators.
 

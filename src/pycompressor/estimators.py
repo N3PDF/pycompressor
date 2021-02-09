@@ -5,7 +5,7 @@
 # paper https://arxiv.org/pdf/1504.06469
 
 import numpy as np
-from numba import njit
+from numba import njit, prange
 
 
 class Estimators:
@@ -35,7 +35,7 @@ class Estimators:
         self._stdev = np.std(replicas, axis=0, ddof=1)
 
     @staticmethod
-    @njit
+    @njit(parallel=True, fastmath=True)
     def moment(replicas, mean, stdev, order):
         """Compute skewness in the standard way following
         exactly eq.(11) of the paper.
@@ -58,17 +58,17 @@ class Estimators:
         """
         nrep, nflv, nxgd = replicas.shape
         result = np.zeros((nflv, nxgd))
-        for fl in range(nflv):
-            for x in range(nxgd):
+        for fl in prange(nflv):
+            for x in prange(nxgd):
                 suma = 0
-                for rep in range(nrep):
+                for rep in prange(nrep):
                     repl = replicas[rep][fl][x] - mean[fl][x]
                     suma += pow(repl, order)
                 result[fl][x] = suma / pow(stdev[fl][x], order)
         return result / nrep
 
     @staticmethod
-    @njit
+    @njit(parallel=True, fastmath=True)
     def kolmogorov(replicas, mean, stdev, nb_regions=6):
         """Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
         of the compressor:
@@ -100,10 +100,10 @@ class Estimators:
         """
         nrep, nflv, nxgd = replicas.shape
         st_ks = np.zeros((nflv, nxgd, nb_regions))
-        for fl in range(nflv):
-            for x in range(nxgd):
+        for fl in prange(nflv):
+            for x in prange(nxgd):
                 res = np.zeros(nb_regions)
-                for r in range(nrep):
+                for r in prange(nrep):
                     val = replicas[r][fl][x]
                     if val <= mean[fl][x] - 2 * stdev[fl][x]:
                         res[0] += 1
@@ -121,7 +121,7 @@ class Estimators:
         return st_ks
 
     @staticmethod
-    @njit
+    @njit(parallel=True, fastmath=True)
     def correlation(replicas):
         """ Compute the correlation matrix of a given PDF replicas as in eq.(16) of
         https://arxiv.org/pdf/1504.06469.
@@ -145,11 +145,11 @@ class Estimators:
         nx = len(xs)
         # Init. Matrix
         cor_mat = np.zeros((size, size))
-        for fl1 in range(nflv):
-            for x1 in range(nx):
+        for fl1 in prange(nflv):
+            for x1 in prange(nx):
                 i = nx * fl1 + x1
-                for fl2 in range(nflv):
-                    for x2 in range(nx):
+                for fl2 in prange(nflv):
+                    for x2 in prange(nx):
                         j = nx * fl2 + x2
                         sq_i, sq_j = 0, 0
                         i_corr, j_corr, ij_corr = 0, 0, 0

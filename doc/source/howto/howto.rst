@@ -193,3 +193,10 @@ The number of cores to be used can be controlled with the appropiate settings to
     export NUMBA_NUM_THREADS=4
     export OMP_NUM_THREADS=4
     export MKL_NUM_THREADS=4
+
+An interface to control the numba number of threads is also provided as the command line argument ``threads``.
+Note that in no case can ``threads`` be greater than the environmental variable (if given) ``NUMBA_NUM_THREADS``.
+
+.. code-block:: bash
+
+  pycomp runcard.yml --threads 4

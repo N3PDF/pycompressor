@@ -32,7 +32,6 @@
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -224,7 +223,7 @@
 <span id="pycompressor-compressor-module"></span><h2>pycompressor.compressor module<a class="headerlink" href="#module-pycompressor.compressor" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.compressor.Compress">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.compressor.</code><code class="sig-name descname">Compress</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">enhanced</span></em>, <em class="sig-param"><span class="n">estdic</span></em>, <em class="sig-param"><span class="n">nbred</span></em>, <em class="sig-param"><span class="n">idx</span></em>, <em class="sig-param"><span class="n">estm</span></em>, <em class="sig-param"><span class="n">fldr</span></em>, <em class="sig-param"><span class="n">rnd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pycompressor.compressor.</span></code><code class="sig-name descname"><span class="pre">Compress</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enhanced</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estdic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nbred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fldr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rnd</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Compress the Prior set of replicas into a subset of replicas that
 faithfully contains the statistical properties of the prior (in other
@@ -240,7 +239,7 @@ words a subset that gives the best value of the error function).</p>
 </dl>
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.error_function">
-<code class="sig-name descname">error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.error_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">error_function</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.error_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a subset of replicas as given by the index. Then computes
 the corrresponding ERF value.</p>
 <dl class="field-list simple">
@@ -258,7 +257,7 @@ the corrresponding ERF value.</p>
 
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.all_error_function">
-<code class="sig-name descname">all_error_function</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.all_error_function" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">all_error_function</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.all_error_function" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sample a subset of replicas as given by the index. Then computes
 the corrresponding ERFs for all estimators.</p>
 <dl class="field-list simple">
@@ -276,7 +275,7 @@ the corrresponding ERFs for all estimators.</p>
 
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.final_erfs">
-<code class="sig-name descname">final_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.final_erfs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">final_erfs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.final_erfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the final ERF after minimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -294,7 +293,7 @@ values.</p>
 
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.genetic_algorithm">
-<code class="sig-name descname">genetic_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nb_mut</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">genetic_algorithm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nb_mut</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.genetic_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look for the combination of replicas that gives the best total
 ERF value. When <cite>enhanced_already_exists</cite> is set to True, the starting
 index is set to be the best from the standard compression.</p>
@@ -314,7 +313,7 @@ contains the index of the reduced PDF</p>
 
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.cma_algorithm">
-<code class="sig-name descname">cma_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">std_dev</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">seed</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">verbosity</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">min_itereval</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">max_itereval</span><span class="o">=</span><span class="default_value">15000</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.cma_algorithm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">cma_algorithm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">std_dev</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_itereval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_itereval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15000</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.cma_algorithm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Define the ERF function that is going to be minimized.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -336,7 +335,7 @@ contains the index of the reduced PDF</p>
 <span id="pycompressor-errfunction-module"></span><h2>pycompressor.errfunction module<a class="headerlink" href="#module-pycompressor.errfunction" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="pycompressor.errfunction.randomize_rep">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">randomize_rep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replica</span></em>, <em class="sig-param"><span class="n">number</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.randomize_rep" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">randomize_rep</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replica</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndgen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.randomize_rep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a subset of random replica from the prior in a nun-
 redundant way (no duplicates).</p>
 <dl class="field-list simple">
@@ -357,7 +356,7 @@ redundant way (no duplicates).</p>
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.compute_cfd68">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">compute_cfd68</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reslt_trial</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_cfd68" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">compute_cfd68</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reslt_trial</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_cfd68" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the confidence interval of a randomized trial arrays.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -374,7 +373,7 @@ redundant way (no duplicates).</p>
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.compute_erfm">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">compute_erfm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfm" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">compute_erfm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Non-normalized error function. The ERF of the moment estimators
 given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
 <dl class="field-list simple">
@@ -395,7 +394,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.compute_erfs">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">compute_erfs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">compute_erfs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Non-normalized error function for Statistical estimators.</p>
 <p>The Kolmogorov-smirnov is given by eq.(13) of
 <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -417,7 +416,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.compute_erfc">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">compute_erfc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">nset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">compute_erfc</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.compute_erfc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Non-normalized error function for correlation estimators.</p>
 <p>The correlation ERF is given by eq.(21) of
 <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -439,7 +438,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.estimate">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">estimate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.estimate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">estimate</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_dic</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.estimate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute estimators for the PRIOR set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -459,7 +458,7 @@ given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/150
 
 <dl class="py function">
 <dt id="pycompressor.errfunction.normalization">
-<code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">normalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_prior</span></em>, <em class="sig-param"><span class="n">rndm_size</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">trials</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.normalization" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">normalization</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndm_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndgen</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.normalization" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute normalization for each Estimator. The normalization is computed
 by calculating the ERF of the given estimator for each trials as given
 generally by eq.(9) of the paper (<a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>).</p>
@@ -484,7 +483,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 
 <dl class="py class">
 <dt id="pycompressor.errfunction.ErfComputation">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.errfunction.</code><code class="sig-name descname">ErfComputation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">prior</span></em>, <em class="sig-param"><span class="n">est_dic</span></em>, <em class="sig-param"><span class="n">nreduc</span></em>, <em class="sig-param"><span class="n">folder</span></em>, <em class="sig-param"><span class="n">rndgen</span></em>, <em class="sig-param"><span class="n">trials</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">norm</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">ErfComputation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nreduc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndgen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -502,7 +501,7 @@ are computed.</p>
 </dl>
 <dl class="py method">
 <dt id="pycompressor.errfunction.ErfComputation.compute_tot_erf">
-<code class="sig-name descname">compute_tot_erf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation.compute_tot_erf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">compute_tot_erf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation.compute_tot_erf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the total normalized Error Function which is given by the sum of
 all the normalized estimators.</p>
 <dl class="field-list simple">
@@ -520,7 +519,7 @@ all the normalized estimators.</p>
 
 <dl class="py method">
 <dt id="pycompressor.errfunction.ErfComputation.compute_all_erf">
-<code class="sig-name descname">compute_all_erf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reduc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation.compute_all_erf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">compute_all_erf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reduc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation.compute_all_erf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the total normalized Error Function which is given by the sum of
 all the normalized estimators.</p>
 <dl class="field-list simple">
@@ -543,7 +542,7 @@ all the normalized estimators.</p>
 <span id="pycompressor-estimators-module"></span><h2>pycompressor.estimators module<a class="headerlink" href="#module-pycompressor.estimators" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="pycompressor.estimators.Estimators">
-<em class="property">class </em><code class="sig-prename descclassname">pycompressor.estimators.</code><code class="sig-name descname">Estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">axs</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pycompressor.estimators.</span></code><code class="sig-name descname"><span class="pre">Estimators</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replicas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class containing the different types of statistical estimators.</p>
 <p>This class takes a set of PDF replicas (prior/compressed/random)
@@ -560,7 +559,7 @@ to compute along the direction of the pdf replicas</p></li>
 </dl>
 <dl class="py method">
 <dt id="pycompressor.estimators.Estimators.moment">
-<em class="property">static </em><code class="sig-name descname">moment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">mean</span></em>, <em class="sig-param"><span class="n">stdev</span></em>, <em class="sig-param"><span class="n">order</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">moment</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replicas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.moment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute skewness in the standard way following
 exactly eq.(11) of the paper.</p>
 <dl class="field-list simple">
@@ -583,7 +582,7 @@ exactly eq.(11) of the paper.</p>
 
 <dl class="py method">
 <dt id="pycompressor.estimators.Estimators.kolmogorov">
-<em class="property">static </em><code class="sig-name descname">kolmogorov</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em>, <em class="sig-param"><span class="n">mean</span></em>, <em class="sig-param"><span class="n">stdev</span></em>, <em class="sig-param"><span class="n">nb_regions</span><span class="o">=</span><span class="default_value">6</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kolmogorov" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">kolmogorov</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replicas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stdev</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nb_regions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.kolmogorov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
 of the compressor:</p>
 <p><a class="reference external" href="https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122">https://github.com/scarrazza/compressor/blob/master/src/Estimators.cc#L122</a></p>
@@ -612,7 +611,7 @@ replicas, flavours and x-grid.</p>
 
 <dl class="py method">
 <dt id="pycompressor.estimators.Estimators.correlation">
-<em class="property">static </em><code class="sig-name descname">correlation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replicas</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.correlation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">correlation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replicas</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.correlation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the correlation matrix of a given PDF replicas as in eq.(16) of
 <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
 <dl class="field-list simple">
@@ -630,7 +629,7 @@ replicas, flavours and x-grid.</p>
 
 <dl class="py method">
 <dt id="pycompressor.estimators.Estimators.compute_for">
-<code class="sig-name descname">compute_for</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estm_name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.compute_for" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">compute_for</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">estm_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.estimators.Estimators.compute_for" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that maps the called estimators
 to the coorect one.</p>
 <dl class="field-list simple">
@@ -653,12 +652,12 @@ to the coorect one.</p>
 <span id="pycompressor-utils-module"></span><h2>pycompressor.utils module<a class="headerlink" href="#module-pycompressor.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="pycompressor.utils.remap_index">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">remap_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">shuffled</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.remap_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">remap_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffled</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.remap_index" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt id="pycompressor.utils.extract_estvalues">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_estvalues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_estvalues" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">extract_estvalues</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comp_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_estvalues" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the result from the prior for a given
 compressed set (w.r.t the size).</p>
 <dl class="field-list simple">
@@ -670,7 +669,7 @@ compressed set (w.r.t the size).</p>
 
 <dl class="py function">
 <dt id="pycompressor.utils.extract_index">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">extract_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdfname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the list of indices for a given compressed
 set (w.r.t the size)</p>
 <dl class="field-list simple">
@@ -685,7 +684,7 @@ set (w.r.t the size)</p>
 
 <dl class="py function">
 <dt id="pycompressor.utils.extract_bestErf">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">extract_bestErf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pdfname</span></em>, <em class="sig-param"><span class="n">comp_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_bestErf" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">extract_bestErf</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdfname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comp_size</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.extract_bestErf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the best/final ERF value for a given
 compressed set (w.r.t the size).</p>
 <dl class="field-list simple">
@@ -700,7 +699,7 @@ compressed set (w.r.t the size).</p>
 
 <dl class="py function">
 <dt id="pycompressor.utils.compare_estimators">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">compare_estimators</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">est1</span></em>, <em class="sig-param"><span class="n">est2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.compare_estimators" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">compare_estimators</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">est1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.compare_estimators" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare if the values of all the estimators in <cite>est1</cite> are
 samller or equal than in <cite>est2</cite> (<cite>est1`&lt;`est2</cite>) and returns
 True if it is the case.</p>
@@ -716,7 +715,7 @@ True if it is the case.</p>
 
 <dl class="py function">
 <dt id="pycompressor.utils.get_best_estimator">
-<code class="sig-prename descclassname">pycompressor.utils.</code><code class="sig-name descname">get_best_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">list_ests</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.get_best_estimator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">get_best_estimator</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_ests</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.get_best_estimator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the best estimator from a list of dictionaries
 containing values of all the different estimators.</p>
 <dl class="field-list simple">

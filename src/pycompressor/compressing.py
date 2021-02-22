@@ -114,7 +114,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
-        nb_iter, ref_estimators = 25000, None
+        nb_iter, ref_estimators = 100000, None
         init_index = np.array(extract_index(pdf, compressed))
     else:
         final_result = {"pdfset_name": pdf}

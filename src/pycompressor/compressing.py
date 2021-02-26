@@ -68,10 +68,11 @@ def check_adiabaticity(pdfsetting, gans, compressed):
     """ Check whether we are in an adiabatic optimization and if so if it can be performed """
     pdf_name = pdfsetting["pdf"]
     if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"): 
-        adiabatic_result = f"{pdf_name}/{pdf_name}_{compressed}.dat"
+        adiabatic_result = f"{pdf_name}/compress_{pdf_name}_{compressed}_output.dat"
         if not pathlib.Path(adiabatic_result).exists():
             raise CheckError(
-                    "Adiabatic optimization needs to be ran 1st with existing_enhanced: True"
+                    "Adiabatic optimization needs to be ran first with existing_enhanced: False"
+                    f"\nMissing the file: {adiabatic_result}"
                     )
 
 

@@ -45,7 +45,7 @@ A detailed instruction on how to set the different parameters in the runcard can
 The code will create a folder named after the prior PDF sets. To generate the
 compressed PDF grid, run the following command:
 ```bash
-get-grid <PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>_output.dat
+get-grid -i <PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>_output.dat
 ```
 This will generate a folder `<PDF_NAME>/compressed_<PDF_NAME>_<NB_COMPRESSED>` 
 containing the compressed PDF replicas. Note that if the compression is done from an enhanced set,

@@ -16,6 +16,7 @@ from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import Compress
 from pycompressor.utils import extract_index
+from pycompressor.estimators import ALLOWED_ESTIMATORS
 
 console = Console()
 log = logging.getLogger(__name__)
@@ -45,8 +46,16 @@ def splash():
 
 
 @make_argcheck
-def check_validity(pdfsetting, compressed, gans):
+def check_validity(pdfsetting, compressed, gans, est_dic):
+    """ Check whether various quantities are acceptable """
+    if not isinstance(compressed, int):
+        raise CheckError(f"The key 'compressed' must be an integer, received: {compressed}")
     members = pdfsetting["pdf"].load().GetMembers()
+    for estimator_list in est_dic.values():
+        for estimator in estimator_list:
+            if estimator not in ALLOWED_ESTIMATORS:
+                raise CheckError(f"Estimator {estimator} is not allowed, allowed values are"
+                        f"{ALLOWED_ESTIMATORS}")
     if members < compressed:
         if not gans["enhance"] and not pdfsetting["existing_enhanced"]:
             raise CheckError(
@@ -54,6 +63,19 @@ def check_validity(pdfsetting, compressed, gans):
                     f" {members} members if enhancing is not active.")
 
 
+@make_argcheck
+def check_adiabaticity(pdfsetting, gans, compressed):
+    """ Check whether we are in an adiabatic optimization and if so if it can be performed """
+    pdf_name = pdfsetting["pdf"]
+    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"): 
+        adiabatic_result = f"{pdf_name}/{pdf_name}_{compressed}.dat"
+        if not pathlib.Path(adiabatic_result).exists():
+            raise CheckError(
+                    "Adiabatic optimization needs to be ran 1st with existing_enhanced: True"
+                    )
+
+
+@check_adiabaticity
 @check_validity
 def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """

@@ -8,6 +8,18 @@ import numpy as np
 from numba import njit, prange
 
 
+ALLOWED_ESTIMATORS = [
+    "mean",
+    "stdev",
+    "skewness",
+    "kurtosis",
+    "moment5th",
+    "moment6th",
+    "kolmogorov_smirnov",
+    "correlation",
+]
+
+
 class Estimators:
     """Class containing the different types of statistical estimators.
 
@@ -123,7 +135,7 @@ class Estimators:
     @staticmethod
     @njit(parallel=True, fastmath=True)
     def correlation(replicas):
-        """ Compute the correlation matrix of a given PDF replicas as in eq.(16) of
+        """Compute the correlation matrix of a given PDF replicas as in eq.(16) of
         https://arxiv.org/pdf/1504.06469.
 
         Parameters

@@ -96,7 +96,7 @@
 <p class="caption"><span class="caption-text">HowTo</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">How to use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#post-run">Post-run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#pdf-grid-and-validation-plot">PDF grid and Validation plot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#controlling-the-parallelization">Controlling the parallelization</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Modules</span></p>
@@ -174,7 +174,7 @@
 <p>Once the <strong>pyCompressor</strong> package is installed, runnig a compression is very easy. It just takes
 an input run card in which all the input parameters are defined. The run card is subdivided into
 two distincts part: the compression and the GANs parameters.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycompressor runcard.yml
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycompressor runcards/runcard.yml <span class="o">[</span>--threads NUMB_THREADS<span class="o">]</span>
 </pre></div>
 </div>
 <p>The compression per-say requires the following keys:</p>
@@ -184,92 +184,69 @@ two distincts part: the compression and the GANs parameters.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">compressed</span></code> - <em>int</em> : size of the compressed replicas</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">minimizer</span></code> - <em>str</em> : name of the minimizer (<cite>genetic</cite> or <cite>cma</cite>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">est_dic</span></code> - <em>dict</em> : dictionary of estimators</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gans</span></code> - <em>dict</em> : dictionary containing input parameters for GANs</p></li>
 </ul>
 </div></blockquote>
-<p>The GANs requires has the following keys:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">enhance</span></code> - <em>bool</em> : switch on/off GANs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nbgeng</span></code> - <em>int</em> : total number of output replicas (this includes the prior)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">q</span></code> - <em>float</em> : initiale at which the PDF grid will be generated</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">x_grid</span></code> - <em>str</em> : choose between the built-in GANs grid or the LHAPDF-grid from the
-PDF file (options: <cite>custom</cite> or <cite>lhapdf</cite>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">architecture</span></code> - <em>str</em> : define the architecture; <cite>dcnn</cite> for deep convolutional neural
-network, <cite>dnn</cite> for deep neural network</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">g_nodes</span></code> - <em>int</em> : number of nodes in the first hidden layer for the generator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">d_nodes</span></code> - <em>int</em> : number of nodes in the first hidden layer for the critic/discriminator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">g_act</span></code> - <em>str</em> : name of the activation function for the generator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">d_act</span></code> - <em>str</em> : name of the activation function for the critic/discriminator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">d_opt</span></code> - <em>str</em> : name of the optimizer for the critic/discriminator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">gan_opt</span></code> - <em>str</em> : name of the optimizer for the adversarial</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">epochs</span></code> - <em>int</em> : number of epochs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">batch_size</span></code> - <em>int</em> : number of batches per epoch</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ng_steps</span></code> - <em>int</em> : number of intermediate steps to train the generator</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nd_steps</span></code> - <em>int</em> : number of intermediate steps to train the critic/discriminator</p></li>
-</ul>
-</div></blockquote>
+<p>One of the keys for the <code class="docutils literal notranslate"><span class="pre">gan</span></code> entry is a <code class="docutils literal notranslate"><span class="pre">runcard</span></code> which gets passed to the <em>ganpdfs</em> code.
+For details on how to set the parameters for the GAN, have a look <a class="reference external" href="https://n3pdf.github.io/ganpdfs/howto/howto.html">here</a>.</p>
 <p>An example of run card is shown below:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># pyCompressor input parameters</span>
-<span class="nt">pdf</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PN3_GLOBAL_NNPDF31_nnlo_as_0118_070219-001</span>
-<span class="nt">compressed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">50</span>
-<span class="nt">minimizer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">genetic</span>
-<span class="nt">est_dic</span><span class="p">:</span>
-     <span class="nt">corr_estimators</span><span class="p">:</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">correlation</span>
-     <span class="nt">stat_estimators</span><span class="p">:</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kolmogorov_smirnov</span>
-     <span class="nt">moment_estimators</span><span class="p">:</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mean</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">stdev</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">skewness</span>
-       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kurtosis</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">###################################################</span>
+<span class="c1"># PDF Set                                         #</span>
+<span class="c1">###################################################</span>
+<span class="nt">pdfsetting</span><span class="p">:</span>
+  <span class="nt">pdf</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NNPDF40_nnlo_as_0118_1000</span>
+  <span class="nt">existing_enhanced</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
 
- <span class="c1"># GANs input parameters</span>
-<span class=" -Error"> </span><span class="nt">enhance  </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">True</span>
- <span class="nt">nbgen    </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
- <span class="nt">q        </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.65</span>
- <span class="nt">x_grid   </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">custom</span>
- <span class="nt">architecture</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">dcnn</span>
- <span class="nt">g_nodes  </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">256</span>
- <span class="nt">d_nodes  </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">128</span>
- <span class="nt">g_act    </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leakyrelu</span>
- <span class="nt">d_act    </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">leakyrelu</span>
- <span class="nt">d_opt    </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rms</span>
- <span class="nt">gan_opt  </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">rms</span>
- <span class="nt">epochs   </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5000</span>
- <span class="nt">batch_size </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">32</span>
- <span class="nt">nd_steps </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">4</span>
- <span class="nt">ng_steps </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="c1">###################################################</span>
+<span class="c1"># Size of compressed PDF replicas                 #</span>
+<span class="c1">###################################################</span>
+<span class="nt">compressed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">500</span>
+
+<span class="c1">###################################################</span>
+<span class="c1"># Choice of Minimizer                             #</span>
+<span class="c1"># Options:                                        #</span>
+<span class="c1">#   - genetic                                     #</span>
+<span class="c1">#   - cma                                         #</span>
+<span class="c1">###################################################</span>
+<span class="nt">minimizer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">genetic</span>
+
+<span class="c1">###################################################</span>
+<span class="c1"># Statistical Estimators                          #</span>
+<span class="c1"># Extra-options for Moment:                       #</span>
+<span class="c1">#   - moment5th                                   #</span>
+<span class="c1">#   - moment6th                                   #</span>
+<span class="c1">###################################################</span>
+<span class="nt">est_dic</span><span class="p">:</span>
+  <span class="nt">corr_estimators</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">correlation</span>
+  <span class="nt">stat_estimators</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kolmogorov_smirnov</span>
+  <span class="nt">moment_estimators</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mean</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">stdev</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">skewness</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kurtosis</span>
+
+<span class="c1">###################################################</span>
+<span class="c1"># Enhance statistics of Prior                     #</span>
+<span class="c1">###################################################</span>
+<span class="nt">gans  </span><span class="p">:</span>
+  <span class="nt">enhance </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+  <span class="nt">runcard </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ganpdfs</span>
+  <span class="nt">total_replicas</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3000</span>
 </pre></div>
 </div>
-<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is set to <cite>True</cite>, the code will first enhance the statistic the prior using GANs.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>+-------------------------------------------------------------------------+
-<span class="p">|</span>𝖌𝖆𝖓𝖕𝖉𝖋𝖘:                                                                 <span class="p">|</span>
-<span class="p">|</span>-------                                                                  <span class="p">|</span>
-<span class="p">|</span>Generative Adversarial Neural Networks <span class="o">(</span>GANs<span class="o">)</span> <span class="k">for</span> PDF replicas.          <span class="p">|</span>
-<span class="p">|</span>https://n3pdf.github.io/ganpdfs/                                         <span class="p">|</span>
-<span class="p">|</span>© N3PDF                                                                  <span class="p">|</span>
-+-------------------------------------------------------------------------+
-</pre></div>
-</div>
-<p>Once the generation of the extra-replicas is finished, the output grids are evolved using
+<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is set to <cite>True</cite>, the code will first enhance the statistic the prior using GANs.
+Once the generation of the extra-replicas is finished, the output grids are evolved using
 <a class="reference external" href="https://github.com/NNPDF/nnpdf/blob/master/n3fit/evolven3fit/evolven3fit.cc">evolven3fit</a>.
 Then, the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyCompressor.postgans</span></code> module (in a similar fashion as postfit) creates a
 symbolic link of both the original and the generated PDF sets into the LHAPDF data directory.
 The new enhanced Monte Carlo set of PDF replicas is then used as input to the compressor.
 Once the compression is finished, a folder is created in the main directory with the folowing
-structure</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PDF_NAME&gt;_enhanced
-├── checkpoint
-│   ├── checkpoint
-│   ├── ckpt-1.data-00000-of-00001
-│   └── ckpt-1.index
-│   └── ...
+structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PRIOR_PDF_NAME&gt;_enhanced
 ├── filter.yml
 ├── input-runcard.json
-├── iterations
-│   └── pdf_generated_at_&lt;ITERATION&gt;.png
-│   └── ...
 ├── losses_info.json
 ├── nnfit
 │    ├── &lt;PDF_NAME&gt;_enhanced.info
@@ -277,15 +254,12 @@ structure</p>
 │    │   ├── &lt;PDF_NAME&gt;_enhanced.dat
 │    │   └── &lt;PDF_NAME&gt;.exportgrid
 │    └── ...
-└── compress_&lt;PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat
+└── compress_&lt;PRIOR_PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat
 </pre></div>
 </div>
 <p>where:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><strong>checkpoint</strong> stores the evolution of the GANs training. In case a long runnning training is
-interupted, the last checkpoint can be restored and the training can re-start from there</p></li>
-<li><p><strong>iterations</strong> contains the evolution of the GANs training for every given iteration step.</p></li>
 <li><p><strong>losses_info.json</strong> stores the losses of the generator and the critic/discriminator for the
 GANs model.</p></li>
 <li><p><strong>filter.yml</strong> contains the information on the theory ID use to reproduce the prior replicas.</p></li>
@@ -297,44 +271,38 @@ evolution. That is where the evolved grid in the format <cite>.dat</cite> is als
 the reduced replicas along with the final ERF value.</p></li>
 </ul>
 </div></blockquote>
-<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is instead set to <cite>False</cite>, the folder would just simply be:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PDF_NAME&gt;_enhanced
-└── compress_&lt;PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat
+<p>If <code class="docutils literal notranslate"><span class="pre">enhance</span></code> is instead set to <cite>False</cite>, the folder will just simply be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;PRIOR_PDF_NAME&gt;_enhanced
+└── compress_&lt;PRIOR_PDF_NAME&gt;_enhanced_&lt;NB_COMPRESSED_REPLICAS&gt;_output.dat
 </pre></div>
 </div>
 </div>
-<div class="section" id="post-run">
-<h1>Post-run<a class="headerlink" href="#post-run" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pdf-grid-and-validation-plot">
+<h1>PDF grid and Validation plot<a class="headerlink" href="#pdf-grid-and-validation-plot" title="Permalink to this headline">¶</a></h1>
 <p>To generate the reduced Monte Carlo set of PDF replicas, simply run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./tools/compressed_grid.py &lt;PDF_NAME&gt;<span class="o">(</span>_enhanced<span class="o">)</span>/compressed_&lt;PDF_NAME&gt;<span class="o">(</span>_enhanced<span class="o">)</span>_&lt;NB_COMPRESSED&gt;_output.dat
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>get-grid -i &lt;PRIOR_PDF_NAME&gt;/compressed_&lt;PDF_NAME&gt;_&lt;NB_COMPRESSED&gt;_output.dat
 </pre></div>
 </div>
+<p>Note that if the compression is done from an enhanced set, the output folder will be append by <strong>_enhanced</strong>.</p>
 <p>Finally, to check that the reduced Monte Carlo set indeed faithfully reproduces the statistics of the
-prior, ERF plots for each of the estimator can be generated and compared to a random selection. For
-the time, this is done using root, but this will be changed by a python script. To generate the ERF
-plots, copy the <cite>compressor_validate.C</cite> file in tools into the <cite>erfs_output</cite> folder and run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>root -l compressor_validate.C
+prior, ERF plots for each of the estimator can be generated and compared to a random selection. To generate
+the ERF validation plots, enter in the <code class="docutils literal notranslate"><span class="pre">erfs_output</span></code> folder and run the following:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>validate --random erf_randomized.dat --reduced erf_reduced.dat
 </pre></div>
 </div>
-<p>This will generate the following ERF plots:</p>
-<blockquote>
-<div><div class="figure align-center">
-<img alt="../_images/erf_validation.png" src="../_images/erf_validation.png" />
-</div>
-</div></blockquote>
 </div>
 <div class="section" id="controlling-the-parallelization">
 <h1>Controlling the parallelization<a class="headerlink" href="#controlling-the-parallelization" title="Permalink to this headline">¶</a></h1>
 <p>The backend of pycompressor is the JIT compiler [numba](<a class="reference external" href="https://numba.pydata.org">https://numba.pydata.org</a>) and it is numba who controls the parallelization of the calculations within the code.
 The number of cores to be used can be controlled with the appropiate settings to the following environmental variables:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">NUMBA_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
-<span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
 <span class="nb">export</span> <span class="nv">MKL_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
+<span class="nb">export</span> <span class="nv">NUMBA_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
 </pre></div>
 </div>
 <p>An interface to control the numba number of threads is also provided as the command line argument <code class="docutils literal notranslate"><span class="pre">threads</span></code>.
 Note that in no case can <code class="docutils literal notranslate"><span class="pre">threads</span></code> be greater than the environmental variable (if given) <code class="docutils literal notranslate"><span class="pre">NUMBA_NUM_THREADS</span></code>.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycomp runcard.yml --threads <span class="m">4</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pycomp runcards/runcard.yml --threads <span class="m">4</span>
 </pre></div>
 </div>
 </div>

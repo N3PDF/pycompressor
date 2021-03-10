@@ -97,7 +97,7 @@
 <p class="caption"><span class="caption-text">HowTo</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../howto/howto.html">How to use</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../howto/howto.html#post-run">Post-run</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/howto.html#pdf-grid-and-validation-plot">PDF grid and Validation plot</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/howto.html#controlling-the-parallelization">Controlling the parallelization</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Modules</span></p>
@@ -172,11 +172,9 @@
             
   <div class="section" id="why-pycompressor">
 <h1>Why pyCompressor?<a class="headerlink" href="#why-pycompressor" title="Permalink to this headline">¶</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Add the motivations here.</p>
-</div>
-<p>The two new main features of the <cite>pyCompressor</cite> package compared to the C++ implementation are:</p>
+<p>The <cite>pyCompressor</cite> package was designed in order to have a compression code that is flexible enough to
+include various features that might improve the efficiency of the PDF compression strategy. The two new
+main features of the <cite>pyCompressor</cite> package compared to the C++ implementation are:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>A new minimization algoirthm, <strong>Covariance Matrix Adapation Strategy (CMA-ES)</strong>. In addition to the
@@ -190,35 +188,28 @@ generate new ones that follow the same distribution.</p></li>
 <p>The new desing flow of the <cite>pyCompressor</cite> package is schematically described in the following diagram.</p>
 <blockquote>
 <div><div class="figure align-center">
-<img alt="../_images/diagram.png" src="../_images/diagram.png" />
+<img alt="../_images/flowchart.png" src="../_images/flowchart.png" />
 </div>
 </div></blockquote>
-<p>The prior Monte Carlo set of replica of size <span class="math notranslate nohighlight">\(\tilde{N}_{\mathrm{rep}}\)</span> is given as input from which a PDF grid of shape
-<span class="math notranslate nohighlight">\((\tilde{N}_{\mathrm{rep}}, NF, X)\)</span> (where <span class="math notranslate nohighlight">\(NF\)</span> and <span class="math notranslate nohighlight">\(X\)</span> resp. denote the total number of flavors and the size of
+<p>The prior Monte Carlo set of replica of size <span class="math notranslate nohighlight">\(N_p\)</span> is given as input from which a PDF grid of shape
+<span class="math notranslate nohighlight">\((N_p, n_f, x_g)\)</span> (where <span class="math notranslate nohighlight">\(n_f\)</span> and <span class="math notranslate nohighlight">\(x_g\)</span> resp. denote the total number of flavors and the size of
 the <span class="math notranslate nohighlight">\(x\)</span>-grid) is computed. If the choice to enhance the statistics is activated, the prior PDF set goes through
-the GANs. This will generate a new Monte Carlo PDF set
-<span class="math notranslate nohighlight">\(\bar{N}_{\mathrm{rep}}\)</span> (with <span class="math notranslate nohighlight">\(\tilde{N}_{\mathrm{rep}} &lt; \bar{N}_{\mathrm{rep}}\)</span>). A subset sample
-of the PDF replicas (prior or ehancend) with size <span class="math notranslate nohighlight">\(N_{\mathrm{rep}}\)</span> is then extracted in order to compute the Error Function
+the GANs. This will generate a new (enhanced) Monte Carlo PDF set
+<span class="math notranslate nohighlight">\(N_e\)</span> (with <span class="math notranslate nohighlight">\(N_e=Np+N_s\)</span> where <cite>N_s</cite> represents the size of the generated replicas). A subset sample
+of the PDF replicas (prior or ehancend) with size <span class="math notranslate nohighlight">\(N_c\)</span> is then extracted in order to compute the Error Function
 (ERF). The minimization of the ERF is then performed either using the GA or the CMA which can be defined in the input
 runcard. The minimizer basically tries to find a candidate sample that leads to the smallest value of ERF. Once a
 convergence is achieved after a given iteration, the agorithm stops and outputs a compressed Monte Carlo set of PDF
-replicas with size <span class="math notranslate nohighlight">\(\bar{N}\)</span> (with <span class="math notranslate nohighlight">\(N_{\mathrm{rep}} &lt; \tilde{N}_{\mathrm{rep}} &lt; \bar{N}_{\mathrm{rep}}\)</span>).</p>
+replicas with size <span class="math notranslate nohighlight">\(N_c\)</span> (with <span class="math notranslate nohighlight">\(N_c \ll N_p &lt; N_e\)</span>).</p>
 </div>
 <div class="section" id="benchmarks">
 <h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline">¶</a></h1>
 <p>The following benchmarks agains the C++ code is done without enhancing the statistics of the prior (i.e. truning
 off the GANs). The input PDF set chosen here is the NNPDF31_nnlo_as_0118_1000 with 1000 replicas. The mahine used
-for testing is a Ryzen 5 2600 (12 threads) with 16 GB of RAM and a GTX 1060.</p>
+for testing is a Ryzen 5 2600 (12 threads) with 16 GB of RAM.</p>
 <blockquote>
 <div><div class="figure align-center">
 <img alt="../_images/speed_benchmark.png" src="../_images/speed_benchmark.png" />
-</div>
-</div></blockquote>
-<p>As shown below, the performance of the pyCompressor is comparable to the C++ implementation with as slightly
-faster convergence.</p>
-<blockquote>
-<div><div class="figure align-center">
-<img alt="../_images/erf_iterations.png" src="../_images/erf_iterations.png" />
 </div>
 </div></blockquote>
 </div>

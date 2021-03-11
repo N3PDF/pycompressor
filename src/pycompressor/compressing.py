@@ -63,20 +63,6 @@ def check_validity(pdfsetting, compressed, gans, est_dic):
                     f" {members} members if enhancing is not active.")
 
 
-@make_argcheck
-def check_adiabaticity(pdfsetting, gans, compressed):
-    """ Check whether we are in an adiabatic optimization and if so if it can be performed """
-    pdf_name = pdfsetting["pdf"]
-    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"): 
-        adiabatic_result = f"{pdf_name}/compress_{pdf_name}_{compressed}_output.dat"
-        if not pathlib.Path(adiabatic_result).exists():
-            raise CheckError(
-                    "Adiabatic optimization needs to be ran first with existing_enhanced: False"
-                    f"\nMissing the file: {adiabatic_result}"
-                    )
-
-
-@check_adiabaticity
 @check_validity
 def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """
@@ -94,7 +80,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     """
 
     pdf = str(pdfsetting["pdf"])
-    enhanced_already_exists = pdfsetting.get("existing_enhanced", False)
+    enhd_exists = pdfsetting.get("existing_enhanced", False)
 
     if gans["enhance"]:
         from pycompressor.postgans import postgans
@@ -121,95 +107,123 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         postgans(str(pdf), outfolder, nbgen)
 
     splash()
-    # Set seed
     rndgen = Generator(PCG64(seed=0))
 
-    console.print("\n• Load PDF sets & Printing Summary:", style="bold blue")
     xgrid = XGrid().build_xgrid()
     # Load Prior Sets
     prior = PdfSet(pdf, xgrid, Q0, NF).build_pdf()
     rndindex = rndgen.choice(prior.shape[0], compressed, replace=False)
-    # Load Enhanced Sets
-    if enhanced_already_exists:
-        try:
-            postgan = pdf + "_enhanced"
-            final_result = {"pdfset_name": postgan}
-            enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
-        except RuntimeError as excp:
-            raise LoadingEnhancedError(f"{excp}")
-        nb_iter, ref_estimators = 100000, None
-        init_index = np.array(extract_index(pdf, compressed))
-    else:
-        final_result = {"pdfset_name": pdf}
-        nb_iter, ref_estimators = 15000, None
-        init_index, enhanced = rndindex, prior
 
-    # Create output folder
-    outrslt = postgan if enhanced_already_exists else pdf
-    folder = pathlib.Path().absolute() / outrslt
-    folder.mkdir(exist_ok=True)
-    # Create output folder for ERF stats
-    out_folder = pathlib.Path().absolute() / "erfs_output"
-    out_folder.mkdir(exist_ok=True)
+    outname = [pdf]
+    final_result = [{"pdfset_name": pdf}]
+    nb_iter, ref_estimators = [15000], [None]
+    init_index, enhanced = [rndindex], [prior]
 
-    # Output Summary
-    table = Table(show_header=True, header_style="bold magenta")
-    table.add_column("Parameters", justify="left", width=24)
-    table.add_column("Description", justify="left", width=50)
-    table.add_row("PDF set name", f"{pdf}")
-    table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
-    if enhanced_already_exists:
-        table.add_row("Size of enhanced", f"{enhanced.shape[0] - 1} replicas")
-    table.add_row("Size of compression", f"{compressed} replicas")
-    table.add_row("Input energy Q0", f"{Q0} GeV")
-    table.add_row(
-        "x-grid size",
-        f"{xgrid.shape[0]} points, x=({xgrid[0]:.4e}, {xgrid[-1]:.4e})"
-    )
-    table.add_row("Minimizer", f"{minimizer}")
-    console.print(table)
+    # Methodological iterations
+    mtd_iteration = 2 if enhd_exists else 1
 
-    # Init. Compressor class
-    comp = Compress(
-        prior,
-        enhanced,
-        est_dic,
-        compressed,
-        init_index,
-        ref_estimators,
-        out_folder,
-        rndgen
-    )
-    # Start compression depending on the Evolution Strategy
-    erf_list = []
-    console.print("\n• Compressing MC PDF replicas:", style="bold blue")
-    if minimizer == "genetic":
-        # Run compressor using GA
-        with trange(nb_iter) as iter_range:
-            for _ in iter_range:
-                iter_range.set_description("Compression")
-                erf, index = comp.genetic_algorithm(nb_mut=5)
-                erf_list.append(erf)
-                iter_range.set_postfix(ERF=erf)
-    elif minimizer == "cma":
-        # Run compressor using CMA
-        erf, index = comp.cma_algorithm(std_dev=0.8)
-    else:
-        raise ValueError(f"{minimizer} is not a valid minimizer.")
+    for cmtype in range(mtd_iteration):
+        # necessary to get the same normalization
+        rndgen = Generator(PCG64(seed=0))
+        _ = rndgen.choice(prior.shape[0], compressed, replace=False)
+        # reference log
+        if cmtype==0:
+            console.print(
+                    "Standard compression using Input set",
+                    style="bold green underline"
+            )
+        elif cmtype==1:
+            console.print(
+                    "Adiabatic compression using Enhanced set",
+                    style="bold green underline"
+            )
 
-    # Prepare output file
-    final_result["ERFs"] = erf_list
-    final_result["index"] = index.tolist()
-    outfile = open(f"{outrslt}/compress_{pdf}_{compressed}_output.dat", "w")
-    outfile.write(json.dumps(final_result, indent=2))
-    outfile.close()
-    # Fetching ERF and construct reduced PDF grid
-    console.print(f"\n• Final ERF: [bold red]{erf}.", style="bold red")
+        # Create output folder
+        outrslt = outname[cmtype]
+        folder = pathlib.Path().absolute() / outrslt
+        folder.mkdir(exist_ok=True)
+        # Create output folder for ERF stats
+        out_folder = pathlib.Path().absolute() / "erfs_output"
+        out_folder.mkdir(exist_ok=True)
 
-    # Compute final ERFs for the final choosen replicas
-    final_err_func = comp.final_erfs(index)
-    serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
-    serfile.write(f"{compressed}:")
-    serfile.write(json.dumps(final_err_func))
-    serfile.write("\n")
-    serfile.close()
+        # Output Summary
+        console.print("\n• Compression Summary:", style="bold blue")
+        table = Table(show_header=True, header_style="bold magenta")
+        table.add_column("Parameters", justify="left", width=24)
+        table.add_column("Description", justify="left", width=50)
+        table.add_row("PDF set name", f"{pdf}")
+        table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
+        if cmtype!=0 and enhd_exists:
+            table.add_row(
+                    "Size of enhanced",
+                    f"{enhanced[1].shape[0] - 1} replicas"
+            )
+        table.add_row("Size of compression", f"{compressed} replicas")
+        table.add_row("Input energy Q0", f"{Q0} GeV")
+        table.add_row(
+            "x-grid size",
+            f"{xgrid.shape[0]} points, x=({xgrid[0]:.4e}, {xgrid[-1]:.4e})"
+        )
+        table.add_row("Minimizer", f"{minimizer}")
+        console.print(table)
+
+        # Init. Compressor class
+        comp = Compress(
+            prior,
+            enhanced[cmtype],
+            est_dic,
+            compressed,
+            init_index[cmtype],
+            ref_estimators[cmtype],
+            out_folder,
+            rndgen
+        )
+        # Start compression depending on the Evolution Strategy
+        erf_list = []
+        console.print("\n• Compressing MC PDF replicas:", style="bold blue")
+        if minimizer == "genetic":
+            # Run compressor using GA
+            with trange(nb_iter[cmtype]) as iter_range:
+                for _ in iter_range:
+                    iter_range.set_description("Compression")
+                    erf, index = comp.genetic_algorithm(nb_mut=5)
+                    erf_list.append(erf)
+                    iter_range.set_postfix(ERF=erf)
+        elif minimizer == "cma":
+            # Run compressor using CMA
+            erf, index = comp.cma_algorithm(std_dev=0.8)
+        else:
+            raise ValueError(f"{minimizer} is not a valid minimizer.")
+
+        # Prepare output file
+        final_result[cmtype]["ERFs"] = erf_list
+        final_result[cmtype]["index"] = index.tolist()
+        outfile = open(f"{outrslt}/compress_{pdf}_{compressed}_output.dat", "w")
+        outfile.write(json.dumps(final_result[cmtype], indent=2))
+        outfile.close()
+        # Fetching ERF and construct reduced PDF grid
+        console.print(f"\n• Final ERF: {erf}.", style="bold blue")
+
+        if (cmtype!=0 and enhd_exists) or (cmtype==0 and not enhd_exists):
+            # Compute final ERFs for the final choosen replicas
+            final_err_func = comp.final_erfs(index)
+            serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
+            serfile.write(f"{compressed}:")
+            serfile.write(json.dumps(final_err_func))
+            serfile.write("\n")
+            serfile.close()
+
+        # Load Enhanced Sets
+        if cmtype==0 and enhd_exists:
+            try:
+                postgan = pdf + "_enhanced"
+                outname.append(postgan)
+                final_result.append({"pdfset_name": postgan})
+                enhncd = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+                enhanced.append(enhncd)
+            except RuntimeError as excp:
+                raise LoadingEnhancedError(f"{excp}")
+            nb_iter.append(100000)
+            ref_estimators.append(None)
+            pre_index = np.array(extract_index(pdf, compressed))
+            init_index.append(pre_index)

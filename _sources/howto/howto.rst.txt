@@ -24,7 +24,7 @@ One of the keys for the ``gan`` entry is a ``runcard`` which gets passed to the 
 For details on how to set the parameters for the GAN, have a look `here <https://n3pdf.github.io/ganpdfs/howto/howto.html>`_.
 
 
-An example of run card is shown below:
+An example of an input card is shown below:
 
 
 .. code-block:: yaml
@@ -75,7 +75,14 @@ An example of run card is shown below:
      total_replicas: 3000
 
 
-If ``enhance`` is set to `True`, the code will first enhance the statistic the prior using GANs.
+
+Running GANs within pyCompressor
+--------------------------------
+
+
+Although it is advised to run the `ganpdfs` code independently, it is possible to call it
+within the `pyCompressor` code by setting ``enhance`` to `True` in the runcard. In this
+scenario, the code will first enhance the statistic the prior using GANs.
 Once the generation of the extra-replicas is finished, the output grids are evolved using
 `evolven3fit <https://github.com/NNPDF/nnpdf/blob/master/n3fit/evolven3fit/evolven3fit.cc>`_. 
 Then, the :mod:`pyCompressor.postgans` module (in a similar fashion as postfit) creates a 
@@ -120,6 +127,18 @@ If ``enhance`` is instead set to `False`, the folder will just simply be:
 
    <PRIOR_PDF_NAME>_enhanced
    └── compress_<PRIOR_PDF_NAME>_enhanced_<NB_COMPRESSED_REPLICAS>_output.dat
+
+
+
+Adiabatic minimization
+----------------------
+
+
+Since compressing from an enhanced set could be difficult due to the limitation of the minimization
+algorithm, it is possible to perfrom an adiabatic minimization by setting ``existing_enhanced`` to
+`True` in the runcard. In this case, the minimization is perfromed in two steps: (1) a standard
+compression of the prior, (2) a compression using the enhanced set but using as a starting point
+the space in which the best from the standard compression was generated.
 
 
 

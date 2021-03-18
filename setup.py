@@ -34,7 +34,7 @@ except ImportError:
 
 setup(
     name=PACKAGE,
-    version='1.0.0-dev',
+    version='1.1.0-dev',
     description="PDF Compression",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",

@@ -16,7 +16,7 @@ python setup.py install # or python setup.py develop (if you want development mo
 
 #### Standard compression
 
-The input parameters that define the compression is contained in a YAML file. To run the standard compression,
+The input parameters that define the compression are contained in a YAML file. To run the standard compression,
 use the reference [runcard](https://github.com/N3PDF/pycompressor/blob/master/runcards/runcard.yml) as it is by 
 just replacing the entry of the `pdf` key with the name of the PDF set, then run the following:
 ```bash

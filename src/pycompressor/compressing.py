@@ -118,7 +118,8 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     final_result = [{"pdfset_name": pdf}]
     nb_iter =[15000]
     ref_estimators = [None]
-    init_index, enhanced = [rndindex], [prior]
+    init_index = [rndindex]
+    enhanced = [prior]
 
     # Methodological iterations
     mtd_iteration = 2 if enhd_exists else 1

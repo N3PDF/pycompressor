@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 
 # Initial scale (in GeV)
 Q0 = 1
-# Total number of flavour to 2nf+1=7
+# Total number of flavour to 2nf+1=9
 NF = 4
 
 

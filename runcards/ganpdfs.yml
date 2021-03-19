@@ -1,9 +1,4 @@
 #############################################################################################
-# Input PDF                                                                                 #
-#############################################################################################
-pdf: NNPDF40_nnlo_as_0118_1000
-
-#############################################################################################
 # PDF Grids:                                                                                #
 # ---------                                                                                 #
 # * Inittial scale q (in GeV)                                                               #
@@ -70,4 +65,3 @@ nd_steps   : 4                                       # Number of steps to train 
 ng_steps   : 3                                       # Number of steps to train the Generator for one training run
 batch_size : 70                                      # Batch size per epoch in terms of percentage
 epochs     : 1000                                    # Number of epochs
-pdf: NNPDF40_nnlo_as_0118_1000

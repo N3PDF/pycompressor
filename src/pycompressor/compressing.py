@@ -15,8 +15,10 @@ from reportengine.checks import make_argcheck
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import Compress
+from pycompressor.utils import map_index
 from pycompressor.utils import extract_index
 from pycompressor.estimators import ALLOWED_ESTIMATORS
+
 
 console = Console()
 log = logging.getLogger(__name__)
@@ -121,7 +123,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         postgans(str(pdf), outfolder, nbgen)
 
     splash()
-    # Set seed
     rndgen = Generator(PCG64(seed=0))
 
     console.print("\n• Load PDF sets & Printing Summary:", style="bold blue")
@@ -135,14 +136,27 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
             postgan = pdf + "_enhanced"
             final_result = {"pdfset_name": postgan}
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            # Shuffled the enhanced PDF grid and save the shuffling
+            # index in order to restore it later.
+            shuffled_index = rndgen.choice(
+                    enhanced.shape[0],
+                    enhanced.shape[0],
+                    replace=False
+            )
+            assert enhanced.shape[0] == shuffled_index.shape[0]
+            enhanced = enhanced[shuffled_index]
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
         nb_iter, ref_estimators = 100000, None
-        init_index = np.array(extract_index(pdf, compressed))
+        extr_index = np.array(extract_index(pdf, compressed))
+        init_index = map_index(shuffled_index, extr_index)
+        assert extr_index.shape[0] == init_index.shape[0]
     else:
         final_result = {"pdfset_name": pdf}
         nb_iter, ref_estimators = 15000, None
         init_index, enhanced = rndindex, prior
+    # reset seeds
+    rndgen = Generator(PCG64(seed=1))
 
     # Create output folder
     outrslt = postgan if enhanced_already_exists else pdf
@@ -196,6 +210,10 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         erf, index = comp.cma_algorithm(std_dev=0.8)
     else:
         raise ValueError(f"{minimizer} is not a valid minimizer.")
+    # Restore the shuffled index back in case of compression from
+    # an enhanced set
+    if enhanced_already_exists:
+        index = map_index(shuffled_index, index)
 
     # Prepare output file
     final_result["ERFs"] = erf_list

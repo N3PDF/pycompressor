@@ -17,6 +17,27 @@ def remap_index(index, shuffled):
     return np.array(new_idx)
 
 
+def map_index(refarr, arr):
+    """Map the the elements in `arr` to the index in which
+    they occur in `refarr`.
+
+    Parameters
+    ----------
+    arr: np.array(int)
+        one dimensional array of integers with size N
+    refarr: np.array(int)
+        one dimentional array of integers with size M
+
+    Returns
+    -------
+    np.array(int)
+        one dimentional array of integers with size N
+    """
+
+    inds = {e:i for i, e in enumerate(refarr)}
+    return np.vectorize(inds.get)(arr)
+
+
 def extract_estvalues(comp_size):
     """Extract the result from the prior for a given
     compressed set (w.r.t the size).

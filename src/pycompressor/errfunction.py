@@ -276,7 +276,7 @@ class ErfComputation:
         Number of trials
     """
 
-    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=1000, norm=True):
+    def __init__(self, prior, est_dic, nreduc, folder, rndgen, trials=10000, norm=True):
         self.prior = prior
         self.est_dic = est_dic
         # Compute estimators for PRIOR replicas

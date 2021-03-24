@@ -275,7 +275,7 @@ the corrresponding ERFs for all estimators.</p>
 
 <dl class="py method">
 <dt id="pycompressor.compressor.Compress.final_erfs">
-<code class="sig-name descname"><span class="pre">final_erfs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.final_erfs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">final_erfs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enhanced</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.compressor.Compress.final_erfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the final ERF after minimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -483,7 +483,7 @@ generally by eq.(9) of the paper (<a class="reference external" href="https://ar
 
 <dl class="py class">
 <dt id="pycompressor.errfunction.ErfComputation">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">ErfComputation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nreduc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndgen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pycompressor.errfunction.</span></code><code class="sig-name descname"><span class="pre">ErfComputation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">est_dic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nreduc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rndgen</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.errfunction.ErfComputation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class that computes the normalized Error Functions. The complete ERF
 expression is generally given by eq.(6) of <a class="reference external" href="https://arxiv.org/pdf/1504.06469">https://arxiv.org/pdf/1504.06469</a>.</p>
@@ -650,6 +650,68 @@ to the coorect one.</p>
 </div>
 <div class="section" id="module-pycompressor.utils">
 <span id="pycompressor-utils-module"></span><h2>pycompressor.utils module<a class="headerlink" href="#module-pycompressor.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="pycompressor.utils.preprocess_enhanced">
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">preprocess_enhanced</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">enhanced</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.preprocess_enhanced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-process the enhanced set by removing duplicates
+in the PDF grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>enhanced</strong> (<em>np.array</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>)</em>) – enhanced PDF grid</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>tuple that returns the pre-processed array, the indices
+that are kept and the number of times each array occured.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(np.array, np.array, np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.map_index">
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">map_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">refarr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arr</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.map_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map the the elements in <cite>arr</cite> to the index in which
+they occur in <cite>refarr</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arr</strong> (<em>np.array</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>)</em>) – one dimensional array of integers with size N</p></li>
+<li><p><strong>refarr</strong> (<em>np.array</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a><em>)</em>) – one dimentional array of integers with size M</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>one dimentional array of integers with size N</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="pycompressor.utils.restore_permutation">
+<code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">restore_permutation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preprocess</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.restore_permutation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Undo the maping of indices due to the preprocessing
+and the shuffling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>np.array</em><em>(</em><em>)</em>) – array containing the final indices</p></li>
+<li><p><strong>shuffle</strong> (<em>np.array</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>)</em>) – array containing the permutation</p></li>
+<li><p><strong>preprocess</strong> (<em>np.array</em><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a><em>)</em>) – array containing the indices of the pre-processing</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>array of index</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)">float</a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt id="pycompressor.utils.remap_index">
 <code class="sig-prename descclassname"><span class="pre">pycompressor.utils.</span></code><code class="sig-name descname"><span class="pre">remap_index</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffled</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pycompressor.utils.remap_index" title="Permalink to this definition">¶</a></dt>

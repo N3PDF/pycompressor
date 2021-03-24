@@ -41,11 +41,11 @@ def splash():
 
     style = Style(color="blue")
     logo = Table(show_header=True, header_style="bold blue", style=style)
-    logo.add_column("𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗", justify="center", width=60)
+    logo.add_column("𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗", justify="center", width=76)
     logo.add_row("[bold blue]Fast python compressor for PDF replicas.")
     logo.add_row("[bold blue]https://n3pdf.github.io/pycompressor/")
     logo.add_row("[bold blue]© N3PDF 2021")
-    logo.add_row("[bold blue]Authors: Stefano Carrazza, Juan E. Cruz-Martinez, Tanjona R. Rabemananjara")
+    logo.add_row("[bold blue]Authors: Stefano Carrazza, Juan M. Cruz-Martinez, Tanjona R. Rabemananjara")
     console.print(logo)
 
 
@@ -176,7 +176,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     table.add_row("PDF set name", f"{pdf}")
     table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
     if enhanced_already_exists:
-        table.add_row("Size of enhanced", f"{enhanced.shape[0] - 1} replicas")
+        table.add_row("Size of enhanced", f"{enhcd_grid.shape[0] - 1} replicas")
     table.add_row("Size of compression", f"{compressed} replicas")
     table.add_row("Input energy Q0", f"{Q0} GeV")
     table.add_row(

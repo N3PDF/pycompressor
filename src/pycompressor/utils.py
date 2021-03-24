@@ -8,13 +8,30 @@ import numpy as np
 log = logging.getLogger(__name__)
 
 
-def remap_index(index, shuffled):
-    new_idx = []
-    for idx in index:
-        # TODO: Implement exception
-        pos = np.where(shuffled == idx)[0][0]
-        new_idx.append(pos)
-    return np.array(new_idx)
+def preprocess_enhanced(enhanced, dec_check=15):
+    """Pre-process the enhanced set by removing duplicates
+    in the PDF grid.
+
+    Parameters
+    ----------
+    enhanced: np.array(float)
+        enhanced PDF grid
+
+    Returns
+    -------
+    tuple(np.array, np.array, np.array)
+        tuple that returns the pre-processed array, the indices
+        that are kept and the number of times each array occured.
+    """
+
+    rounded = np.round(enhanced, dec_check)
+    preprocessed, index, counts = np.unique(
+            rounded,
+            axis=0,
+            return_index=True,
+            return_counts=True
+    )
+    return preprocessed, index, counts
 
 
 def map_index(refarr, arr):
@@ -36,6 +53,39 @@ def map_index(refarr, arr):
 
     inds = {e:i for i, e in enumerate(refarr)}
     return np.vectorize(inds.get)(arr)
+
+
+def restore_permutation(index, shuffle, preprocess):
+    """Undo the maping of indices due to the preprocessing
+    and the shuffling.
+
+    Parameters
+    ----------
+    index: np.array()
+        array containing the final indices
+    shuffle: np.array(float)
+        array containing the permutation
+    preprocess: np.array(float)
+        array containing the indices of the pre-processing
+
+    Returns
+    -------
+    np.array(float)
+        array of index
+    """
+
+    undo_shuffle = shuffle[index]
+    undo_preproc = preprocess[undo_shuffle]
+    return undo_preproc
+
+
+def remap_index(index, shuffled):
+    new_idx = []
+    for idx in index:
+        # TODO: Implement exception
+        pos = np.where(shuffled == idx)[0][0]
+        new_idx.append(pos)
+    return np.array(new_idx)
 
 
 def extract_estvalues(comp_size):

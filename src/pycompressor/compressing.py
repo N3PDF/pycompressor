@@ -17,6 +17,8 @@ from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import Compress
 from pycompressor.utils import map_index
 from pycompressor.utils import extract_index
+from pycompressor.utils import preprocess_enhanced
+from pycompressor.utils import restore_permutation
 from pycompressor.estimators import ALLOWED_ESTIMATORS
 
 
@@ -69,7 +71,7 @@ def check_validity(pdfsetting, compressed, gans, est_dic):
 def check_adiabaticity(pdfsetting, gans, compressed):
     """ Check whether we are in an adiabatic optimization and if so if it can be performed """
     pdf_name = pdfsetting["pdf"]
-    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"): 
+    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"):
         adiabatic_result = f"{pdf_name}/compress_{pdf_name}_{compressed}_output.dat"
         if not pathlib.Path(adiabatic_result).exists():
             raise CheckError(
@@ -135,21 +137,22 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         try:
             postgan = pdf + "_enhanced"
             final_result = {"pdfset_name": postgan}
-            enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            enhcd_grid = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            processed, pindex, counts = preprocess_enhanced(enhcd_grid)
             # Shuffled the enhanced PDF grid and save the shuffling
             # index in order to restore it later.
             shuffled_index = rndgen.choice(
-                    enhanced.shape[0],
-                    enhanced.shape[0],
+                    processed.shape[0],
+                    processed.shape[0],
                     replace=False
             )
-            assert enhanced.shape[0] == shuffled_index.shape[0]
-            enhanced = enhanced[shuffled_index]
+            enhanced = processed[shuffled_index]
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
         nb_iter, ref_estimators = 100000, None
         extr_index = np.array(extract_index(pdf, compressed))
-        init_index = map_index(shuffled_index, extr_index)
+        map_pindex = map_index(pindex, extr_index)
+        init_index = map_index(shuffled_index, map_pindex)
         assert extr_index.shape[0] == init_index.shape[0]
     else:
         final_result = {"pdfset_name": pdf}
@@ -213,7 +216,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     # Restore the shuffled index back in case of compression from
     # an enhanced set
     if enhanced_already_exists:
-        index = map_index(shuffled_index, index)
+        index = restore_permutation(index, shuffled_index, pindex)
 
     # Prepare output file
     final_result["ERFs"] = erf_list
@@ -225,7 +228,8 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     console.print(f"\n• Final ERF: [bold red]{erf}.", style="bold red")
 
     # Compute final ERFs for the final choosen replicas
-    final_err_func = comp.final_erfs(index)
+    samples = enhcd_grid if enhanced_already_exists else enhanced
+    final_err_func = comp.final_erfs(samples, index)
     serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
     serfile.write(f"{compressed}:")
     serfile.write(json.dumps(final_err_func))

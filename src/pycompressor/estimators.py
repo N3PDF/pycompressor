@@ -81,7 +81,7 @@ class Estimators:
 
     @staticmethod
     @njit(parallel=True, fastmath=True)
-    def kolmogorov(replicas, mean, stdev, nb_regions=6):
+    def kolmogorov(replicas, mean, stdev):
         """Compute Kolmogorov-smirnov (KS) estimator as in the C-implementation
         of the compressor:
 
@@ -102,14 +102,13 @@ class Estimators:
             Array with the mean values of replicas
         stdev: array_like
             Array with the values of standard deviation of replicas
-        nb_regions: int, optional
-            Number of regions. This is by default set to 6
 
         Returns
         -------
             array_like
                 Array containing the number of replicas that fall into a region
         """
+        nb_regions = 6
         nrep, nflv, nxgd = replicas.shape
         st_ks = np.zeros((nflv, nxgd, nb_regions))
         for fl in prange(nflv):

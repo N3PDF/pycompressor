@@ -15,14 +15,18 @@ from reportengine.checks import make_argcheck
 from pycompressor.pdfgrid import XGrid
 from pycompressor.pdfgrid import PdfSet
 from pycompressor.compressor import Compress
+from pycompressor.utils import map_index
 from pycompressor.utils import extract_index
+from pycompressor.utils import preprocess_enhanced
+from pycompressor.utils import restore_permutation
 from pycompressor.estimators import ALLOWED_ESTIMATORS
+
 
 console = Console()
 log = logging.getLogger(__name__)
 
 # Initial scale (in GeV)
-Q0 = 1
+Q0 = 1.65
 # Total number of flavour to 2nf+1=7
 NF = 4
 
@@ -37,11 +41,11 @@ def splash():
 
     style = Style(color="blue")
     logo = Table(show_header=True, header_style="bold blue", style=style)
-    logo.add_column("𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗", justify="center", width=60)
+    logo.add_column("𝖕𝖞𝕮𝖔𝖒𝖕𝖗𝖊𝖘𝖘𝖔𝖗", justify="center", width=76)
     logo.add_row("[bold blue]Fast python compressor for PDF replicas.")
     logo.add_row("[bold blue]https://n3pdf.github.io/pycompressor/")
     logo.add_row("[bold blue]© N3PDF 2021")
-    logo.add_row("[bold blue]Authors: Stefano Carrazza, Juan E. Cruz-Martinez, Tanjona R. Rabemananjara")
+    logo.add_row("[bold blue]Authors: Stefano Carrazza, Juan M. Cruz-Martinez, Tanjona R. Rabemananjara")
     console.print(logo)
 
 
@@ -67,7 +71,7 @@ def check_validity(pdfsetting, compressed, gans, est_dic):
 def check_adiabaticity(pdfsetting, gans, compressed):
     """ Check whether we are in an adiabatic optimization and if so if it can be performed """
     pdf_name = pdfsetting["pdf"]
-    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"): 
+    if pdfsetting.get("existing_enhanced") and not gans.get("enhanced"):
         adiabatic_result = f"{pdf_name}/compress_{pdf_name}_{compressed}_output.dat"
         if not pathlib.Path(adiabatic_result).exists():
             raise CheckError(
@@ -121,7 +125,6 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         postgans(str(pdf), outfolder, nbgen)
 
     splash()
-    # Set seed
     rndgen = Generator(PCG64(seed=0))
 
     console.print("\n• Load PDF sets & Printing Summary:", style="bold blue")
@@ -134,15 +137,29 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         try:
             postgan = pdf + "_enhanced"
             final_result = {"pdfset_name": postgan}
-            enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            enhcd_grid = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
+            processed, pindex, counts = preprocess_enhanced(enhcd_grid)
+            # Shuffled the enhanced PDF grid and save the shuffling
+            # index in order to restore it later.
+            shuffled_index = rndgen.choice(
+                    processed.shape[0],
+                    processed.shape[0],
+                    replace=False
+            )
+            enhanced = processed[shuffled_index]
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
         nb_iter, ref_estimators = 100000, None
-        init_index = np.array(extract_index(pdf, compressed))
+        extr_index = np.array(extract_index(pdf, compressed))
+        map_pindex = map_index(pindex, extr_index)
+        init_index = map_index(shuffled_index, map_pindex)
+        assert extr_index.shape[0] == init_index.shape[0]
     else:
         final_result = {"pdfset_name": pdf}
         nb_iter, ref_estimators = 15000, None
         init_index, enhanced = rndindex, prior
+    # reset seeds
+    rndgen = Generator(PCG64(seed=1))
 
     # Create output folder
     outrslt = postgan if enhanced_already_exists else pdf
@@ -159,7 +176,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     table.add_row("PDF set name", f"{pdf}")
     table.add_row("Size of Prior", f"{prior.shape[0] - 1} replicas")
     if enhanced_already_exists:
-        table.add_row("Size of enhanced", f"{enhanced.shape[0] - 1} replicas")
+        table.add_row("Size of enhanced", f"{enhcd_grid.shape[0] - 1} replicas")
     table.add_row("Size of compression", f"{compressed} replicas")
     table.add_row("Input energy Q0", f"{Q0} GeV")
     table.add_row(
@@ -196,6 +213,10 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         erf, index = comp.cma_algorithm(std_dev=0.8)
     else:
         raise ValueError(f"{minimizer} is not a valid minimizer.")
+    # Restore the shuffled index back in case of compression from
+    # an enhanced set
+    if enhanced_already_exists:
+        index = restore_permutation(index, shuffled_index, pindex)
 
     # Prepare output file
     final_result["ERFs"] = erf_list
@@ -207,7 +228,8 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
     console.print(f"\n• Final ERF: [bold red]{erf}.", style="bold red")
 
     # Compute final ERFs for the final choosen replicas
-    final_err_func = comp.final_erfs(index)
+    samples = enhcd_grid if enhanced_already_exists else enhanced
+    final_err_func = comp.final_erfs(samples, index)
     serfile = open(f"{out_folder}/erf_reduced.dat", "a+")
     serfile.write(f"{compressed}:")
     serfile.write(json.dumps(final_err_func))

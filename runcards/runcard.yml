@@ -2,13 +2,13 @@
 # PDF Set                                         #
 ###################################################
 pdfsetting:
-  pdf: NNPDF40_nnlo_as_0118_1000
+  pdf: 210715-n3fit-1000-001
   existing_enhanced: False
 
 ###################################################
 # Size of compressed PDF replicas                 #
 ###################################################
-compressed: 500
+compressed: 100
 
 ###################################################
 # Choice of Minimizer                             #
@@ -16,7 +16,10 @@ compressed: 500
 #   - genetic                                     #
 #   - cma                                         #
 ###################################################
-minimizer: genetic
+minimization:
+  seed: 0
+  max_iteration: 45000
+  minimizer: genetic
 
 ###################################################
 # Statistical Estimators                          #

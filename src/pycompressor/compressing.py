@@ -78,7 +78,7 @@ def check_adiabaticity(pdfsetting, gans, compressed):
 
 @check_adiabaticity
 @check_validity
-def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
+def compressing(pdfsetting, compressed, minimization, est_dic, gans):
     """
     Action that performs the compression. The parameters
     for the compression are provided by a `runcard.yml`.
@@ -93,6 +93,9 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
         Dictionary containing the list of estimators
     """
 
+    minimizer = minimization.get("minimizer", "genetic")
+    seed = minimization.get("seed", 0)
+    maxit = minimization.get("max_iteration", 15000)
     pdf = str(pdfsetting["pdf"])
     enhanced_already_exists = pdfsetting.get("existing_enhanced", False)
 
@@ -122,7 +125,7 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
 
     splash()
     # Set seed
-    rndgen = Generator(PCG64(seed=0))
+    rndgen = Generator(PCG64(seed=seed))
 
     console.print("\n• Load PDF sets & Printing Summary:", style="bold blue")
     xgrid = XGrid().build_xgrid()
@@ -137,11 +140,11 @@ def compressing(pdfsetting, compressed, minimizer, est_dic, gans):
             enhanced = PdfSet(postgan, xgrid, Q0, NF).build_pdf()
         except RuntimeError as excp:
             raise LoadingEnhancedError(f"{excp}")
-        nb_iter, ref_estimators = 100000, None
+        nb_iter, ref_estimators = maxit, None
         init_index = np.array(extract_index(pdf, compressed))
     else:
         final_result = {"pdfset_name": pdf}
-        nb_iter, ref_estimators = 15000, None
+        nb_iter, ref_estimators = maxit, None
         init_index, enhanced = rndindex, prior
 
     # Create output folder

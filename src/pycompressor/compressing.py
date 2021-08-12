@@ -22,7 +22,7 @@ console = Console()
 log = logging.getLogger(__name__)
 
 # Initial scale (in GeV)
-Q0 = 1
+Q0 = 1.65
 # Total number of flavour to 2nf+1=7
 NF = 4
 

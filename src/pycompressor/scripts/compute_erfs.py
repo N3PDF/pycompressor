@@ -58,7 +58,7 @@ def main():
     ).compute_all_erf(pdfcmpf)
 
     # Write results to file
-    filename = f"ERFs_{basename}_{cmpfname}.dat"
+    filename = f"ERFs_{basename}_vs_{cmpfname}.dat"
     outfile = open(filename, "w")
     outfile.write(json.dumps(erfs))
     outfile.close()

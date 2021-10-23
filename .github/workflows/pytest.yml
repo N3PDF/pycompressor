@@ -22,10 +22,6 @@ jobs:
           auto-update-conda: true
     - name: Install package with dependencies
       shell: bash --login {0}
-      env:
-        LOGIN: ${{ secrets.LOGIN}}
-        MACHINE: ${{ secrets.MACHINE}}
-        PASSWORD: ${{ secrets.PASSWORD}}
       run: |
         conda info
         # Create .condarc file

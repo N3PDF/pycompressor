@@ -354,15 +354,12 @@ class ErfComputation:
         for es in self.est_dic["moment_estimators"]:
             est_reduc = reduc_cl.compute_for(es)
             erf[es] = compute_erfm(self.pestm[es], est_reduc)
-            # erf[es] /= self.normz[es]
         # Compute non-normalized Statistical Estimators
         for es in self.est_dic["stat_estimators"]:
             est_reduc = reduc_cl.compute_for(es)
             erf[es] = compute_erfs(self.pestm[es], est_reduc)
-            # erf[es] /= self.normz[es]
         # Compute non-normalized Correlation Estimators
         for es in self.est_dic["corr_estimators"]:
             est_reduc = reduc_cl.compute_for(es)
             erf[es] = compute_erfc(self.pestm[es], est_reduc)
-            # erf[es] /= self.normz[es]
         return erf

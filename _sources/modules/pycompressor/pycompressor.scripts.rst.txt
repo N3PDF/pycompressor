@@ -12,6 +12,14 @@ pycompressor.scripts.compressed\_set module
    :undoc-members:
    :show-inheritance:
 
+pycompressor.scripts.compute\_erfs module
+-----------------------------------------
+
+.. automodule:: pycompressor.scripts.compute_erfs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pycompressor.scripts.correlations module
 ----------------------------------------
 

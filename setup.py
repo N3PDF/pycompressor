@@ -51,6 +51,7 @@ setup(
         "console_scripts": [
             "pycomp = pycompressor.scripts.main:main",
             "validate = pycompressor.scripts.validate:main",
+            "cmp-erfs = pycompressor.scripts.compute_erfs:main",
             "cmp-fids = pycompressor.scripts.fids:main",
             "cmp-dist = pycompressor.scripts.distributions:main",
             "cmp-corr = pycompressor.scripts.correlations:main",

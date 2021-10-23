@@ -292,6 +292,10 @@ class ErfComputation:
                     folder,
                     rndgen
             )
+        else:
+            self.normz = {}
+            normlst = [erf for _, merf in est_dic.items() for erf in merf]
+            self.normz = {erf: 1 for erf in normlst}
 
     def __repr__(self):
         return "Normalizations: {}".format(self.normz)

@@ -22,24 +22,15 @@ jobs:
           auto-update-conda: true
     - name: Install package with dependencies
       shell: bash --login {0}
-      env:
-        LOGIN: ${{ secrets.LOGIN}}
-        MACHINE: ${{ secrets.MACHINE}}
-        PASSWORD: ${{ secrets.PASSWORD}}
       run: |
         conda info
-        # Create .netrc file for authentification
-        echo "machine $MACHINE" >> ~/.netrc
-        echo "  login $LOGIN" >> ~/.netrc
-        echo "  password $PASSWORD" >> ~/.netrc
         # Create .condarc file
         echo "channels: " >> ~/.condarc
-        echo " - https://packages.nnpdf.science/conda-private" >> ~/.condarc
-        echo " - https://packages.nnpdf.science/conda" >> ~/.condarc
+        echo " - https://packages.nnpdf.science/private" >> ~/.condarc
+        echo " - https://packages.nnpdf.science/public" >> ~/.condarc
         echo " - defaults" >> ~/.condarc
         echo " - conda-forge" >> ~/.condarc
-        # Install lhapdf && nnpdf
-        conda install -y lhapdf
+        # Install nnpdf
         conda install -y nnpdf
         # Install package
         python -m pip install --upgrade pip

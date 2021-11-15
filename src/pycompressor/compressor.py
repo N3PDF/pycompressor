@@ -232,5 +232,4 @@ class Compress:
         selected_index = cma_res.astype(int)
         selected_modulo = selected_index % self.prior.shape[0]
         erf_cma = self.error_function(selected_modulo)
-        import ipdb; ipdb.set_trace()
         return erf_cma, selected_modulo

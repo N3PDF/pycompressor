@@ -106,50 +106,50 @@ two distincts part: the compression and the GANs parameters.</p>
 <p>One of the keys for the <code class="docutils literal notranslate"><span class="pre">gan</span></code> entry is a <code class="docutils literal notranslate"><span class="pre">runcard</span></code> which gets passed to the <em>ganpdfs</em> code.
 For details on how to set the parameters for the GAN, have a look <a class="reference external" href="https://n3pdf.github.io/ganpdfs/howto/howto.html">here</a>.</p>
 <p>An example of an input card is shown below:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">###################################################</span>
-<span class="c1"># PDF Set                                         #</span>
-<span class="c1">###################################################</span>
-<span class="nt">pdfsetting</span><span class="p">:</span>
-  <span class="nt">pdf</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NNPDF40_nnlo_as_0118_1000</span>
-  <span class="nt">existing_enhanced</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">###################################################</span><span class="w"></span>
+<span class="c1"># PDF Set                                         #</span><span class="w"></span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="nt">pdfsetting</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">pdf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NNPDF40_nnlo_as_0118_1000</span><span class="w"></span>
+<span class="w">  </span><span class="nt">existing_enhanced</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
 
-<span class="c1">###################################################</span>
-<span class="c1"># Size of compressed PDF replicas                 #</span>
-<span class="c1">###################################################</span>
-<span class="nt">compressed</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">500</span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="c1"># Size of compressed PDF replicas                 #</span><span class="w"></span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="nt">compressed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500</span><span class="w"></span>
 
-<span class="c1">###################################################</span>
-<span class="c1"># Choice of Minimizer                             #</span>
-<span class="c1"># Options:                                        #</span>
-<span class="c1">#   - genetic                                     #</span>
-<span class="c1">#   - cma                                         #</span>
-<span class="c1">###################################################</span>
-<span class="nt">minimizer</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">genetic</span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="c1"># Choice of Minimizer                             #</span><span class="w"></span>
+<span class="c1"># Options:                                        #</span><span class="w"></span>
+<span class="c1">#   - genetic                                     #</span><span class="w"></span>
+<span class="c1">#   - cma                                         #</span><span class="w"></span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="nt">minimizer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">genetic</span><span class="w"></span>
 
-<span class="c1">###################################################</span>
-<span class="c1"># Statistical Estimators                          #</span>
-<span class="c1"># Extra-options for Moment:                       #</span>
-<span class="c1">#   - moment5th                                   #</span>
-<span class="c1">#   - moment6th                                   #</span>
-<span class="c1">###################################################</span>
-<span class="nt">est_dic</span><span class="p">:</span>
-  <span class="nt">corr_estimators</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">correlation</span>
-  <span class="nt">stat_estimators</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kolmogorov_smirnov</span>
-  <span class="nt">moment_estimators</span><span class="p">:</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">mean</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">stdev</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">skewness</span>
-    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">kurtosis</span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="c1"># Statistical Estimators                          #</span><span class="w"></span>
+<span class="c1"># Extra-options for Moment:                       #</span><span class="w"></span>
+<span class="c1">#   - moment5th                                   #</span><span class="w"></span>
+<span class="c1">#   - moment6th                                   #</span><span class="w"></span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="nt">est_dic</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">corr_estimators</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">correlation</span><span class="w"></span>
+<span class="w">  </span><span class="nt">stat_estimators</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kolmogorov_smirnov</span><span class="w"></span>
+<span class="w">  </span><span class="nt">moment_estimators</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mean</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">stdev</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">skewness</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kurtosis</span><span class="w"></span>
 
-<span class="c1">###################################################</span>
-<span class="c1"># Enhance statistics of Prior                     #</span>
-<span class="c1">###################################################</span>
-<span class="nt">gans  </span><span class="p">:</span>
-  <span class="nt">enhance </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
-  <span class="nt">runcard </span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ganpdfs</span>
-  <span class="nt">total_replicas</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3000</span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="c1"># Enhance statistics of Prior                     #</span><span class="w"></span>
+<span class="c1">###################################################</span><span class="w"></span>
+<span class="nt">gans  </span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">enhance </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runcard </span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ganpdfs</span><span class="w"></span>
+<span class="w">  </span><span class="nt">total_replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span><span class="w"></span>
 </pre></div>
 </div>
 <section id="running-gans-within-pycompressor">

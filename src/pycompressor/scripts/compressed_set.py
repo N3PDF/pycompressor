@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import json
+import math
 import shutil
 import lhapdf
 import argparse
@@ -168,11 +168,11 @@ def main():
                     for iq in range(len(qgrid[ss])):
                         xpdf[irep][ss][ix].append([])
                         for ifl in range(len(fgrid[ss])):
-                            xpdf[irep][ss][ix][iq].append(
-                                pdf[cindex[irep]].xfxQ(
-                                    fgrid[ss][ifl], xgrid[ss][ix], qgrid[ss][iq]
-                                )
+                            xfq_result = pdf[cindex[irep]].xfxQ(
+                                fgrid[ss][ifl], xgrid[ss][ix], qgrid[ss][iq]
                             )
+                            if math.isnan(xfq_result): xfq_result = 0
+                            xpdf[irep][ss][ix][iq].append(xfq_result)
 
 
     # Construct commpressed central PDF

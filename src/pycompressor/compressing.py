@@ -50,7 +50,7 @@ def check_validity(pdfsetting, compressed, gans, est_dic):
     """ Check whether various quantities are acceptable """
     if not isinstance(compressed, int):
         raise CheckError(f"The key 'compressed' must be an integer, received: {compressed}")
-    members = pdfsetting["pdf"].load().GetMembers()
+    members = pdfsetting["pdf"].load().n_members
     for estimator_list in est_dic.values():
         for estimator in estimator_list:
             if estimator not in ALLOWED_ESTIMATORS:

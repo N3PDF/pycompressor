@@ -14,7 +14,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -71,8 +73,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Why pyCompressor?</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Why pyCompressor?</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/intro/introduction.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,7 +85,7 @@
            <div itemprop="articleBody">
              
   <section id="why-pycompressor">
-<h1>Why pyCompressor?<a class="headerlink" href="#why-pycompressor" title="Permalink to this headline"></a></h1>
+<h1>Why pyCompressor?<a class="headerlink" href="#why-pycompressor" title="Permalink to this heading"></a></h1>
 <p>The <cite>pyCompressor</cite> package was designed in order to have a compression code that is flexible enough to
 include various features that might improve the efficiency of the PDF compression strategy. The two new
 main features of the <cite>pyCompressor</cite> package compared to the C++ implementation are:</p>
@@ -115,7 +117,7 @@ convergence is achieved after a given iteration, the agorithm stops and outputs 
 replicas with size <span class="math notranslate nohighlight">\(N_c\)</span> (with <span class="math notranslate nohighlight">\(N_c \ll N_p &lt; N_e\)</span>).</p>
 </section>
 <section id="benchmarks">
-<h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this headline"></a></h1>
+<h1>Benchmarks<a class="headerlink" href="#benchmarks" title="Permalink to this heading"></a></h1>
 <p>The following benchmarks agains the C++ code is done without enhancing the statistics of the prior (i.e. truning
 off the GANs). The input PDF set chosen here is the NNPDF31_nnlo_as_0118_1000 with 1000 replicas. The mahine used
 for testing is a Ryzen 5 2600 (12 threads) with 16 GB of RAM.</p>

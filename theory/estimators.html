@@ -14,7 +14,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -76,8 +78,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Statistical Estimators</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Statistical Estimators</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/theory/estimators.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -88,7 +90,7 @@
            <div itemprop="articleBody">
              
   <section id="statistical-estimators">
-<h1>Statistical Estimators<a class="headerlink" href="#statistical-estimators" title="Permalink to this headline"></a></h1>
+<h1>Statistical Estimators<a class="headerlink" href="#statistical-estimators" title="Permalink to this heading"></a></h1>
 <p>The error function (ERF) that assesses the goodness of the compression by measuring the
 distance between the prior and the compressed distributions is defined as</p>
 <div class="math notranslate nohighlight">
@@ -114,7 +116,7 @@ is important to ensure that PDF-induced correlations in physical cross-sections 
 succesfully maintained.</p></li>
 </ol>
 <section id="mean-value-variance-higher-moments">
-<h2>Mean Value, Variance, Higher Moments<a class="headerlink" href="#mean-value-variance-higher-moments" title="Permalink to this headline"></a></h2>
+<h2>Mean Value, Variance, Higher Moments<a class="headerlink" href="#mean-value-variance-higher-moments" title="Permalink to this heading"></a></h2>
 <p>Let’s denote by <span class="math notranslate nohighlight">\(g_{i}^{(k)}\left(x_{j},Q_{0}\right)\)</span> and <span class="math notranslate nohighlight">\(f_{i}^{(r)}\left(x_{j},Q_{0}\right)\)</span>
 respectively the prior and the compressed sets of replicas for a flavor <span class="math notranslate nohighlight">\(i\)</span> at the position <span class="math notranslate nohighlight">\(j\)</span>
 of the <span class="math notranslate nohighlight">\(x\)</span>-grid containing <span class="math notranslate nohighlight">\(N_{x}\)</span> points. <span class="math notranslate nohighlight">\(N_{\text {rep }}\)</span> is the number of required
@@ -152,7 +154,7 @@ extractions of <span class="math notranslate nohighlight">\(N_{\text {rep }}\)</
 and <span class="math notranslate nohighlight">\(\mathrm{KUR}\)</span> respectively.</p>
 </section>
 <section id="kolmogorov-smirnov">
-<h2>Kolmogorov-Smirnov<a class="headerlink" href="#kolmogorov-smirnov" title="Permalink to this headline"></a></h2>
+<h2>Kolmogorov-Smirnov<a class="headerlink" href="#kolmogorov-smirnov" title="Permalink to this heading"></a></h2>
 <p>We define the contribution to the total ERF from the Kolmogorov-Smirnov (KS) distance as follows</p>
 <div class="math notranslate nohighlight">
 \[\mathrm{ERF}_{\mathrm{KS}}=\frac{1}{N_{\mathrm{KS}}} \sum_{i=-n_{f}}^{n_{f}} \sum_{j=1}^{N_{x}} \sum_{k=1}^{(r)}\left(\frac{F_{i}^{k}\left(x_{j}, Q_{0}\right)-G_{i}^{k}\left(x_{j}, Q_{0}\right)}{G_{i}^{k}\left(x_{j}, Q_{0}\right)}\right)^{2}\]</div>
@@ -172,7 +174,7 @@ extracted from the prior, denoted <span class="math notranslate nohighlight">\(R
 <p>and we include in the sum those points for which the denominator satisfies <span class="math notranslate nohighlight">\(G_{i}^{k}\left(x_{j}, Q_{0}\right) \neq 0\)</span>.</p>
 </section>
 <section id="pdf-correlation">
-<h2>PDF Correlation<a class="headerlink" href="#pdf-correlation" title="Permalink to this headline"></a></h2>
+<h2>PDF Correlation<a class="headerlink" href="#pdf-correlation" title="Permalink to this heading"></a></h2>
 <p>In addition to all the moments of the prior distribution, a sensible compression should also main-tain the
 correlations between values of <span class="math notranslate nohighlight">\(x\)</span> and between flavours of the PDFs. In order to achieve this, correlations
 are taken into account in the ERF by meansof the trace method. We define acorrelation matrix <span class="math notranslate nohighlight">\(C\)</span> for

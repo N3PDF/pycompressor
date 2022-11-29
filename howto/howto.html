@@ -14,7 +14,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -74,8 +76,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>How to use</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">How to use</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/howto/howto.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -86,7 +88,7 @@
            <div itemprop="articleBody">
              
   <section id="how-to-use">
-<h1>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this headline"></a></h1>
+<h1>How to use<a class="headerlink" href="#how-to-use" title="Permalink to this heading"></a></h1>
 <p>Once the <strong>pyCompressor</strong> package is installed, runnig a compression is very easy. It just takes
 an input run card in which all the input parameters are defined. The run card is subdivided into
 two distincts part: the compression and the GANs parameters.</p>
@@ -153,7 +155,7 @@ For details on how to set the parameters for the GAN, have a look <a class="refe
 </pre></div>
 </div>
 <section id="running-gans-within-pycompressor">
-<h2>Running GANs within pyCompressor<a class="headerlink" href="#running-gans-within-pycompressor" title="Permalink to this headline"></a></h2>
+<h2>Running GANs within pyCompressor<a class="headerlink" href="#running-gans-within-pycompressor" title="Permalink to this heading"></a></h2>
 <p>Although it is advised to run the <cite>ganpdfs</cite> code independently, it is possible to call it
 within the <cite>pyCompressor</cite> code by setting <code class="docutils literal notranslate"><span class="pre">enhance</span></code> to <cite>True</cite> in the runcard. In this
 scenario, the code will first enhance the statistic the prior using GANs.
@@ -198,7 +200,7 @@ the reduced replicas along with the final ERF value.</p></li>
 </div>
 </section>
 <section id="adiabatic-minimization">
-<h2>Adiabatic minimization<a class="headerlink" href="#adiabatic-minimization" title="Permalink to this headline"></a></h2>
+<h2>Adiabatic minimization<a class="headerlink" href="#adiabatic-minimization" title="Permalink to this heading"></a></h2>
 <p>Since compressing from an enhanced set could be difficult due to the limitation of the minimization
 algorithm, it is possible to perfrom an adiabatic minimization by setting <code class="docutils literal notranslate"><span class="pre">existing_enhanced</span></code> to
 <cite>True</cite> in the runcard. In this case, the minimization is perfromed in two steps: (1) a standard
@@ -207,7 +209,7 @@ the space in which the best from the standard compression was generated.</p>
 </section>
 </section>
 <section id="pdf-grid-and-validation-plot">
-<h1>PDF grid and Validation plot<a class="headerlink" href="#pdf-grid-and-validation-plot" title="Permalink to this headline"></a></h1>
+<h1>PDF grid and Validation plot<a class="headerlink" href="#pdf-grid-and-validation-plot" title="Permalink to this heading"></a></h1>
 <p>To generate the reduced Monte Carlo set of PDF replicas, simply run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>get-grid -i &lt;PRIOR_PDF_NAME&gt;/compressed_&lt;PDF_NAME&gt;_&lt;NB_COMPRESSED&gt;_output.dat
 </pre></div>
@@ -221,7 +223,7 @@ the ERF validation plots, enter in the <code class="docutils literal notranslate
 </div>
 </section>
 <section id="controlling-the-parallelization">
-<h1>Controlling the parallelization<a class="headerlink" href="#controlling-the-parallelization" title="Permalink to this headline"></a></h1>
+<h1>Controlling the parallelization<a class="headerlink" href="#controlling-the-parallelization" title="Permalink to this heading"></a></h1>
 <p>The backend of pycompressor is the JIT compiler [numba](<a class="reference external" href="https://numba.pydata.org">https://numba.pydata.org</a>) and it is numba who controls the parallelization of the calculations within the code.
 The number of cores to be used can be controlled with the appropiate settings to the following environmental variables:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span>
